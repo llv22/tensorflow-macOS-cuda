@@ -5,7 +5,7 @@
 
 --------------------------------------------------------------------------------
 
-As officially Tensorflow doesn't support for macOS cuda, I used this repository to build tensorflow 2.8+ on macOS cuda. **This branch v2.8.0-fixed branch is the current investigation branch**. Though [TomHeaven's Tensorflow OSX Build] didn't support TF 1.15, 2.0.0, 2.1.0 and 2.2.0 as well as [2.4.0](https://github.com/TomHeaven/tensorflow/tree/v2.4.0-macos). After checkup with him via [ticket 25 on tensorflow-osx-build](https://github.com/TomHeaven/tensorflow-osx-build/issues/25), knowing that he won't continue to crack for higher version, I decided to try on my own similar to [pytorch-macOS-cuda](https://github.com/llv22/pytorch-macOS-cuda/), [nccl-osx](https://github.com/llv22/nccl-osx), as well as [jax-macOS-cuda](https://github.com/llv22/jax-macOS-cuda).
+As officially Tensorflow doesn't support for macOS cuda, I used this repository to build tensorflow 2.8+ on macOS cuda. **This branch v2.8.0-fixed branch is the current investigation branch**. Though [TomHeaven's Tensorflow OSX Build](https://github.com/TomHeaven/tensorflow-osx-build) didn't support TF 1.15, 2.0.0, 2.1.0 and 2.2.0 as well as [2.4.0](https://github.com/TomHeaven/tensorflow/tree/v2.4.0-macos). After checkup with him via [ticket 25 on tensorflow-osx-build](https://github.com/TomHeaven/tensorflow-osx-build/issues/25), knowing that he won't continue to crack for higher version, I decided to try on my own similar to [pytorch-macOS-cuda](https://github.com/llv22/pytorch-macOS-cuda/), [nccl-osx](https://github.com/llv22/nccl-osx), as well as [jax-macOS-cuda](https://github.com/llv22/jax-macOS-cuda).
 
 The main development environment settings as follow:
 
