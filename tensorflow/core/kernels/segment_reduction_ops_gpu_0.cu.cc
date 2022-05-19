@@ -15,6 +15,10 @@ limitations under the License.
 
 #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
 
+#if defined(__APPLE__) && defined(__MACH__)
+#include "tensorflow/core/framework/tensor_shape.pb.h"
+#endif
+
 #include "tensorflow/core/framework/register_types.h"
 #include "tensorflow/core/kernels/segment_reduction_ops_gpu.cu.h"
 

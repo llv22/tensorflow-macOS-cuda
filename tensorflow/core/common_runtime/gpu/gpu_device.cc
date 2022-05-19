@@ -1727,9 +1727,10 @@ se::CudaComputeCapability ComputeCapabilityFromString(
   return se::CudaComputeCapability{major_part, minor_part};
 }
 
+// orlando: https://githublab.com/repository/issues/tensorflow/tensorflow/55621
 std::vector<se::CudaComputeCapability> GetSupportedCudaComputeCapabilities() {
   std::vector<se::CudaComputeCapability> cuda_caps = {
-      ComputeCapabilityFromString("3.5"), ComputeCapabilityFromString("5.2")};
+      ComputeCapabilityFromString("3.0"), ComputeCapabilityFromString("3.5"), ComputeCapabilityFromString("5.2")};
 #ifdef TF_EXTRA_CUDA_CAPABILITIES
 // TF_EXTRA_CUDA_CAPABILITIES should be defined a sequence separated by commas,
 // for example:

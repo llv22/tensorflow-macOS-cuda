@@ -136,10 +136,27 @@ std::string Reindent(absl::string_view original,
       });
 }
 
+#if defined(__APPLE__) && defined(__MACH__)
+   template<typename T>
+   inline bool isnan_(T x) {
+     return std::isnan(x);
+   }
+   inline bool isnan_(const Eigen::bfloat16 x) {
+     return std::isnan(static_cast<float>(x));
+   }
+   inline bool isnan_(const Eigen::half x) {
+     return std::isnan(x.x);
+   }
+#endif
+
 template <typename IntT, typename FloatT>
 static void RoundTripNanPayload(FloatT value, std::string* result) {
   const int kPayloadBits = NanPayloadBits<FloatT>();
+#if defined(__APPLE__) && defined(__MACH__)
+  if (isnan_(value) && kPayloadBits > 0) {
+#else
   if (std::isnan(value) && kPayloadBits > 0) {
+#endif
     auto rep = absl::bit_cast<IntT>(value);
     auto payload = rep & NanPayloadBitMask<FloatT>();
     if (payload != QuietNanWithoutPayload<FloatT>()) {

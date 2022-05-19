@@ -108,6 +108,9 @@ tf_cc_binary(
         "//tensorflow/compiler/mlir/tools/kernel_gen/tests/tf_to_kernel:__pkg__",
         "//tensorflow/core/kernels/mlir_generated:__pkg__",
     ],
+    linkopts = [        
+        "-framework CoreFoundation",
+    ],
     deps = [
         ":kernel_creator",
         "//tensorflow/compiler/mlir:init_mlir",

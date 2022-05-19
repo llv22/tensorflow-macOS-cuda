@@ -17,6 +17,10 @@ limitations under the License.
 
 #define EIGEN_USE_GPU
 
+#if defined(__APPLE__) && defined(__MACH__)
+#include "tensorflow/core/framework/tensor_shape.pb.h"
+#endif
+
 #include "tensorflow/core/kernels/reshape_util.h"
 #include "tensorflow/core/util/gpu_kernel_helper.h"
 

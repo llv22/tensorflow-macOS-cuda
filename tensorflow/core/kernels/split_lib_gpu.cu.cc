@@ -19,6 +19,10 @@ limitations under the License.
 
 #include <stdio.h>
 
+#if defined(__APPLE__) && defined(__MACH__)
+#include "tensorflow/core/framework/tensor_shape.pb.h"
+#endif
+
 #include "tensorflow/core/framework/register_types.h"
 #include "tensorflow/core/framework/tensor_types.h"
 #include "tensorflow/core/kernels/gpu_device_array_gpu.h"
@@ -205,12 +209,21 @@ void SplitOpGPULaunch<T>::Run(const Eigen::GpuDevice& d, const T* input,
                               output_ptr_data));
 }
 
+#if defined(__APPLE__) && defined(__MACH__)
+template <typename T, typename IntType>
+void SplitVOpGPULaunch<T, IntType>::Run(
+    const Eigen::GpuDevice& gpu_device, int fixed_size, const T* input_ptr,
+    int total_rows, int total_cols,
+    const GpuDeviceArrayStruct<IntType>& output_scan,
+    const GpuDeviceArrayStruct<T*>& output_ptr_data) {
+#else
 template <typename T, typename IntType>
 void SplitVOpGPULaunch<T, IntType>::Run(
     const Eigen::GpuDevice& gpu_device, bool fixed_size, const T* input_ptr,
     int total_rows, int total_cols,
     const GpuDeviceArrayStruct<IntType>& output_scan,
     const GpuDeviceArrayStruct<T*>& output_ptr_data) {
+#endif
   if (fixed_size) {
     GpuLaunchConfig config =
         GetGpuLaunchConfig(total_rows * total_cols, gpu_device);
@@ -227,6 +240,20 @@ void SplitVOpGPULaunch<T, IntType>::Run(
     // memory on most processors possibly due to decreasing occupancy
     // 4096 inputs is a lot, most code will take the smem path
     const int32 kMaxSmemBytesPerformance = 16384;
+#if defined(__APPLE__) && defined(__MACH__)
+    if (smem_usage < smem_max && smem_usage < kMaxSmemBytesPerformance) {
+      TF_CHECK_OK(GpuLaunchKernel(
+          split_v_kernel<T, IntType, 1>, config.block_count,
+          config.thread_per_block, smem_usage, gpu_device.stream(), input_ptr,
+          output_scan, total_rows, total_cols, output_ptr_data));
+    } else {
+      TF_CHECK_OK(GpuLaunchKernel(
+          split_v_kernel<T, IntType, 0>, config.block_count,
+          config.thread_per_block, 0, gpu_device.stream(), input_ptr,
+          output_scan, total_rows, total_cols, output_ptr_data));
+    }
+  }
+#else
     if (smem_usage < smem_max && smem_usage < kMaxSmemBytesPerformance) {
       TF_CHECK_OK(GpuLaunchKernel(
           split_v_kernel<T, IntType, true>, config.block_count,
@@ -239,6 +266,7 @@ void SplitVOpGPULaunch<T, IntType>::Run(
           output_scan, total_rows, total_cols, output_ptr_data));
     }
   }
+#endif
 }
 
 #define REGISTER_GPU_KERNEL(T) template struct SplitOpGPULaunch<T>;

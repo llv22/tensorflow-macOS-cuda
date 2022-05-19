@@ -36,6 +36,15 @@ struct SplitOpGPULaunch {
            const GpuDeviceArrayStruct<T*>& output_ptr_data);
 };
 
+#if defined(__APPLE__) && defined(__MACH__)
+template <typename T, typename IntType>
+struct SplitVOpGPULaunch {
+  void Run(const Eigen::GpuDevice& d, int fixed, const T* input,
+           int total_cols, int total_rows,
+           const GpuDeviceArrayStruct<IntType>& output_scan,
+           const GpuDeviceArrayStruct<T*>& output_ptr_data);
+};
+#else
 template <typename T, typename IntType>
 struct SplitVOpGPULaunch {
   void Run(const Eigen::GpuDevice& d, bool fixed, const T* input,
@@ -43,6 +52,7 @@ struct SplitVOpGPULaunch {
            const GpuDeviceArrayStruct<IntType>& output_scan,
            const GpuDeviceArrayStruct<T*>& output_ptr_data);
 };
+#endif
 
 // Explicit instantiations in split_lib_gpu.cu.cc.
 #define REGISTER_GPU_KERNEL(T)                        \

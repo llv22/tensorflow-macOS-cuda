@@ -17,6 +17,7 @@ limitations under the License.
 
 #if defined(__APPLE__)
 #include <mach-o/dyld.h>
+#include <stdlib.h>
 #endif
 #if defined(PLATFORM_WINDOWS)
 #include <windows.h>
@@ -184,6 +185,17 @@ bool GpuExecutor::FindOnDiskForISAVersion(absl::string_view filename,
 // Arg: strip_exe: if true, remove the name of the executable itself from the
 //                 returned string. Example: calling this from /usr/bin/foo
 //                 would return /usr/bin.
+
+#if defined(__APPLE__) && defined(__MACH__)
+#define CHECK_ERR(err) \
+	({ \
+		if (err < 0) \
+			printf("%s():%d \n\r", __func__, __LINE__); \
+		if (err < 0) \
+			exit(err); \
+	})
+#endif
+
 static std::string GetBinaryDir(bool strip_exe) {
   char exe_path[PATH_MAX] = {0};
 #if defined(__APPLE__)
@@ -191,7 +203,9 @@ static std::string GetBinaryDir(bool strip_exe) {
   _NSGetExecutablePath(nullptr, &buffer_size);
   char unresolved_path[buffer_size];
   _NSGetExecutablePath(unresolved_path, &buffer_size);
+#if defined(__MACH__)
   CHECK_ERR(realpath(unresolved_path, exe_path) ? 1 : -1);
+#endif
 #else
 #if defined(PLATFORM_WINDOWS)
   HMODULE hModule = GetModuleHandle(NULL);
