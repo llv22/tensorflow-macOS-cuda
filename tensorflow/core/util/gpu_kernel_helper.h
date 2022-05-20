@@ -55,11 +55,18 @@ using gpuStream_t = hipStream_t;
 using gpuError_t = hipError_t;
 #endif
 
-// macro wrapper to declare dynamic shared memory
+// macro wrapper to declare dynamic shared memory, but on macOS to avoid dynamic alignment which leads to template instantiation issue
+// refer to 
+// 1. https://gist.githubusercontent.com/rxwei/993deb4c9ed51c875e74f5ca4e074d3d/raw/13ebd8bbca7054a4dde275dce7695c8b4c476ae7/tensorflow_macos_gpu.patch
+// 2. https://github.com/TomHeaven/tensorflow-osx-build/blob/master/source_patches/v2.2.0_macos.patch
 #if GOOGLE_CUDA
 
 #define GPU_DYNAMIC_SHARED_MEM_DECL(ALIGN, TYPE, NAME) \
+#if defined(__APPLE__) && defined(__MACH__)
+  extern __shared__ TYPE NAME[]
+#else
   extern __shared__ __align__(ALIGN) TYPE NAME[]
+#endif
 
 #elif TENSORFLOW_USE_ROCM
 
