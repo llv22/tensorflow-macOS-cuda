@@ -1,0 +1,3188 @@
+From 54307e6fb6f38e47ebeb84a26d61fd6c988b2fce Mon Sep 17 00:00:00 2001
+From: TensorFlow Release Automation <jenkins@tensorflow.org>
+Date: Mon, 31 Jan 2022 19:08:09 +0000
+Subject: [PATCH 1/7] Update version numbers to 2.8.0
+
+---
+ tensorflow/core/public/version.h      | 2 +-
+ tensorflow/tools/pip_package/setup.py | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tensorflow/core/public/version.h b/tensorflow/core/public/version.h
+index f6d8cfa56ab..157ce4e661b 100644
+--- a/tensorflow/core/public/version.h
++++ b/tensorflow/core/public/version.h
+@@ -26,7 +26,7 @@ limitations under the License.
+ 
+ // TF_VERSION_SUFFIX is non-empty for pre-releases (e.g. "-alpha", "-alpha.1",
+ // "-beta", "-rc", "-rc.1")
+-#define TF_VERSION_SUFFIX "-rc1"
++#define TF_VERSION_SUFFIX ""
+ 
+ #define TF_STR_HELPER(x) #x
+ #define TF_STR(x) TF_STR_HELPER(x)
+diff --git a/tensorflow/tools/pip_package/setup.py b/tensorflow/tools/pip_package/setup.py
+index 472e8726073..58de3ad9c40 100644
+--- a/tensorflow/tools/pip_package/setup.py
++++ b/tensorflow/tools/pip_package/setup.py
+@@ -46,7 +46,7 @@ from setuptools.dist import Distribution
+ # result for pip.
+ # Also update tensorflow/tensorflow.bzl and
+ # tensorflow/core/public/version.h
+-_VERSION = '2.8.0-rc1'
++_VERSION = '2.8.0'
+ 
+ 
+ # We use the same setup.py for all tensorflow_* packages and for the nightly
+-- 
+2.17.2 (Apple Git-113)
+
+
+From c6eb0691dd30113e6b8cbe8563d2d9b3695f59c6 Mon Sep 17 00:00:00 2001
+From: Orlando Ding <xiandao.airs@gmail.com>
+Date: Fri, 13 May 2022 17:57:04 +0800
+Subject: [PATCH 2/7] orlando - for setup of TF2.8
+
+---
+ README.md | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/README.md b/README.md
+index d43ef159639..b5388d18680 100644
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,19 @@
++<!-- markdownlint-disable MD033 -->
++<!-- markdownlint-disable MD004 -->
++<!-- markdownlint-disable MD029 -->
++# tensorflow 2.8.0+ for Nvidia GPU on macOS
++
++--------------------------------------------------------------------------------
++
++As officially Tensorflow doesn't support for macOS cuda, I used this repository to build pytorch on macOS cuda. **This branch v2.8.0-fixed branch is the current investigation branch**. Though [TomHeaven's Tensorflow OSX Build] didn't support TF 1.15, 2.0.0, 2.1.0 and 2.2.0 as well as [2.4.0](https://github.com/TomHeaven/tensorflow/tree/v2.4.0-macos). After checkup with him via [ticket 25 on tensorflow-osx-build](https://github.com/TomHeaven/tensorflow-osx-build/issues/25), knowing that he won't continue to crack for higher version, I decided to try on my own similar to [pytorch-macOS-cuda](https://github.com/llv22/pytorch-macOS-cuda/), [nccl-osx](https://github.com/llv22/nccl-osx), as well as [jax-macOS-cuda](https://github.com/llv22/jax-macOS-cuda).
++
++The main development environment settings as follow:
++
++- macOS 10.13.6, cuda 10.1, cudnn 7.6.5 (cuda and cudnn is the last official version which Nvidia released to support macOS)
++- [NCCL on macOS 2.9.6.1](https://github.com/llv22/nccl-osx) and [test suite](https://github.com/llv22/nccl-tests-macOS-cuda)
++
++--------------------------------------------------------------------------------
++
+ <div align="center">
+   <img src="https://www.tensorflow.org/images/tf_logo_horizontal.png">
+ </div>
+-- 
+2.17.2 (Apple Git-113)
+
+
+From f3f6ef3a462a1a7c55b019309afc802bcce72b19 Mon Sep 17 00:00:00 2001
+From: orlando <xiandao.airs@gmail.com>
+Date: Sat, 14 May 2022 08:58:12 +0800
+Subject: [PATCH 3/7] Update README.md
+
+---
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/README.md b/README.md
+index b5388d18680..e8aa5e36458 100644
+--- a/README.md
++++ b/README.md
+@@ -5,7 +5,7 @@
+ 
+ --------------------------------------------------------------------------------
+ 
+-As officially Tensorflow doesn't support for macOS cuda, I used this repository to build pytorch on macOS cuda. **This branch v2.8.0-fixed branch is the current investigation branch**. Though [TomHeaven's Tensorflow OSX Build] didn't support TF 1.15, 2.0.0, 2.1.0 and 2.2.0 as well as [2.4.0](https://github.com/TomHeaven/tensorflow/tree/v2.4.0-macos). After checkup with him via [ticket 25 on tensorflow-osx-build](https://github.com/TomHeaven/tensorflow-osx-build/issues/25), knowing that he won't continue to crack for higher version, I decided to try on my own similar to [pytorch-macOS-cuda](https://github.com/llv22/pytorch-macOS-cuda/), [nccl-osx](https://github.com/llv22/nccl-osx), as well as [jax-macOS-cuda](https://github.com/llv22/jax-macOS-cuda).
++As officially Tensorflow doesn't support for macOS cuda, I used this repository to build tensorflow 2.8+ on macOS cuda. **This branch v2.8.0-fixed branch is the current investigation branch**. Though [TomHeaven's Tensorflow OSX Build] didn't support TF 1.15, 2.0.0, 2.1.0 and 2.2.0 as well as [2.4.0](https://github.com/TomHeaven/tensorflow/tree/v2.4.0-macos). After checkup with him via [ticket 25 on tensorflow-osx-build](https://github.com/TomHeaven/tensorflow-osx-build/issues/25), knowing that he won't continue to crack for higher version, I decided to try on my own similar to [pytorch-macOS-cuda](https://github.com/llv22/pytorch-macOS-cuda/), [nccl-osx](https://github.com/llv22/nccl-osx), as well as [jax-macOS-cuda](https://github.com/llv22/jax-macOS-cuda).
+ 
+ The main development environment settings as follow:
+ 
+-- 
+2.17.2 (Apple Git-113)
+
+
+From e7f273532bcfde17093e10f0bad1213b407f59b0 Mon Sep 17 00:00:00 2001
+From: orlando <xiandao.airs@gmail.com>
+Date: Sat, 14 May 2022 08:59:11 +0800
+Subject: [PATCH 4/7] Update README.md
+
+---
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/README.md b/README.md
+index e8aa5e36458..3c1b2d8fbc1 100644
+--- a/README.md
++++ b/README.md
+@@ -5,7 +5,7 @@
+ 
+ --------------------------------------------------------------------------------
+ 
+-As officially Tensorflow doesn't support for macOS cuda, I used this repository to build tensorflow 2.8+ on macOS cuda. **This branch v2.8.0-fixed branch is the current investigation branch**. Though [TomHeaven's Tensorflow OSX Build] didn't support TF 1.15, 2.0.0, 2.1.0 and 2.2.0 as well as [2.4.0](https://github.com/TomHeaven/tensorflow/tree/v2.4.0-macos). After checkup with him via [ticket 25 on tensorflow-osx-build](https://github.com/TomHeaven/tensorflow-osx-build/issues/25), knowing that he won't continue to crack for higher version, I decided to try on my own similar to [pytorch-macOS-cuda](https://github.com/llv22/pytorch-macOS-cuda/), [nccl-osx](https://github.com/llv22/nccl-osx), as well as [jax-macOS-cuda](https://github.com/llv22/jax-macOS-cuda).
++As officially Tensorflow doesn't support for macOS cuda, I used this repository to build tensorflow 2.8+ on macOS cuda. **This branch v2.8.0-fixed branch is the current investigation branch**. Though [TomHeaven's Tensorflow OSX Build](https://github.com/TomHeaven/tensorflow-osx-build) didn't support TF 1.15, 2.0.0, 2.1.0 and 2.2.0 as well as [2.4.0](https://github.com/TomHeaven/tensorflow/tree/v2.4.0-macos). After checkup with him via [ticket 25 on tensorflow-osx-build](https://github.com/TomHeaven/tensorflow-osx-build/issues/25), knowing that he won't continue to crack for higher version, I decided to try on my own similar to [pytorch-macOS-cuda](https://github.com/llv22/pytorch-macOS-cuda/), [nccl-osx](https://github.com/llv22/nccl-osx), as well as [jax-macOS-cuda](https://github.com/llv22/jax-macOS-cuda).
+ 
+ The main development environment settings as follow:
+ 
+-- 
+2.17.2 (Apple Git-113)
+
+
+From 6c0b6fa013b04c79204e66b217e47abfd4d5b525 Mon Sep 17 00:00:00 2001
+From: Orlando Ding <xiandao.airs@gmail.com>
+Date: Fri, 20 May 2022 07:54:09 +0800
+Subject: [PATCH 5/7] orlando - for fixing 2.8.0 on macOS
+
+---
+ .../compiler/mlir/tools/kernel_gen/BUILD      |  3 ++
+ tensorflow/compiler/xla/util.cc               | 17 +++++++++++
+ .../core/common_runtime/gpu/gpu_device.cc     |  3 +-
+ .../core/kernels/aggregate_ops_gpu.cu.cc      |  4 +++
+ tensorflow/core/kernels/argmax_op_gpu.cu.cc   |  4 +++
+ .../core/kernels/avgpooling_op_gpu.cu.cc      |  4 +++
+ .../core/kernels/batch_norm_op_gpu.cu.cc      |  4 +++
+ tensorflow/core/kernels/betainc_op_gpu.cu.cc  |  4 +++
+ tensorflow/core/kernels/bias_op_gpu.cu.cc     |  4 +++
+ tensorflow/core/kernels/bincount_op_gpu.cu.cc |  4 +++
+ tensorflow/core/kernels/broadcast_to_op.cc    |  4 +++
+ .../core/kernels/broadcast_to_op_gpu.cu.cc    |  4 +++
+ .../core/kernels/bucketize_op_gpu.cu.cc       |  4 +++
+ tensorflow/core/kernels/cast_op_gpu.cu.cc     |  4 +++
+ .../core/kernels/concat_lib_gpu_impl.cu.cc    |  4 +++
+ .../core/kernels/cwise_op_clip_gpu.cu.cc      |  4 +++
+ .../core/kernels/data/optional_ops.cu.cc      |  4 +++
+ .../core/kernels/data_format_ops_gpu.cu.cc    |  4 +++
+ tensorflow/core/kernels/debug_ops_gpu.cu.cc   |  4 +++
+ .../kernels/dense_update_functor_gpu.cu.cc    |  4 +++
+ .../core/kernels/depthtospace_op_gpu.cu.cc    |  4 +++
+ .../depthwise_conv_op_gpu_double.cu.cc        |  4 +++
+ .../kernels/depthwise_conv_op_gpu_float.cu.cc |  4 +++
+ .../kernels/depthwise_conv_op_gpu_half.cu.cc  |  4 +++
+ tensorflow/core/kernels/diag_op_gpu.cu.cc     |  4 +++
+ .../core/kernels/dilation_ops_gpu.cu.cc       |  4 +++
+ .../kernels/dynamic_partition_op_gpu.cu.cc    |  4 +++
+ .../core/kernels/dynamic_stitch_op_gpu.cu.cc  |  4 +++
+ tensorflow/core/kernels/fill_functor.cu.cc    |  4 +++
+ .../core/kernels/fused_batch_norm_op.cu.cc    |  5 ++++
+ .../kernels/gather_functor_batched_gpu.cu.cc  |  4 +++
+ .../core/kernels/gather_functor_gpu.cu.cc     |  4 +++
+ .../core/kernels/histogram_op_gpu.cu.cc       |  4 +++
+ .../image/adjust_contrast_op_gpu.cu.cc        |  4 +++
+ .../image/crop_and_resize_op_gpu.cu.cc        |  4 +++
+ .../image/extract_image_patches_op_gpu.cu.cc  |  4 +++
+ .../image/extract_volume_patches_op_gpu.cu.cc |  4 +++
+ .../image/generate_box_proposals_op.cu.cc     |  4 +++
+ .../resize_nearest_neighbor_op_gpu.cu.cc      |  4 +++
+ tensorflow/core/kernels/in_topk_op_gpu.cu.cc  |  4 +++
+ .../kernels/inplace_ops_functor_gpu.cu.cc     |  4 +++
+ tensorflow/core/kernels/l2loss_op_gpu.cu.cc   |  4 +++
+ .../core/kernels/linalg/eye_functor_gpu.cu.cc |  5 ++++
+ .../linalg/matrix_band_part_op_gpu.cu.cc      |  4 +++
+ tensorflow/core/kernels/list_kernels.cu.cc    |  4 +++
+ .../core/kernels/multinomial_op_gpu.cu.cc     |  4 +++
+ tensorflow/core/kernels/one_hot_op_gpu.cu.cc  |  4 +++
+ ...arameterized_truncated_normal_op_gpu.cu.cc |  4 +++
+ .../kernels/population_count_op_gpu.cu.cc     |  4 +++
+ .../core/kernels/reduction_ops_gpu_bool.cu.cc |  4 +++
+ tensorflow/core/kernels/relu_op_gpu.cu.cc     |  4 +++
+ .../core/kernels/reshape_util_gpu.cu.cc       |  4 +++
+ tensorflow/core/kernels/reverse_op_gpu.cu.cc  |  4 +++
+ .../kernels/reverse_sequence_op_gpu.cu.cc     |  4 +++
+ .../core/kernels/rnn/lstm_ops_gpu.cu.cc       |  4 +++
+ tensorflow/core/kernels/roll_op_gpu.cu.cc     |  4 +++
+ .../core/kernels/scan_ops_gpu_double.cu.cc    |  4 +++
+ .../core/kernels/scan_ops_gpu_float.cu.cc     |  4 +++
+ .../core/kernels/scan_ops_gpu_half.cu.cc      |  4 +++
+ .../core/kernels/scan_ops_gpu_int.cu.cc       |  4 +++
+ .../core/kernels/scatter_functor_gpu.cu.cc    |  4 +++
+ .../core/kernels/scatter_nd_op_gpu.cu.cc      |  4 +++
+ tensorflow/core/kernels/scatter_op_gpu.cu.cc  |  4 +++
+ .../core/kernels/searchsorted_op_gpu.cu.cc    |  4 +++
+ .../kernels/segment_reduction_ops_gpu_0.cu.cc |  4 +++
+ .../kernels/segment_reduction_ops_gpu_2.cu.cc |  4 +++
+ .../core/kernels/sequence_ops_gpu.cu.cc       |  4 +++
+ tensorflow/core/kernels/slice_op_gpu.cu.cc    |  4 +++
+ tensorflow/core/kernels/softmax_op_gpu.cu.cc  |  4 +++
+ tensorflow/core/kernels/softplus_op_gpu.cu.cc |  4 +++
+ tensorflow/core/kernels/softsign_op_gpu.cu.cc |  4 +++
+ .../kernels/spacetobatch_functor_gpu.cu.cc    |  4 +++
+ .../core/kernels/spacetodepth_op_gpu.cu.cc    |  4 +++
+ .../core/kernels/sparse/kernels_gpu.cu.cc     |  4 +++
+ .../core/kernels/sparse_concat_op_gpu.cu.cc   |  4 +++
+ .../sparse_fill_empty_rows_op_gpu.cu.cc       |  4 +++
+ .../core/kernels/sparse_reorder_op_gpu.cu.cc  |  4 +++
+ .../sparse_tensor_dense_matmul_op_gpu.cu.cc   |  4 +++
+ .../core/kernels/sparse_to_dense_op_gpu.cu.cc |  4 +++
+ .../core/kernels/sparse_xent_op_gpu.cu.cc     |  4 +++
+ tensorflow/core/kernels/split_lib_gpu.cu.cc   | 28 +++++++++++++++++++
+ tensorflow/core/kernels/split_lib_gpu.h       | 10 +++++++
+ .../kernels/stateful_random_ops_gpu.cu.cc     |  4 +++
+ .../stateless_random_gamma_op_gpu.cu.cc       |  4 +++
+ .../kernels/strided_slice_op_gpu_bool.cu.cc   |  4 +++
+ .../strided_slice_op_gpu_complex.cu.cc        |  4 +++
+ .../tensor_to_hash_bucket_op_gpu.cu.cc        |  4 +++
+ .../core/kernels/tile_functor_gpu_bool.cu.cc  |  4 +++
+ .../core/kernels/topk_op_gpu_double.cu.cc     |  4 +++
+ .../core/kernels/topk_op_gpu_float.cu.cc      |  4 +++
+ .../core/kernels/topk_op_gpu_uint64.cu.cc     |  4 +++
+ .../core/kernels/training_ops_gpu.cu.cc       |  4 +++
+ .../core/kernels/transpose_functor_gpu.cu.cc  |  4 +++
+ tensorflow/core/kernels/unique_op_gpu_0.cu.cc |  4 +++
+ .../core/kernels/where_op_gpu_impl_1.cu.cc    |  3 ++
+ tensorflow/core/util/gpu_device_functions.h   |  2 +-
+ tensorflow/stream_executor/cuda/cuda_dnn.cc   | 10 ++++++-
+ .../stream_executor/cuda/cuda_gpu_executor.cc | 14 ++++++++++
+ .../crosstool_wrapper_driver_is_not_gcc.tpl   |  7 +++--
+ third_party/gpus/cuda_configure.bzl           |  5 ++--
+ 100 files changed, 452 insertions(+), 8 deletions(-)
+
+diff --git a/tensorflow/compiler/mlir/tools/kernel_gen/BUILD b/tensorflow/compiler/mlir/tools/kernel_gen/BUILD
+index 54c4cec73fe..0f902b0235d 100644
+--- a/tensorflow/compiler/mlir/tools/kernel_gen/BUILD
++++ b/tensorflow/compiler/mlir/tools/kernel_gen/BUILD
+@@ -108,6 +108,9 @@ tf_cc_binary(
+         "//tensorflow/compiler/mlir/tools/kernel_gen/tests/tf_to_kernel:__pkg__",
+         "//tensorflow/core/kernels/mlir_generated:__pkg__",
+     ],
++    linkopts = [        
++        "-framework CoreFoundation",
++    ],
+     deps = [
+         ":kernel_creator",
+         "//tensorflow/compiler/mlir:init_mlir",
+diff --git a/tensorflow/compiler/xla/util.cc b/tensorflow/compiler/xla/util.cc
+index 177cc238d5d..9918bce6aaf 100644
+--- a/tensorflow/compiler/xla/util.cc
++++ b/tensorflow/compiler/xla/util.cc
+@@ -136,10 +136,27 @@ std::string Reindent(absl::string_view original,
+       });
+ }
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++   template<typename T>
++   inline bool isnan_(T x) {
++     return std::isnan(x);
++   }
++   inline bool isnan_(const Eigen::bfloat16 x) {
++     return std::isnan(static_cast<float>(x));
++   }
++   inline bool isnan_(const Eigen::half x) {
++     return std::isnan(x.x);
++   }
++#endif
++
+ template <typename IntT, typename FloatT>
+ static void RoundTripNanPayload(FloatT value, std::string* result) {
+   const int kPayloadBits = NanPayloadBits<FloatT>();
++#if defined(__APPLE__) && defined(__MACH__)
++  if (isnan_(value) && kPayloadBits > 0) {
++#else
+   if (std::isnan(value) && kPayloadBits > 0) {
++#endif
+     auto rep = absl::bit_cast<IntT>(value);
+     auto payload = rep & NanPayloadBitMask<FloatT>();
+     if (payload != QuietNanWithoutPayload<FloatT>()) {
+diff --git a/tensorflow/core/common_runtime/gpu/gpu_device.cc b/tensorflow/core/common_runtime/gpu/gpu_device.cc
+index 604a1c2d56b..63a34b8ab48 100644
+--- a/tensorflow/core/common_runtime/gpu/gpu_device.cc
++++ b/tensorflow/core/common_runtime/gpu/gpu_device.cc
+@@ -1727,9 +1727,10 @@ se::CudaComputeCapability ComputeCapabilityFromString(
+   return se::CudaComputeCapability{major_part, minor_part};
+ }
+ 
++// orlando: https://githublab.com/repository/issues/tensorflow/tensorflow/55621
+ std::vector<se::CudaComputeCapability> GetSupportedCudaComputeCapabilities() {
+   std::vector<se::CudaComputeCapability> cuda_caps = {
+-      ComputeCapabilityFromString("3.5"), ComputeCapabilityFromString("5.2")};
++      ComputeCapabilityFromString("3.0"), ComputeCapabilityFromString("3.5"), ComputeCapabilityFromString("5.2")};
+ #ifdef TF_EXTRA_CUDA_CAPABILITIES
+ // TF_EXTRA_CUDA_CAPABILITIES should be defined a sequence separated by commas,
+ // for example:
+diff --git a/tensorflow/core/kernels/aggregate_ops_gpu.cu.cc b/tensorflow/core/kernels/aggregate_ops_gpu.cu.cc
+index 2efcbc500ec..a3cc0d87e9b 100644
+--- a/tensorflow/core/kernels/aggregate_ops_gpu.cu.cc
++++ b/tensorflow/core/kernels/aggregate_ops_gpu.cu.cc
+@@ -18,6 +18,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/aggregate_ops.h"
+ 
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/argmax_op_gpu.cu.cc b/tensorflow/core/kernels/argmax_op_gpu.cu.cc
+index 659048e6a1f..a7affc8b724 100644
+--- a/tensorflow/core/kernels/argmax_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/argmax_op_gpu.cu.cc
+@@ -18,6 +18,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/argmax_op.h"
+ 
+diff --git a/tensorflow/core/kernels/avgpooling_op_gpu.cu.cc b/tensorflow/core/kernels/avgpooling_op_gpu.cu.cc
+index f97312adf0e..d727f590ea3 100644
+--- a/tensorflow/core/kernels/avgpooling_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/avgpooling_op_gpu.cu.cc
+@@ -21,6 +21,10 @@ limitations under the License.
+ 
+ #include <iostream>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/avgpooling_op.h"
+diff --git a/tensorflow/core/kernels/batch_norm_op_gpu.cu.cc b/tensorflow/core/kernels/batch_norm_op_gpu.cu.cc
+index e57cb16a620..d3a4111922b 100644
+--- a/tensorflow/core/kernels/batch_norm_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/batch_norm_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/batch_norm_op.h"
+ 
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/betainc_op_gpu.cu.cc b/tensorflow/core/kernels/betainc_op_gpu.cu.cc
+index 2b7ce398696..6473132838e 100644
+--- a/tensorflow/core/kernels/betainc_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/betainc_op_gpu.cu.cc
+@@ -20,6 +20,10 @@ limitations under the License.
+ 
+ #include <stdio.h>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/betainc_op.h"
+ 
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/bias_op_gpu.cu.cc b/tensorflow/core/kernels/bias_op_gpu.cu.cc
+index 16c1391f333..f10d3518230 100644
+--- a/tensorflow/core/kernels/bias_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/bias_op_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ 
+ #include <algorithm>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor.h"
+ #include "tensorflow/core/framework/tensor_shape.h"
+diff --git a/tensorflow/core/kernels/bincount_op_gpu.cu.cc b/tensorflow/core/kernels/bincount_op_gpu.cu.cc
+index 502c8609879..0c529992f0a 100644
+--- a/tensorflow/core/kernels/bincount_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/bincount_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/op_kernel.h"
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor.h"
+diff --git a/tensorflow/core/kernels/broadcast_to_op.cc b/tensorflow/core/kernels/broadcast_to_op.cc
+index df6e7226ac5..d6fcc965894 100644
+--- a/tensorflow/core/kernels/broadcast_to_op.cc
++++ b/tensorflow/core/kernels/broadcast_to_op.cc
+@@ -20,6 +20,10 @@ limitations under the License.
+ #define EIGEN_USE_GPU
+ #endif  // GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/broadcast_to_op.h"
+ 
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+diff --git a/tensorflow/core/kernels/broadcast_to_op_gpu.cu.cc b/tensorflow/core/kernels/broadcast_to_op_gpu.cu.cc
+index 0e9ec7a4c01..27f03538b6f 100644
+--- a/tensorflow/core/kernels/broadcast_to_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/broadcast_to_op_gpu.cu.cc
+@@ -18,6 +18,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/broadcast_to_op.h"
+ #include "tensorflow/core/framework/register_types.h"
+ 
+diff --git a/tensorflow/core/kernels/bucketize_op_gpu.cu.cc b/tensorflow/core/kernels/bucketize_op_gpu.cu.cc
+index 998a2721a93..6e41a9c552b 100644
+--- a/tensorflow/core/kernels/bucketize_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/bucketize_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/op_kernel.h"
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/cast_op_gpu.cu.cc b/tensorflow/core/kernels/cast_op_gpu.cu.cc
+index 35d9bc22bf0..2c1c43bd04e 100644
+--- a/tensorflow/core/kernels/cast_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/cast_op_gpu.cu.cc
+@@ -18,6 +18,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/bfloat16.h"
+ #define SPECIALIZE_FOR_GPUS
+ #include "tensorflow/core/kernels/cast_op.h"
+diff --git a/tensorflow/core/kernels/concat_lib_gpu_impl.cu.cc b/tensorflow/core/kernels/concat_lib_gpu_impl.cu.cc
+index 8dcd79d09f4..03c0f0616b8 100644
+--- a/tensorflow/core/kernels/concat_lib_gpu_impl.cu.cc
++++ b/tensorflow/core/kernels/concat_lib_gpu_impl.cu.cc
+@@ -20,6 +20,10 @@ limitations under the License.
+ #include <memory>
+ #include <vector>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/bfloat16.h"
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+diff --git a/tensorflow/core/kernels/cwise_op_clip_gpu.cu.cc b/tensorflow/core/kernels/cwise_op_clip_gpu.cu.cc
+index ebf279f92c2..554f7092c15 100644
+--- a/tensorflow/core/kernels/cwise_op_clip_gpu.cu.cc
++++ b/tensorflow/core/kernels/cwise_op_clip_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/cwise_op_clip.h"
+ #include "tensorflow/core/kernels/cwise_ops_gpu_common.cu.h"
+ #include "tensorflow/core/util/gpu_kernel_helper.h"
+diff --git a/tensorflow/core/kernels/data/optional_ops.cu.cc b/tensorflow/core/kernels/data/optional_ops.cu.cc
+index db838a3dca4..fc899f79713 100644
+--- a/tensorflow/core/kernels/data/optional_ops.cu.cc
++++ b/tensorflow/core/kernels/data/optional_ops.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/data/optional_ops.h"
+ 
+ #include "tensorflow/core/framework/variant_op_registry.h"
+diff --git a/tensorflow/core/kernels/data_format_ops_gpu.cu.cc b/tensorflow/core/kernels/data_format_ops_gpu.cu.cc
+index 4df94e8c6af..72866d379cd 100644
+--- a/tensorflow/core/kernels/data_format_ops_gpu.cu.cc
++++ b/tensorflow/core/kernels/data_format_ops_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/data_format_ops.h"
+ 
+diff --git a/tensorflow/core/kernels/debug_ops_gpu.cu.cc b/tensorflow/core/kernels/debug_ops_gpu.cu.cc
+index e1df486b0f1..35f1d3b4dfb 100644
+--- a/tensorflow/core/kernels/debug_ops_gpu.cu.cc
++++ b/tensorflow/core/kernels/debug_ops_gpu.cu.cc
+@@ -22,6 +22,10 @@ limitations under the License.
+ 
+ #include <algorithm>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/platform/types.h"
+ #include "tensorflow/core/util/gpu_kernel_helper.h"
+diff --git a/tensorflow/core/kernels/dense_update_functor_gpu.cu.cc b/tensorflow/core/kernels/dense_update_functor_gpu.cu.cc
+index b8ee1bf98e5..5d5ff81798d 100644
+--- a/tensorflow/core/kernels/dense_update_functor_gpu.cu.cc
++++ b/tensorflow/core/kernels/dense_update_functor_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/dense_update_functor.h"
+ 
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/depthtospace_op_gpu.cu.cc b/tensorflow/core/kernels/depthtospace_op_gpu.cu.cc
+index 7ed6eee17f5..c260d0f7c48 100644
+--- a/tensorflow/core/kernels/depthtospace_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/depthtospace_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/depthtospace_op.h"
+ #include "tensorflow/core/platform/types.h"
+diff --git a/tensorflow/core/kernels/depthwise_conv_op_gpu_double.cu.cc b/tensorflow/core/kernels/depthwise_conv_op_gpu_double.cu.cc
+index 1e4b3390d7f..248a196707b 100644
+--- a/tensorflow/core/kernels/depthwise_conv_op_gpu_double.cu.cc
++++ b/tensorflow/core/kernels/depthwise_conv_op_gpu_double.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/depthwise_conv_op.h"
+ #include "tensorflow/core/kernels/depthwise_conv_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/depthwise_conv_op_gpu_float.cu.cc b/tensorflow/core/kernels/depthwise_conv_op_gpu_float.cu.cc
+index 946cb650668..9a6f2663c66 100644
+--- a/tensorflow/core/kernels/depthwise_conv_op_gpu_float.cu.cc
++++ b/tensorflow/core/kernels/depthwise_conv_op_gpu_float.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/depthwise_conv_op.h"
+ #include "tensorflow/core/kernels/depthwise_conv_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/depthwise_conv_op_gpu_half.cu.cc b/tensorflow/core/kernels/depthwise_conv_op_gpu_half.cu.cc
+index c1fe5dfa5b1..af70c91b90e 100644
+--- a/tensorflow/core/kernels/depthwise_conv_op_gpu_half.cu.cc
++++ b/tensorflow/core/kernels/depthwise_conv_op_gpu_half.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/depthwise_conv_op.h"
+ #include "tensorflow/core/kernels/depthwise_conv_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/diag_op_gpu.cu.cc b/tensorflow/core/kernels/diag_op_gpu.cu.cc
+index c6859d748d3..fb282d9d84b 100644
+--- a/tensorflow/core/kernels/diag_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/diag_op_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ 
+ #include <complex>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/diag_op.h"
+ #include "tensorflow/core/util/gpu_kernel_helper.h"
+diff --git a/tensorflow/core/kernels/dilation_ops_gpu.cu.cc b/tensorflow/core/kernels/dilation_ops_gpu.cu.cc
+index 7c4123c11d8..5f845e973ba 100644
+--- a/tensorflow/core/kernels/dilation_ops_gpu.cu.cc
++++ b/tensorflow/core/kernels/dilation_ops_gpu.cu.cc
+@@ -22,6 +22,10 @@ limitations under the License.
+ #include <cfloat>
+ #include <vector>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/dilation_ops.h"
+diff --git a/tensorflow/core/kernels/dynamic_partition_op_gpu.cu.cc b/tensorflow/core/kernels/dynamic_partition_op_gpu.cu.cc
+index 0f59662149a..ab6f388722f 100644
+--- a/tensorflow/core/kernels/dynamic_partition_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/dynamic_partition_op_gpu.cu.cc
+@@ -35,6 +35,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/common_runtime/gpu/gpu_event_mgr.h"
+ #include "tensorflow/core/framework/bounds_check.h"
+ #include "tensorflow/core/framework/op_kernel.h"
+diff --git a/tensorflow/core/kernels/dynamic_stitch_op_gpu.cu.cc b/tensorflow/core/kernels/dynamic_stitch_op_gpu.cu.cc
+index c0a3df38b5d..0996c24a406 100644
+--- a/tensorflow/core/kernels/dynamic_stitch_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/dynamic_stitch_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/gpu_device_array_gpu.h"
+diff --git a/tensorflow/core/kernels/fill_functor.cu.cc b/tensorflow/core/kernels/fill_functor.cu.cc
+index 7fd2491dd9e..1cb7215208a 100644
+--- a/tensorflow/core/kernels/fill_functor.cu.cc
++++ b/tensorflow/core/kernels/fill_functor.cu.cc
+@@ -18,6 +18,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/fill_functor.h"
+diff --git a/tensorflow/core/kernels/fused_batch_norm_op.cu.cc b/tensorflow/core/kernels/fused_batch_norm_op.cu.cc
+index 762ea45aa23..fa16214aab9 100644
+--- a/tensorflow/core/kernels/fused_batch_norm_op.cu.cc
++++ b/tensorflow/core/kernels/fused_batch_norm_op.cu.cc
+@@ -15,6 +15,11 @@ limitations under the License.
+ 
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
++
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #if GOOGLE_CUDA
+ #include "third_party/gpus/cuda/include/cuda.h"
+ #endif
+diff --git a/tensorflow/core/kernels/gather_functor_batched_gpu.cu.cc b/tensorflow/core/kernels/gather_functor_batched_gpu.cu.cc
+index 40b9894776d..36fec7be8bb 100644
+--- a/tensorflow/core/kernels/gather_functor_batched_gpu.cu.cc
++++ b/tensorflow/core/kernels/gather_functor_batched_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/gather_functor_batched_gpu.cu.h"
+ #include "tensorflow/core/framework/register_types.h"
+ 
+diff --git a/tensorflow/core/kernels/gather_functor_gpu.cu.cc b/tensorflow/core/kernels/gather_functor_gpu.cu.cc
+index 39402ebacec..608e5eeca4a 100644
+--- a/tensorflow/core/kernels/gather_functor_gpu.cu.cc
++++ b/tensorflow/core/kernels/gather_functor_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/gather_functor_gpu.cu.h"
+ #include "tensorflow/core/framework/register_types.h"
+ 
+diff --git a/tensorflow/core/kernels/histogram_op_gpu.cu.cc b/tensorflow/core/kernels/histogram_op_gpu.cu.cc
+index 244cbafb6ac..22bbfad690b 100644
+--- a/tensorflow/core/kernels/histogram_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/histogram_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/op_kernel.h"
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/image/adjust_contrast_op_gpu.cu.cc b/tensorflow/core/kernels/image/adjust_contrast_op_gpu.cu.cc
+index 147700c1574..eb72c01900e 100644
+--- a/tensorflow/core/kernels/image/adjust_contrast_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/image/adjust_contrast_op_gpu.cu.cc
+@@ -18,6 +18,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/image/adjust_contrast_op.h"
+ 
+diff --git a/tensorflow/core/kernels/image/crop_and_resize_op_gpu.cu.cc b/tensorflow/core/kernels/image/crop_and_resize_op_gpu.cu.cc
+index 4fa079b5695..56bd8409a51 100644
+--- a/tensorflow/core/kernels/image/crop_and_resize_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/image/crop_and_resize_op_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/image/crop_and_resize_op.h"
+diff --git a/tensorflow/core/kernels/image/extract_image_patches_op_gpu.cu.cc b/tensorflow/core/kernels/image/extract_image_patches_op_gpu.cu.cc
+index 37b9c9bda32..e7baac72a59 100644
+--- a/tensorflow/core/kernels/image/extract_image_patches_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/image/extract_image_patches_op_gpu.cu.cc
+@@ -18,6 +18,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/image/extract_image_patches_op.h"
+ 
+diff --git a/tensorflow/core/kernels/image/extract_volume_patches_op_gpu.cu.cc b/tensorflow/core/kernels/image/extract_volume_patches_op_gpu.cu.cc
+index 379907712a8..24c9951c681 100644
+--- a/tensorflow/core/kernels/image/extract_volume_patches_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/image/extract_volume_patches_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/image/extract_volume_patches_op.h"
+ 
+diff --git a/tensorflow/core/kernels/image/generate_box_proposals_op.cu.cc b/tensorflow/core/kernels/image/generate_box_proposals_op.cu.cc
+index a12cd3e6601..49e70e76ff0 100644
+--- a/tensorflow/core/kernels/image/generate_box_proposals_op.cu.cc
++++ b/tensorflow/core/kernels/image/generate_box_proposals_op.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ #include <algorithm>
+ #include <vector>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/numeric_types.h"
+ #include "tensorflow/core/framework/op_kernel.h"
+diff --git a/tensorflow/core/kernels/image/resize_nearest_neighbor_op_gpu.cu.cc b/tensorflow/core/kernels/image/resize_nearest_neighbor_op_gpu.cu.cc
+index 93fde9131f2..7df7b014a2c 100644
+--- a/tensorflow/core/kernels/image/resize_nearest_neighbor_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/image/resize_nearest_neighbor_op_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ 
+ #include <stdio.h>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/image/resize_nearest_neighbor_op.h"
+diff --git a/tensorflow/core/kernels/in_topk_op_gpu.cu.cc b/tensorflow/core/kernels/in_topk_op_gpu.cu.cc
+index cd1d3e88b51..19dbec9af65 100644
+--- a/tensorflow/core/kernels/in_topk_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/in_topk_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/in_topk_op.h"
+diff --git a/tensorflow/core/kernels/inplace_ops_functor_gpu.cu.cc b/tensorflow/core/kernels/inplace_ops_functor_gpu.cu.cc
+index 8bee7dbee67..a041c97efd6 100644
+--- a/tensorflow/core/kernels/inplace_ops_functor_gpu.cu.cc
++++ b/tensorflow/core/kernels/inplace_ops_functor_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/kernels/inplace_ops_functor.h"
+ #include "tensorflow/core/util/gpu_kernel_helper.h"
+diff --git a/tensorflow/core/kernels/l2loss_op_gpu.cu.cc b/tensorflow/core/kernels/l2loss_op_gpu.cu.cc
+index a2c288c36d1..ffe3a5e316e 100644
+--- a/tensorflow/core/kernels/l2loss_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/l2loss_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/gpu_prim.h"
+ #include "tensorflow/core/kernels/l2loss_op.h"
+diff --git a/tensorflow/core/kernels/linalg/eye_functor_gpu.cu.cc b/tensorflow/core/kernels/linalg/eye_functor_gpu.cu.cc
+index 85865588f2c..cd3358112e2 100644
+--- a/tensorflow/core/kernels/linalg/eye_functor_gpu.cu.cc
++++ b/tensorflow/core/kernels/linalg/eye_functor_gpu.cu.cc
+@@ -17,6 +17,11 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "absl/types/span.h"
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/framework/type_traits.h"
+diff --git a/tensorflow/core/kernels/linalg/matrix_band_part_op_gpu.cu.cc b/tensorflow/core/kernels/linalg/matrix_band_part_op_gpu.cu.cc
+index 9c734b7fd6e..432cd3e3c77 100644
+--- a/tensorflow/core/kernels/linalg/matrix_band_part_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/linalg/matrix_band_part_op_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ 
+ #include <complex>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/linalg/matrix_band_part_op.h"
+diff --git a/tensorflow/core/kernels/list_kernels.cu.cc b/tensorflow/core/kernels/list_kernels.cu.cc
+index b95a065edb8..2035f57340d 100644
+--- a/tensorflow/core/kernels/list_kernels.cu.cc
++++ b/tensorflow/core/kernels/list_kernels.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/list_kernels.h"
+ 
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+diff --git a/tensorflow/core/kernels/multinomial_op_gpu.cu.cc b/tensorflow/core/kernels/multinomial_op_gpu.cu.cc
+index bc3232170f2..42ec4ba01eb 100644
+--- a/tensorflow/core/kernels/multinomial_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/multinomial_op_gpu.cu.cc
+@@ -20,6 +20,10 @@ limitations under the License.
+ #include <assert.h>
+ #include <stdio.h>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/gpu_prim.h"
+ #include "tensorflow/core/kernels/multinomial_op.h"
+diff --git a/tensorflow/core/kernels/one_hot_op_gpu.cu.cc b/tensorflow/core/kernels/one_hot_op_gpu.cu.cc
+index 47af41477c7..2a0d71a4dfb 100644
+--- a/tensorflow/core/kernels/one_hot_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/one_hot_op_gpu.cu.cc
+@@ -20,6 +20,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/types.h"
+ #include "tensorflow/core/kernels/one_hot_op.h"
+diff --git a/tensorflow/core/kernels/parameterized_truncated_normal_op_gpu.cu.cc b/tensorflow/core/kernels/parameterized_truncated_normal_op_gpu.cu.cc
+index af972a1eb5e..3ddc55edec4 100644
+--- a/tensorflow/core/kernels/parameterized_truncated_normal_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/parameterized_truncated_normal_op_gpu.cu.cc
+@@ -22,6 +22,10 @@ limitations under the License.
+ 
+ #include <cmath>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/parameterized_truncated_normal_op.h"
+diff --git a/tensorflow/core/kernels/population_count_op_gpu.cu.cc b/tensorflow/core/kernels/population_count_op_gpu.cu.cc
+index 8165dc769e6..4b4792273a0 100644
+--- a/tensorflow/core/kernels/population_count_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/population_count_op_gpu.cu.cc
+@@ -18,6 +18,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/op_kernel.h"
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/reduction_ops_gpu_bool.cu.cc b/tensorflow/core/kernels/reduction_ops_gpu_bool.cu.cc
+index 89bcf1d7ced..fba746dd4b5 100644
+--- a/tensorflow/core/kernels/reduction_ops_gpu_bool.cu.cc
++++ b/tensorflow/core/kernels/reduction_ops_gpu_bool.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/reduction_gpu_kernels.cu.h"
+ 
+ namespace tensorflow {
+diff --git a/tensorflow/core/kernels/relu_op_gpu.cu.cc b/tensorflow/core/kernels/relu_op_gpu.cu.cc
+index 0993f7a5669..ba794c3051f 100644
+--- a/tensorflow/core/kernels/relu_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/relu_op_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ 
+ #include <stdio.h>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/Eigen/Core"
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+diff --git a/tensorflow/core/kernels/reshape_util_gpu.cu.cc b/tensorflow/core/kernels/reshape_util_gpu.cu.cc
+index 0193424c91a..b084451ef9c 100644
+--- a/tensorflow/core/kernels/reshape_util_gpu.cu.cc
++++ b/tensorflow/core/kernels/reshape_util_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/reshape_util.h"
+ #include "tensorflow/core/util/gpu_kernel_helper.h"
+ 
+diff --git a/tensorflow/core/kernels/reverse_op_gpu.cu.cc b/tensorflow/core/kernels/reverse_op_gpu.cu.cc
+index 28c50bc66df..c8839905953 100644
+--- a/tensorflow/core/kernels/reverse_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/reverse_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/reverse_op.h"
+ 
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/reverse_sequence_op_gpu.cu.cc b/tensorflow/core/kernels/reverse_sequence_op_gpu.cu.cc
+index 948a99a7d37..ec818422fa1 100644
+--- a/tensorflow/core/kernels/reverse_sequence_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/reverse_sequence_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/reverse_sequence_op.h"
+ 
+diff --git a/tensorflow/core/kernels/rnn/lstm_ops_gpu.cu.cc b/tensorflow/core/kernels/rnn/lstm_ops_gpu.cu.cc
+index 7de8046b129..8459e73861d 100644
+--- a/tensorflow/core/kernels/rnn/lstm_ops_gpu.cu.cc
++++ b/tensorflow/core/kernels/rnn/lstm_ops_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/kernels/eigen_activations.h"
+ #include "tensorflow/core/kernels/rnn/lstm_ops.h"
+diff --git a/tensorflow/core/kernels/roll_op_gpu.cu.cc b/tensorflow/core/kernels/roll_op_gpu.cu.cc
+index dca487fc060..6f4ef8bcfbc 100644
+--- a/tensorflow/core/kernels/roll_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/roll_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/roll_op.h"
+diff --git a/tensorflow/core/kernels/scan_ops_gpu_double.cu.cc b/tensorflow/core/kernels/scan_ops_gpu_double.cu.cc
+index 199a477b560..7c54c3ba7ca 100644
+--- a/tensorflow/core/kernels/scan_ops_gpu_double.cu.cc
++++ b/tensorflow/core/kernels/scan_ops_gpu_double.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/scan_ops.h"
+ #include "tensorflow/core/kernels/scan_ops_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/scan_ops_gpu_float.cu.cc b/tensorflow/core/kernels/scan_ops_gpu_float.cu.cc
+index 6704572c1cf..8ea636f5fdd 100644
+--- a/tensorflow/core/kernels/scan_ops_gpu_float.cu.cc
++++ b/tensorflow/core/kernels/scan_ops_gpu_float.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/scan_ops.h"
+ #include "tensorflow/core/kernels/scan_ops_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/scan_ops_gpu_half.cu.cc b/tensorflow/core/kernels/scan_ops_gpu_half.cu.cc
+index 0b16cb79ab8..2f6411a942a 100644
+--- a/tensorflow/core/kernels/scan_ops_gpu_half.cu.cc
++++ b/tensorflow/core/kernels/scan_ops_gpu_half.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/scan_ops.h"
+ #include "tensorflow/core/kernels/scan_ops_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/scan_ops_gpu_int.cu.cc b/tensorflow/core/kernels/scan_ops_gpu_int.cu.cc
+index 5e84e20f5a7..80688460838 100644
+--- a/tensorflow/core/kernels/scan_ops_gpu_int.cu.cc
++++ b/tensorflow/core/kernels/scan_ops_gpu_int.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/scan_ops.h"
+ #include "tensorflow/core/kernels/scan_ops_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/scatter_functor_gpu.cu.cc b/tensorflow/core/kernels/scatter_functor_gpu.cu.cc
+index 10991b271b0..448a85c8f74 100644
+--- a/tensorflow/core/kernels/scatter_functor_gpu.cu.cc
++++ b/tensorflow/core/kernels/scatter_functor_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/scatter_functor_gpu.cu.h"
+ 
+ namespace tensorflow {
+diff --git a/tensorflow/core/kernels/scatter_nd_op_gpu.cu.cc b/tensorflow/core/kernels/scatter_nd_op_gpu.cu.cc
+index 64b69af423f..d7c4f28e97a 100644
+--- a/tensorflow/core/kernels/scatter_nd_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/scatter_nd_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/scatter_nd_op.h"
+diff --git a/tensorflow/core/kernels/scatter_op_gpu.cu.cc b/tensorflow/core/kernels/scatter_op_gpu.cu.cc
+index 099604646fa..3ea1c077021 100644
+--- a/tensorflow/core/kernels/scatter_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/scatter_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/scatter_functor_gpu.cu.h"
+ 
+ namespace tensorflow {
+diff --git a/tensorflow/core/kernels/searchsorted_op_gpu.cu.cc b/tensorflow/core/kernels/searchsorted_op_gpu.cu.cc
+index ad345b8eaa9..13effded05a 100644
+--- a/tensorflow/core/kernels/searchsorted_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/searchsorted_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/op_kernel.h"
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor.h"
+diff --git a/tensorflow/core/kernels/segment_reduction_ops_gpu_0.cu.cc b/tensorflow/core/kernels/segment_reduction_ops_gpu_0.cu.cc
+index ea04f287aa9..a713cfc5112 100644
+--- a/tensorflow/core/kernels/segment_reduction_ops_gpu_0.cu.cc
++++ b/tensorflow/core/kernels/segment_reduction_ops_gpu_0.cu.cc
+@@ -15,6 +15,10 @@ limitations under the License.
+ 
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/segment_reduction_ops_gpu.cu.h"
+ 
+diff --git a/tensorflow/core/kernels/segment_reduction_ops_gpu_2.cu.cc b/tensorflow/core/kernels/segment_reduction_ops_gpu_2.cu.cc
+index 45bd46d44cd..77b130b463e 100644
+--- a/tensorflow/core/kernels/segment_reduction_ops_gpu_2.cu.cc
++++ b/tensorflow/core/kernels/segment_reduction_ops_gpu_2.cu.cc
+@@ -15,6 +15,10 @@ limitations under the License.
+ 
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/segment_reduction_ops_gpu.cu.h"
+ 
+diff --git a/tensorflow/core/kernels/sequence_ops_gpu.cu.cc b/tensorflow/core/kernels/sequence_ops_gpu.cu.cc
+index 205978fc1a4..67495d8509d 100644
+--- a/tensorflow/core/kernels/sequence_ops_gpu.cu.cc
++++ b/tensorflow/core/kernels/sequence_ops_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/op_kernel.h"
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/sequence_ops.h"
+diff --git a/tensorflow/core/kernels/slice_op_gpu.cu.cc b/tensorflow/core/kernels/slice_op_gpu.cu.cc
+index c20d01751d9..f684c11e4f0 100644
+--- a/tensorflow/core/kernels/slice_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/slice_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/slice_op.h"
+ 
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/softmax_op_gpu.cu.cc b/tensorflow/core/kernels/softmax_op_gpu.cu.cc
+index 160cf4f4b24..f5e48a3547f 100644
+--- a/tensorflow/core/kernels/softmax_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/softmax_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/op_kernel.h"
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/softplus_op_gpu.cu.cc b/tensorflow/core/kernels/softplus_op_gpu.cu.cc
+index 6c90e5bc6ca..c7ffba330d8 100644
+--- a/tensorflow/core/kernels/softplus_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/softplus_op_gpu.cu.cc
+@@ -20,6 +20,10 @@ limitations under the License.
+ 
+ #include <stdio.h>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/softplus_op.h"
+ 
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/softsign_op_gpu.cu.cc b/tensorflow/core/kernels/softsign_op_gpu.cu.cc
+index 79c09212a3f..6a41742dc29 100644
+--- a/tensorflow/core/kernels/softsign_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/softsign_op_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ 
+ #include <stdio.h>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/softsign_op.h"
+ 
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/spacetobatch_functor_gpu.cu.cc b/tensorflow/core/kernels/spacetobatch_functor_gpu.cu.cc
+index 25996b1a202..7031f2d2c5c 100644
+--- a/tensorflow/core/kernels/spacetobatch_functor_gpu.cu.cc
++++ b/tensorflow/core/kernels/spacetobatch_functor_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/spacetobatch_functor.h"
+ #include "tensorflow/core/util/gpu_kernel_helper.h"
+diff --git a/tensorflow/core/kernels/spacetodepth_op_gpu.cu.cc b/tensorflow/core/kernels/spacetodepth_op_gpu.cu.cc
+index 610cb5eed59..4018d540558 100644
+--- a/tensorflow/core/kernels/spacetodepth_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/spacetodepth_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/spacetodepth_op.h"
+ #include "tensorflow/core/platform/types.h"
+diff --git a/tensorflow/core/kernels/sparse/kernels_gpu.cu.cc b/tensorflow/core/kernels/sparse/kernels_gpu.cu.cc
+index f653feba95b..d74df446ff2 100644
+--- a/tensorflow/core/kernels/sparse/kernels_gpu.cu.cc
++++ b/tensorflow/core/kernels/sparse/kernels_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+diff --git a/tensorflow/core/kernels/sparse_concat_op_gpu.cu.cc b/tensorflow/core/kernels/sparse_concat_op_gpu.cu.cc
+index c8182c8564f..d953dafd66d 100644
+--- a/tensorflow/core/kernels/sparse_concat_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/sparse_concat_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor.h"
+diff --git a/tensorflow/core/kernels/sparse_fill_empty_rows_op_gpu.cu.cc b/tensorflow/core/kernels/sparse_fill_empty_rows_op_gpu.cu.cc
+index 05b734dea23..0df3cdec4b7 100644
+--- a/tensorflow/core/kernels/sparse_fill_empty_rows_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/sparse_fill_empty_rows_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/common_runtime/gpu/gpu_event_mgr.h"
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/sparse_reorder_op_gpu.cu.cc b/tensorflow/core/kernels/sparse_reorder_op_gpu.cu.cc
+index e8ad793d8ed..eb1f4ffb32c 100644
+--- a/tensorflow/core/kernels/sparse_reorder_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/sparse_reorder_op_gpu.cu.cc
+@@ -13,6 +13,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/op_kernel.h"
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
+index 14e9044b292..800ffc1dcc2 100644
+--- a/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/sparse_tensor_dense_matmul_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/bounds_check.h"
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/sparse_tensor_dense_matmul_op.h"
+diff --git a/tensorflow/core/kernels/sparse_to_dense_op_gpu.cu.cc b/tensorflow/core/kernels/sparse_to_dense_op_gpu.cu.cc
+index a7fbe4af795..cb196338707 100644
+--- a/tensorflow/core/kernels/sparse_to_dense_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/sparse_to_dense_op_gpu.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/sparse_to_dense_op_gpu.h"
+ 
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+diff --git a/tensorflow/core/kernels/sparse_xent_op_gpu.cu.cc b/tensorflow/core/kernels/sparse_xent_op_gpu.cu.cc
+index 862048603f5..4eb99182d40 100644
+--- a/tensorflow/core/kernels/sparse_xent_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/sparse_xent_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/gpu_prim.h"
+ #include "tensorflow/core/kernels/reduction_gpu_kernels.cu.h"
+diff --git a/tensorflow/core/kernels/split_lib_gpu.cu.cc b/tensorflow/core/kernels/split_lib_gpu.cu.cc
+index b4379a01ce1..3d7d3794afd 100644
+--- a/tensorflow/core/kernels/split_lib_gpu.cu.cc
++++ b/tensorflow/core/kernels/split_lib_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ 
+ #include <stdio.h>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/gpu_device_array_gpu.h"
+@@ -205,12 +209,21 @@ void SplitOpGPULaunch<T>::Run(const Eigen::GpuDevice& d, const T* input,
+                               output_ptr_data));
+ }
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++template <typename T, typename IntType>
++void SplitVOpGPULaunch<T, IntType>::Run(
++    const Eigen::GpuDevice& gpu_device, int fixed_size, const T* input_ptr,
++    int total_rows, int total_cols,
++    const GpuDeviceArrayStruct<IntType>& output_scan,
++    const GpuDeviceArrayStruct<T*>& output_ptr_data) {
++#else
+ template <typename T, typename IntType>
+ void SplitVOpGPULaunch<T, IntType>::Run(
+     const Eigen::GpuDevice& gpu_device, bool fixed_size, const T* input_ptr,
+     int total_rows, int total_cols,
+     const GpuDeviceArrayStruct<IntType>& output_scan,
+     const GpuDeviceArrayStruct<T*>& output_ptr_data) {
++#endif
+   if (fixed_size) {
+     GpuLaunchConfig config =
+         GetGpuLaunchConfig(total_rows * total_cols, gpu_device);
+@@ -227,6 +240,20 @@ void SplitVOpGPULaunch<T, IntType>::Run(
+     // memory on most processors possibly due to decreasing occupancy
+     // 4096 inputs is a lot, most code will take the smem path
+     const int32 kMaxSmemBytesPerformance = 16384;
++#if defined(__APPLE__) && defined(__MACH__)
++    if (smem_usage < smem_max && smem_usage < kMaxSmemBytesPerformance) {
++      TF_CHECK_OK(GpuLaunchKernel(
++          split_v_kernel<T, IntType, 1>, config.block_count,
++          config.thread_per_block, smem_usage, gpu_device.stream(), input_ptr,
++          output_scan, total_rows, total_cols, output_ptr_data));
++    } else {
++      TF_CHECK_OK(GpuLaunchKernel(
++          split_v_kernel<T, IntType, 0>, config.block_count,
++          config.thread_per_block, 0, gpu_device.stream(), input_ptr,
++          output_scan, total_rows, total_cols, output_ptr_data));
++    }
++  }
++#else
+     if (smem_usage < smem_max && smem_usage < kMaxSmemBytesPerformance) {
+       TF_CHECK_OK(GpuLaunchKernel(
+           split_v_kernel<T, IntType, true>, config.block_count,
+@@ -239,6 +266,7 @@ void SplitVOpGPULaunch<T, IntType>::Run(
+           output_scan, total_rows, total_cols, output_ptr_data));
+     }
+   }
++#endif
+ }
+ 
+ #define REGISTER_GPU_KERNEL(T) template struct SplitOpGPULaunch<T>;
+diff --git a/tensorflow/core/kernels/split_lib_gpu.h b/tensorflow/core/kernels/split_lib_gpu.h
+index 1d1a9e9d531..e50cad3a3f7 100644
+--- a/tensorflow/core/kernels/split_lib_gpu.h
++++ b/tensorflow/core/kernels/split_lib_gpu.h
+@@ -36,6 +36,15 @@ struct SplitOpGPULaunch {
+            const GpuDeviceArrayStruct<T*>& output_ptr_data);
+ };
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++template <typename T, typename IntType>
++struct SplitVOpGPULaunch {
++  void Run(const Eigen::GpuDevice& d, int fixed, const T* input,
++           int total_cols, int total_rows,
++           const GpuDeviceArrayStruct<IntType>& output_scan,
++           const GpuDeviceArrayStruct<T*>& output_ptr_data);
++};
++#else
+ template <typename T, typename IntType>
+ struct SplitVOpGPULaunch {
+   void Run(const Eigen::GpuDevice& d, bool fixed, const T* input,
+@@ -43,6 +52,7 @@ struct SplitVOpGPULaunch {
+            const GpuDeviceArrayStruct<IntType>& output_scan,
+            const GpuDeviceArrayStruct<T*>& output_ptr_data);
+ };
++#endif
+ 
+ // Explicit instantiations in split_lib_gpu.cu.cc.
+ #define REGISTER_GPU_KERNEL(T)                        \
+diff --git a/tensorflow/core/kernels/stateful_random_ops_gpu.cu.cc b/tensorflow/core/kernels/stateful_random_ops_gpu.cu.cc
+index d244577d2ab..81ae82ef77c 100644
+--- a/tensorflow/core/kernels/stateful_random_ops_gpu.cu.cc
++++ b/tensorflow/core/kernels/stateful_random_ops_gpu.cu.cc
+@@ -15,6 +15,10 @@ limitations under the License.
+ 
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #if TENSORFLOW_USE_ROCM
+ #include "rocm/include/hip/hip_runtime.h"
+ #endif
+diff --git a/tensorflow/core/kernels/stateless_random_gamma_op_gpu.cu.cc b/tensorflow/core/kernels/stateless_random_gamma_op_gpu.cu.cc
+index 3264c79a7e7..c6234d467a6 100644
+--- a/tensorflow/core/kernels/stateless_random_gamma_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/stateless_random_gamma_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/stateless_random_gamma_op.h"
+ #include "tensorflow/core/lib/random/random_distributions.h"
+diff --git a/tensorflow/core/kernels/strided_slice_op_gpu_bool.cu.cc b/tensorflow/core/kernels/strided_slice_op_gpu_bool.cu.cc
+index 38b29b74bc6..63fbec95612 100644
+--- a/tensorflow/core/kernels/strided_slice_op_gpu_bool.cu.cc
++++ b/tensorflow/core/kernels/strided_slice_op_gpu_bool.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/strided_slice_op.h"
+ #include "tensorflow/core/kernels/strided_slice_op_gpu_impl.h"
+ 
+diff --git a/tensorflow/core/kernels/strided_slice_op_gpu_complex.cu.cc b/tensorflow/core/kernels/strided_slice_op_gpu_complex.cu.cc
+index 33d94f4fc71..2a9473af081 100644
+--- a/tensorflow/core/kernels/strided_slice_op_gpu_complex.cu.cc
++++ b/tensorflow/core/kernels/strided_slice_op_gpu_complex.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/strided_slice_op.h"
+ #include "tensorflow/core/kernels/strided_slice_op_gpu_impl.h"
+ 
+diff --git a/tensorflow/core/kernels/tensor_to_hash_bucket_op_gpu.cu.cc b/tensorflow/core/kernels/tensor_to_hash_bucket_op_gpu.cu.cc
+index 6288620b1ea..846cd1c621e 100644
+--- a/tensorflow/core/kernels/tensor_to_hash_bucket_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/tensor_to_hash_bucket_op_gpu.cu.cc
+@@ -12,6 +12,10 @@ limitations under the License.
+ 
+ #if GOOGLE_CUDA
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #define EIGEN_USE_GPU
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/tile_functor_gpu_bool.cu.cc b/tensorflow/core/kernels/tile_functor_gpu_bool.cu.cc
+index 6d337efeef5..77fa3bea7d0 100644
+--- a/tensorflow/core/kernels/tile_functor_gpu_bool.cu.cc
++++ b/tensorflow/core/kernels/tile_functor_gpu_bool.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/tile_functor.h"
+ #include "tensorflow/core/kernels/tile_functor_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/topk_op_gpu_double.cu.cc b/tensorflow/core/kernels/topk_op_gpu_double.cu.cc
+index 787aafdfd07..711d126eb79 100644
+--- a/tensorflow/core/kernels/topk_op_gpu_double.cu.cc
++++ b/tensorflow/core/kernels/topk_op_gpu_double.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/topk_op.h"
+ #include "tensorflow/core/kernels/topk_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/topk_op_gpu_float.cu.cc b/tensorflow/core/kernels/topk_op_gpu_float.cu.cc
+index 10d106248f9..441d3cc6440 100644
+--- a/tensorflow/core/kernels/topk_op_gpu_float.cu.cc
++++ b/tensorflow/core/kernels/topk_op_gpu_float.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/topk_op.h"
+ #include "tensorflow/core/kernels/topk_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/topk_op_gpu_uint64.cu.cc b/tensorflow/core/kernels/topk_op_gpu_uint64.cu.cc
+index 0dd65145d41..fc54d95a142 100644
+--- a/tensorflow/core/kernels/topk_op_gpu_uint64.cu.cc
++++ b/tensorflow/core/kernels/topk_op_gpu_uint64.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/topk_op.h"
+ #include "tensorflow/core/kernels/topk_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/training_ops_gpu.cu.cc b/tensorflow/core/kernels/training_ops_gpu.cu.cc
+index fbb710d25c0..98cd2d9a3a2 100644
+--- a/tensorflow/core/kernels/training_ops_gpu.cu.cc
++++ b/tensorflow/core/kernels/training_ops_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/training_ops.h"
+ #include "tensorflow/core/util/gpu_kernel_helper.h"
+diff --git a/tensorflow/core/kernels/transpose_functor_gpu.cu.cc b/tensorflow/core/kernels/transpose_functor_gpu.cu.cc
+index 0747685853e..c11df37e72f 100644
+--- a/tensorflow/core/kernels/transpose_functor_gpu.cu.cc
++++ b/tensorflow/core/kernels/transpose_functor_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/kernels/ops_util.h"
+ #include "tensorflow/core/kernels/transpose_functor.h"
+diff --git a/tensorflow/core/kernels/unique_op_gpu_0.cu.cc b/tensorflow/core/kernels/unique_op_gpu_0.cu.cc
+index baf655d990c..6fca68d544d 100644
+--- a/tensorflow/core/kernels/unique_op_gpu_0.cu.cc
++++ b/tensorflow/core/kernels/unique_op_gpu_0.cu.cc
+@@ -15,6 +15,10 @@ limitations under the License.
+ 
+ #if GOOGLE_CUDA
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/unique_op_gpu.cu.h"
+ 
+diff --git a/tensorflow/core/kernels/where_op_gpu_impl_1.cu.cc b/tensorflow/core/kernels/where_op_gpu_impl_1.cu.cc
+index 75ddfa76eae..018f2b6301a 100644
+--- a/tensorflow/core/kernels/where_op_gpu_impl_1.cu.cc
++++ b/tensorflow/core/kernels/where_op_gpu_impl_1.cu.cc
+@@ -14,5 +14,8 @@ limitations under the License.
+ ==============================================================================*/
+ 
+ #define GPU_PROVIDED_DIM 1
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
+ #include "tensorflow/core/kernels/where_op_gpu.cu.h"
+ #undef GPU_PROVIDED_DIM
+diff --git a/tensorflow/core/util/gpu_device_functions.h b/tensorflow/core/util/gpu_device_functions.h
+index 76fdbe778f9..4e5a1bdc56d 100644
+--- a/tensorflow/core/util/gpu_device_functions.h
++++ b/tensorflow/core/util/gpu_device_functions.h
+@@ -194,7 +194,7 @@ __device__ const unsigned kGpuWarpAll = 0xffffffff;
+ __device__ inline unsigned GpuLaneId() {
+   unsigned int lane_id;
+ #if GOOGLE_CUDA
+-#if __clang__
++#if __clang__ and !(defined(__APPLE__) && defined(__MACH__))
+   return __nvvm_read_ptx_sreg_laneid();
+ #else   // __clang__
+   asm("mov.u32 %0, %%laneid;" : "=r"(lane_id));
+diff --git a/tensorflow/stream_executor/cuda/cuda_dnn.cc b/tensorflow/stream_executor/cuda/cuda_dnn.cc
+index 623c48eda66..4307ddc1264 100644
+--- a/tensorflow/stream_executor/cuda/cuda_dnn.cc
++++ b/tensorflow/stream_executor/cuda/cuda_dnn.cc
+@@ -4932,7 +4932,15 @@ class CudnnLegacyFusedConvRunner : public dnn::FusedConvRunner {
+     return MakeAlgorithmDesc().ToString();
+   }
+ 
+-  uint64_t GetWorkspaceSize() const override { return workspace_size_; }
++#if defined(__APPLE__) && defined(__MACH__)
++  size_t GetWorkspaceSize() const override {
++    return workspace_size_;
++  }
++#else
++  uint64_t GetWorkspaceSize() const override {
++    return workspace_size_;
++  }
++#endif
+ 
+   port::StatusOr<dnn::AlgorithmDesc> ToAlgorithmDesc() const override {
+     return MakeAlgorithmDesc();
+diff --git a/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc b/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
+index c183c5e2a1a..09b1cc105d7 100644
+--- a/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
++++ b/tensorflow/stream_executor/cuda/cuda_gpu_executor.cc
+@@ -17,6 +17,7 @@ limitations under the License.
+ 
+ #if defined(__APPLE__)
+ #include <mach-o/dyld.h>
++#include <stdlib.h>
+ #endif
+ #if defined(PLATFORM_WINDOWS)
+ #include <windows.h>
+@@ -184,6 +185,17 @@ bool GpuExecutor::FindOnDiskForISAVersion(absl::string_view filename,
+ // Arg: strip_exe: if true, remove the name of the executable itself from the
+ //                 returned string. Example: calling this from /usr/bin/foo
+ //                 would return /usr/bin.
++
++#if defined(__APPLE__) && defined(__MACH__)
++#define CHECK_ERR(err) \
++	({ \
++		if (err < 0) \
++			printf("%s():%d \n\r", __func__, __LINE__); \
++		if (err < 0) \
++			exit(err); \
++	})
++#endif
++
+ static std::string GetBinaryDir(bool strip_exe) {
+   char exe_path[PATH_MAX] = {0};
+ #if defined(__APPLE__)
+@@ -191,7 +203,9 @@ static std::string GetBinaryDir(bool strip_exe) {
+   _NSGetExecutablePath(nullptr, &buffer_size);
+   char unresolved_path[buffer_size];
+   _NSGetExecutablePath(unresolved_path, &buffer_size);
++#if defined(__MACH__)
+   CHECK_ERR(realpath(unresolved_path, exe_path) ? 1 : -1);
++#endif
+ #else
+ #if defined(PLATFORM_WINDOWS)
+   HMODULE hModule = GetModuleHandle(NULL);
+diff --git a/third_party/gpus/crosstool/clang/bin/crosstool_wrapper_driver_is_not_gcc.tpl b/third_party/gpus/crosstool/clang/bin/crosstool_wrapper_driver_is_not_gcc.tpl
+index 702a68bd69e..ba3b6cbc5d3 100755
+--- a/third_party/gpus/crosstool/clang/bin/crosstool_wrapper_driver_is_not_gcc.tpl
++++ b/third_party/gpus/crosstool/clang/bin/crosstool_wrapper_driver_is_not_gcc.tpl
+@@ -93,7 +93,8 @@ def GetHostCompilerOptions(argv):
+   parser.add_argument('-iquote', nargs='*', action='append')
+   parser.add_argument('--sysroot', nargs=1)
+   parser.add_argument('-g', nargs='*', action='append')
+-  parser.add_argument('-fno-canonical-system-headers', action='store_true')
++  # parser.add_argument('-fno-canonical-system-headers', action='store_true')
++  parser.add_argument('-fno-canonical-system-headers', action='store_false')
+   parser.add_argument('-no-canonical-prefixes', action='store_true')
+ 
+   args, _ = parser.parse_known_args(argv)
+@@ -106,8 +107,8 @@ def GetHostCompilerOptions(argv):
+     opts += ' -iquote ' + ' -iquote '.join(sum(args.iquote, []))
+   if args.g:
+     opts += ' -g' + ' -g'.join(sum(args.g, []))
+-  if args.fno_canonical_system_headers:
+-    opts += ' -fno-canonical-system-headers'
++  # if args.fno_canonical_system_headers:
++  #   opts += ' -fno-canonical-system-headers'
+   if args.no_canonical_prefixes:
+     opts += ' -no-canonical-prefixes'
+   if args.sysroot:
+diff --git a/third_party/gpus/cuda_configure.bzl b/third_party/gpus/cuda_configure.bzl
+index ed8ba3d5205..060258f361a 100644
+--- a/third_party/gpus/cuda_configure.bzl
++++ b/third_party/gpus/cuda_configure.bzl
+@@ -476,7 +476,8 @@ def _lib_path(lib, cpu_value, basedir, version, static):
+     return "%s/%s" % (basedir, file_name)
+ 
+ def _should_check_soname(version, static):
+-    return version and not static
++    return False
++    #return version and not static
+ 
+ def _check_cuda_lib_params(lib, cpu_value, basedir, version, static = False):
+     return (
+@@ -1247,7 +1248,7 @@ def _create_local_cuda_repository(repository_ctx):
+         # .d file - given that includes that are prefixed with "../" multiple
+         # time quickly grow longer than the root of the tree, this can lead to
+         # bazel's header check failing.
+-        cuda_defines["%{extra_no_canonical_prefixes_flags}"] = "\"-fno-canonical-system-headers\""
++        # cuda_defines["%{extra_no_canonical_prefixes_flags}"] = "\"-fno-canonical-system-headers\""
+ 
+         file_ext = ".exe" if is_windows(repository_ctx) else ""
+         nvcc_path = "%s/nvcc%s" % (cuda_config.config["cuda_binary_dir"], file_ext)
+-- 
+2.17.2 (Apple Git-113)
+
+
+From 0257639c66508f6a054a1cc5431ed8d52d40f1f4 Mon Sep 17 00:00:00 2001
+From: llv22 <xiandao.airs@gmail.com>
+Date: Fri, 20 May 2022 15:42:47 +0800
+Subject: [PATCH 6/7] orlando -  for updates of
+ tensorflow/core/util/gpu_kernel_helper.h's fis on macOS
+
+---
+ tensorflow/core/util/gpu_kernel_helper.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/tensorflow/core/util/gpu_kernel_helper.h b/tensorflow/core/util/gpu_kernel_helper.h
+index a5ae09b3b02..207e141e1a6 100644
+--- a/tensorflow/core/util/gpu_kernel_helper.h
++++ b/tensorflow/core/util/gpu_kernel_helper.h
+@@ -55,11 +55,18 @@ using gpuStream_t = hipStream_t;
+ using gpuError_t = hipError_t;
+ #endif
+ 
+-// macro wrapper to declare dynamic shared memory
++// macro wrapper to declare dynamic shared memory, but on macOS to avoid dynamic alignment which leads to template instantiation issue
++// refer to 
++// 1. https://gist.githubusercontent.com/rxwei/993deb4c9ed51c875e74f5ca4e074d3d/raw/13ebd8bbca7054a4dde275dce7695c8b4c476ae7/tensorflow_macos_gpu.patch
++// 2. https://github.com/TomHeaven/tensorflow-osx-build/blob/master/source_patches/v2.2.0_macos.patch
+ #if GOOGLE_CUDA
+ 
+ #define GPU_DYNAMIC_SHARED_MEM_DECL(ALIGN, TYPE, NAME) \
++#if defined(__APPLE__) && defined(__MACH__)
++  extern __shared__ TYPE NAME[]
++#else
+   extern __shared__ __align__(ALIGN) TYPE NAME[]
++#endif
+ 
+ #elif TENSORFLOW_USE_ROCM
+ 
+-- 
+2.17.2 (Apple Git-113)
+
+
+From d90c48af731a2075468327694e1c1dab151c473c Mon Sep 17 00:00:00 2001
+From: Orlando Ding <xiandao.airs@gmail.com>
+Date: Sun, 22 May 2022 08:06:00 +0800
+Subject: [PATCH 7/7] orlando - for fixing issue of r2.8.0
+
+---
+ README.md                                                | 6 ++++++
+ tensorflow/core/kernels/check_numerics_op_gpu.cu.cc      | 4 ++++
+ tensorflow/core/kernels/conv_2d_gpu_double.cu.cc         | 4 ++++
+ tensorflow/core/kernels/conv_2d_gpu_float.cu.cc          | 4 ++++
+ tensorflow/core/kernels/conv_2d_gpu_half.cu.cc           | 4 ++++
+ tensorflow/core/kernels/conv_2d_gpu_int.cu.cc            | 4 ++++
+ .../kernels/conv_2d_gpu_int_spatial_convolution.cu.cc    | 4 ++++
+ .../conv_2d_gpu_int_spatial_convolution_backward.cu.cc   | 4 ++++
+ tensorflow/core/kernels/conv_2d_gpu_uint16.cu.cc         | 4 ++++
+ tensorflow/core/kernels/conv_2d_gpu_uint32.cu.cc         | 4 ++++
+ tensorflow/core/kernels/conv_2d_gpu_uint64.cu.cc         | 4 ++++
+ tensorflow/core/kernels/conv_2d_gpu_uint8.cu.cc          | 4 ++++
+ tensorflow/core/kernels/cross_op_gpu.cu.cc               | 4 ++++
+ tensorflow/core/kernels/gather_nd_op_gpu.cu.cc           | 4 ++++
+ tensorflow/core/kernels/image/adjust_hue_op_gpu.cu.cc    | 4 ++++
+ .../core/kernels/image/adjust_saturation_op_gpu.cu.cc    | 4 ++++
+ tensorflow/core/kernels/image/colorspace_op_gpu.cu.cc    | 4 ++++
+ tensorflow/core/kernels/image/image_ops_gpu.cu.cc        | 4 ++++
+ tensorflow/core/kernels/image/mirror_pad_op_gpu.cu.cc    | 4 ++++
+ .../core/kernels/image/non_max_suppression_op.cu.cc      | 5 +++++
+ .../core/kernels/image/resize_bilinear_op_gpu.cu.cc      | 4 ++++
+ tensorflow/core/kernels/linalg/cholesky_op_gpu.cu.cc     | 4 ++++
+ tensorflow/core/kernels/linalg/determinant_op_gpu.cu.cc  | 4 ++++
+ tensorflow/core/kernels/linalg/einsum_op_gpu.cu.cc       | 4 ++++
+ tensorflow/core/kernels/linalg/lu_op_gpu.cu.cc           | 4 ++++
+ tensorflow/core/kernels/linalg/matrix_diag_op_gpu.cu.cc  | 4 ++++
+ .../core/kernels/linalg/matrix_set_diag_op_gpu.cu.cc     | 4 ++++
+ tensorflow/core/kernels/linalg/svd_op_gpu.cu.cc          | 4 ++++
+ .../core/kernels/linalg/tridiagonal_matmul_op_gpu.cu.cc  | 4 ++++
+ .../core/kernels/linalg/tridiagonal_solve_op_gpu.cu.cc   | 4 ++++
+ tensorflow/core/kernels/maxpooling_op_gpu.cu.cc          | 4 ++++
+ tensorflow/core/kernels/pad_op_gpu.cu.cc                 | 4 ++++
+ tensorflow/core/kernels/pooling_ops_3d_gpu.cu.cc         | 4 ++++
+ .../core/kernels/quantize_and_dequantize_op_gpu.cu.cc    | 4 ++++
+ tensorflow/core/kernels/random_op_gpu.cu.cc              | 4 ++++
+ .../core/kernels/reduction_ops_gpu_complex128.cu.cc      | 4 ++++
+ .../core/kernels/reduction_ops_gpu_complex64.cu.cc       | 4 ++++
+ tensorflow/core/kernels/reduction_ops_gpu_double.cu.cc   | 4 ++++
+ tensorflow/core/kernels/reduction_ops_gpu_float.cu.cc    | 4 ++++
+ tensorflow/core/kernels/reduction_ops_gpu_int.cu.cc      | 4 ++++
+ .../core/kernels/reduction_ops_half_mean_sum.cu.cc       | 4 ++++
+ .../core/kernels/reduction_ops_half_prod_max_min.cu.cc   | 4 ++++
+ tensorflow/core/kernels/segment_reduction_ops_gpu.cu.h   | 9 +++++++++
+ .../core/kernels/segment_reduction_ops_gpu_1.cu.cc       | 4 ++++
+ tensorflow/core/kernels/snapshot_op_gpu.cu.cc            | 4 ++++
+ tensorflow/core/kernels/strided_slice_op_gpu_int.cu.cc   | 4 ++++
+ .../core/kernels/strided_slice_op_gpu_number_types.cu.cc | 4 ++++
+ .../core/kernels/tile_functor_gpu_complex128.cu.cc       | 4 ++++
+ tensorflow/core/kernels/tile_functor_gpu_complex64.cu.cc | 4 ++++
+ tensorflow/core/kernels/tile_functor_gpu_double.cu.cc    | 4 ++++
+ tensorflow/core/kernels/tile_functor_gpu_float.cu.cc     | 4 ++++
+ tensorflow/core/kernels/tile_functor_gpu_half.cu.cc      | 4 ++++
+ tensorflow/core/kernels/tile_functor_gpu_int16.cu.cc     | 4 ++++
+ tensorflow/core/kernels/tile_functor_gpu_int32.cu.cc     | 4 ++++
+ tensorflow/core/kernels/tile_functor_gpu_int64.cu.cc     | 4 ++++
+ tensorflow/core/kernels/topk_op_gpu_half.cu.cc           | 4 ++++
+ tensorflow/core/kernels/topk_op_gpu_int16.cu.cc          | 4 ++++
+ tensorflow/core/kernels/topk_op_gpu_int32.cu.cc          | 4 ++++
+ tensorflow/core/kernels/topk_op_gpu_int64.cu.cc          | 4 ++++
+ tensorflow/core/kernels/topk_op_gpu_int8.cu.cc           | 4 ++++
+ tensorflow/core/kernels/topk_op_gpu_uint16.cu.cc         | 4 ++++
+ tensorflow/core/kernels/topk_op_gpu_uint32.cu.cc         | 4 ++++
+ tensorflow/core/kernels/topk_op_gpu_uint8.cu.cc          | 4 ++++
+ tensorflow/core/kernels/unique_op_gpu_1.cu.cc            | 4 ++++
+ tensorflow/core/kernels/unique_op_gpu_2.cu.cc            | 4 ++++
+ tensorflow/core/kernels/unique_op_gpu_3.cu.cc            | 4 ++++
+ tensorflow/core/kernels/where_op_gpu_impl_2.cu.cc        | 3 +++
+ tensorflow/core/kernels/where_op_gpu_impl_3.cu.cc        | 3 +++
+ tensorflow/core/kernels/where_op_gpu_impl_4.cu.cc        | 3 +++
+ tensorflow/core/kernels/where_op_gpu_impl_5.cu.cc        | 3 +++
+ tensorflow/core/kernels/where_op_gpu_impl_6.cu.cc        | 3 +++
+ tensorflow/core/kernels/where_op_gpu_impl_7.cu.cc        | 3 +++
+ tensorflow/core/kernels/where_op_gpu_impl_8.cu.cc        | 3 +++
+ tensorflow/core/util/gpu_kernel_helper.h                 | 3 ++-
+ third_party/gpus/crosstool/BUILD.tpl                     | 6 ++++--
+ third_party/gpus/crosstool/cc_toolchain_config.bzl.tpl   | 4 +++-
+ .../clang/bin/crosstool_wrapper_driver_rocm.tpl          | 4 ++--
+ third_party/gpus/cuda_configure.bzl                      | 6 ++++--
+ 78 files changed, 308 insertions(+), 8 deletions(-)
+
+diff --git a/README.md b/README.md
+index 3c1b2d8fbc1..8ff52d77af3 100644
+--- a/README.md
++++ b/README.md
+@@ -12,6 +12,12 @@ The main development environment settings as follow:
+ - macOS 10.13.6, cuda 10.1, cudnn 7.6.5 (cuda and cudnn is the last official version which Nvidia released to support macOS)
+ - [NCCL on macOS 2.9.6.1](https://github.com/llv22/nccl-osx) and [test suite](https://github.com/llv22/nccl-tests-macOS-cuda)
+ 
++Consolidating [tensorflow-2.8.0-mac.patch](tensorflow-2.8.0-mac.patch) by
++
++```bash
++git format-patch -2 --stdout > tensorflow-2.8.0-mac.patch
++```
++
+ --------------------------------------------------------------------------------
+ 
+ <div align="center">
+diff --git a/tensorflow/core/kernels/check_numerics_op_gpu.cu.cc b/tensorflow/core/kernels/check_numerics_op_gpu.cu.cc
+index dc196af853e..81fbebc031d 100644
+--- a/tensorflow/core/kernels/check_numerics_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/check_numerics_op_gpu.cu.cc
+@@ -22,6 +22,10 @@ limitations under the License.
+ 
+ #include <algorithm>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/platform/types.h"
+ #include "tensorflow/core/util/gpu_kernel_helper.h"
+diff --git a/tensorflow/core/kernels/conv_2d_gpu_double.cu.cc b/tensorflow/core/kernels/conv_2d_gpu_double.cu.cc
+index d3198da806b..39ed77bd121 100644
+--- a/tensorflow/core/kernels/conv_2d_gpu_double.cu.cc
++++ b/tensorflow/core/kernels/conv_2d_gpu_double.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/conv_2d.h"
+ #include "tensorflow/core/kernels/conv_2d_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/conv_2d_gpu_float.cu.cc b/tensorflow/core/kernels/conv_2d_gpu_float.cu.cc
+index 9c92d1f700f..97fc88c9655 100644
+--- a/tensorflow/core/kernels/conv_2d_gpu_float.cu.cc
++++ b/tensorflow/core/kernels/conv_2d_gpu_float.cu.cc
+@@ -22,6 +22,10 @@ limitations under the License.
+ #include <limits>
+ #include <utility>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/conv_2d.h"
+ #include "tensorflow/core/kernels/conv_2d_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/conv_2d_gpu_half.cu.cc b/tensorflow/core/kernels/conv_2d_gpu_half.cu.cc
+index d66e4188877..19cb56b4e6c 100644
+--- a/tensorflow/core/kernels/conv_2d_gpu_half.cu.cc
++++ b/tensorflow/core/kernels/conv_2d_gpu_half.cu.cc
+@@ -22,6 +22,10 @@ limitations under the License.
+ #include <limits>
+ #include <utility>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/conv_2d.h"
+ #include "tensorflow/core/kernels/conv_2d_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/conv_2d_gpu_int.cu.cc b/tensorflow/core/kernels/conv_2d_gpu_int.cu.cc
+index 60d995a6ed9..e8c0d14a3b7 100644
+--- a/tensorflow/core/kernels/conv_2d_gpu_int.cu.cc
++++ b/tensorflow/core/kernels/conv_2d_gpu_int.cu.cc
+@@ -22,6 +22,10 @@ limitations under the License.
+ #include <limits>
+ #include <utility>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/conv_2d.h"
+ #include "tensorflow/core/kernels/conv_2d_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/conv_2d_gpu_int_spatial_convolution.cu.cc b/tensorflow/core/kernels/conv_2d_gpu_int_spatial_convolution.cu.cc
+index 388704f76c3..ae867c0a47f 100644
+--- a/tensorflow/core/kernels/conv_2d_gpu_int_spatial_convolution.cu.cc
++++ b/tensorflow/core/kernels/conv_2d_gpu_int_spatial_convolution.cu.cc
+@@ -22,6 +22,10 @@ limitations under the License.
+ #include <limits>
+ #include <utility>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/conv_2d.h"
+ #include "tensorflow/core/kernels/conv_2d_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/conv_2d_gpu_int_spatial_convolution_backward.cu.cc b/tensorflow/core/kernels/conv_2d_gpu_int_spatial_convolution_backward.cu.cc
+index b5e7156adac..8fec56459c6 100644
+--- a/tensorflow/core/kernels/conv_2d_gpu_int_spatial_convolution_backward.cu.cc
++++ b/tensorflow/core/kernels/conv_2d_gpu_int_spatial_convolution_backward.cu.cc
+@@ -22,6 +22,10 @@ limitations under the License.
+ #include <limits>
+ #include <utility>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/conv_2d.h"
+ #include "tensorflow/core/kernels/conv_2d_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/conv_2d_gpu_uint16.cu.cc b/tensorflow/core/kernels/conv_2d_gpu_uint16.cu.cc
+index 7636a63eaa1..9bdcc4a508c 100644
+--- a/tensorflow/core/kernels/conv_2d_gpu_uint16.cu.cc
++++ b/tensorflow/core/kernels/conv_2d_gpu_uint16.cu.cc
+@@ -22,6 +22,10 @@ limitations under the License.
+ #include <limits>
+ #include <utility>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/conv_2d.h"
+ #include "tensorflow/core/kernels/conv_2d_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/conv_2d_gpu_uint32.cu.cc b/tensorflow/core/kernels/conv_2d_gpu_uint32.cu.cc
+index 0d4045dfc6a..b3eea4e23ad 100644
+--- a/tensorflow/core/kernels/conv_2d_gpu_uint32.cu.cc
++++ b/tensorflow/core/kernels/conv_2d_gpu_uint32.cu.cc
+@@ -22,6 +22,10 @@ limitations under the License.
+ #include <limits>
+ #include <utility>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/conv_2d.h"
+ #include "tensorflow/core/kernels/conv_2d_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/conv_2d_gpu_uint64.cu.cc b/tensorflow/core/kernels/conv_2d_gpu_uint64.cu.cc
+index 558b63132ee..838f8c1ef41 100644
+--- a/tensorflow/core/kernels/conv_2d_gpu_uint64.cu.cc
++++ b/tensorflow/core/kernels/conv_2d_gpu_uint64.cu.cc
+@@ -22,6 +22,10 @@ limitations under the License.
+ #include <limits>
+ #include <utility>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/conv_2d.h"
+ #include "tensorflow/core/kernels/conv_2d_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/conv_2d_gpu_uint8.cu.cc b/tensorflow/core/kernels/conv_2d_gpu_uint8.cu.cc
+index 01f74c94122..07462d3e64f 100644
+--- a/tensorflow/core/kernels/conv_2d_gpu_uint8.cu.cc
++++ b/tensorflow/core/kernels/conv_2d_gpu_uint8.cu.cc
+@@ -22,6 +22,10 @@ limitations under the License.
+ #include <limits>
+ #include <utility>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/conv_2d.h"
+ #include "tensorflow/core/kernels/conv_2d_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/cross_op_gpu.cu.cc b/tensorflow/core/kernels/cross_op_gpu.cu.cc
+index e9fd4523a53..e47b8d7bca8 100644
+--- a/tensorflow/core/kernels/cross_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/cross_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/cross_op.h"
+ 
+diff --git a/tensorflow/core/kernels/gather_nd_op_gpu.cu.cc b/tensorflow/core/kernels/gather_nd_op_gpu.cu.cc
+index 216ca2de114..11d5b7a3e1f 100644
+--- a/tensorflow/core/kernels/gather_nd_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/gather_nd_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/gather_nd_op.h"
+ #include "tensorflow/core/platform/types.h"
+diff --git a/tensorflow/core/kernels/image/adjust_hue_op_gpu.cu.cc b/tensorflow/core/kernels/image/adjust_hue_op_gpu.cu.cc
+index 10c1ddb6aaf..7183e293b20 100644
+--- a/tensorflow/core/kernels/image/adjust_hue_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/image/adjust_hue_op_gpu.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/image/adjust_hsv_gpu.cu.h"
+ #include "tensorflow/core/kernels/image/adjust_hue_op.h"
+ #include "tensorflow/core/util/gpu_kernel_helper.h"
+diff --git a/tensorflow/core/kernels/image/adjust_saturation_op_gpu.cu.cc b/tensorflow/core/kernels/image/adjust_saturation_op_gpu.cu.cc
+index 59541e41b46..cd801d827ae 100644
+--- a/tensorflow/core/kernels/image/adjust_saturation_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/image/adjust_saturation_op_gpu.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/image/adjust_hsv_gpu.cu.h"
+ #include "tensorflow/core/kernels/image/adjust_saturation_op.h"
+ #include "tensorflow/core/util/gpu_kernel_helper.h"
+diff --git a/tensorflow/core/kernels/image/colorspace_op_gpu.cu.cc b/tensorflow/core/kernels/image/colorspace_op_gpu.cu.cc
+index c49698e4c04..ac57b5dd546 100644
+--- a/tensorflow/core/kernels/image/colorspace_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/image/colorspace_op_gpu.cu.cc
+@@ -18,6 +18,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/image/colorspace_op.h"
+ 
+diff --git a/tensorflow/core/kernels/image/image_ops_gpu.cu.cc b/tensorflow/core/kernels/image/image_ops_gpu.cu.cc
+index dd94559ffd7..60593fb33c1 100644
+--- a/tensorflow/core/kernels/image/image_ops_gpu.cu.cc
++++ b/tensorflow/core/kernels/image/image_ops_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/types.h"
+ #include "tensorflow/core/kernels/image/image_ops.h"
+diff --git a/tensorflow/core/kernels/image/mirror_pad_op_gpu.cu.cc b/tensorflow/core/kernels/image/mirror_pad_op_gpu.cu.cc
+index f0afc707fc6..eb9f7e551f9 100644
+--- a/tensorflow/core/kernels/image/mirror_pad_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/image/mirror_pad_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/image/mirror_pad_op.h"
+ 
+diff --git a/tensorflow/core/kernels/image/non_max_suppression_op.cu.cc b/tensorflow/core/kernels/image/non_max_suppression_op.cu.cc
+index 1040100a0ec..68fde235624 100644
+--- a/tensorflow/core/kernels/image/non_max_suppression_op.cu.cc
++++ b/tensorflow/core/kernels/image/non_max_suppression_op.cu.cc
+@@ -15,6 +15,11 @@ limitations under the License.
+ 
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
++
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/image/non_max_suppression_op.h"
+ 
+ #include <limits>
+diff --git a/tensorflow/core/kernels/image/resize_bilinear_op_gpu.cu.cc b/tensorflow/core/kernels/image/resize_bilinear_op_gpu.cu.cc
+index 344cf1d2a2a..a807055e5e0 100644
+--- a/tensorflow/core/kernels/image/resize_bilinear_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/image/resize_bilinear_op_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/image/resize_bilinear_op.h"
+diff --git a/tensorflow/core/kernels/linalg/cholesky_op_gpu.cu.cc b/tensorflow/core/kernels/linalg/cholesky_op_gpu.cu.cc
+index 9d8520e24fd..b5ccc44d63d 100644
+--- a/tensorflow/core/kernels/linalg/cholesky_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/linalg/cholesky_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/kernel_def_builder.h"
+ #include "tensorflow/core/framework/op_kernel.h"
+diff --git a/tensorflow/core/kernels/linalg/determinant_op_gpu.cu.cc b/tensorflow/core/kernels/linalg/determinant_op_gpu.cu.cc
+index 2deb68aae11..5f43e1b976d 100644
+--- a/tensorflow/core/kernels/linalg/determinant_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/linalg/determinant_op_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ 
+ #include <complex>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/linalg/determinant_op.h"
+diff --git a/tensorflow/core/kernels/linalg/einsum_op_gpu.cu.cc b/tensorflow/core/kernels/linalg/einsum_op_gpu.cu.cc
+index 5461e43e0ab..2808ca3f5c7 100644
+--- a/tensorflow/core/kernels/linalg/einsum_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/linalg/einsum_op_gpu.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/linalg/einsum_op.h"
+ 
+diff --git a/tensorflow/core/kernels/linalg/lu_op_gpu.cu.cc b/tensorflow/core/kernels/linalg/lu_op_gpu.cu.cc
+index 0b3df0ec29c..0cc677801cc 100644
+--- a/tensorflow/core/kernels/linalg/lu_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/linalg/lu_op_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ #include <algorithm>
+ #include <vector>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/kernel_def_builder.h"
+ #include "tensorflow/core/framework/op_kernel.h"
+diff --git a/tensorflow/core/kernels/linalg/matrix_diag_op_gpu.cu.cc b/tensorflow/core/kernels/linalg/matrix_diag_op_gpu.cu.cc
+index 6b52e70716d..068939296af 100644
+--- a/tensorflow/core/kernels/linalg/matrix_diag_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/linalg/matrix_diag_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/linalg/matrix_diag_op.h"
+ #include "tensorflow/core/util/gpu_kernel_helper.h"
+diff --git a/tensorflow/core/kernels/linalg/matrix_set_diag_op_gpu.cu.cc b/tensorflow/core/kernels/linalg/matrix_set_diag_op_gpu.cu.cc
+index 0cdb457db03..e768353af57 100644
+--- a/tensorflow/core/kernels/linalg/matrix_set_diag_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/linalg/matrix_set_diag_op_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/linalg/matrix_set_diag_op.h"
+ #include "tensorflow/core/util/gpu_kernel_helper.h"
+diff --git a/tensorflow/core/kernels/linalg/svd_op_gpu.cu.cc b/tensorflow/core/kernels/linalg/svd_op_gpu.cu.cc
+index a3532f765a4..1b7f8850816 100644
+--- a/tensorflow/core/kernels/linalg/svd_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/linalg/svd_op_gpu.cu.cc
+@@ -30,6 +30,10 @@ limitations under the License.
+ #include <algorithm>
+ #include <vector>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+ #include "tensorflow/core/framework/kernel_def_builder.h"
+ #include "tensorflow/core/framework/op_kernel.h"
+diff --git a/tensorflow/core/kernels/linalg/tridiagonal_matmul_op_gpu.cu.cc b/tensorflow/core/kernels/linalg/tridiagonal_matmul_op_gpu.cu.cc
+index c1b75f2cd0e..49f4cd8ec1f 100644
+--- a/tensorflow/core/kernels/linalg/tridiagonal_matmul_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/linalg/tridiagonal_matmul_op_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/op_kernel.h"
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_shape.h"
+diff --git a/tensorflow/core/kernels/linalg/tridiagonal_solve_op_gpu.cu.cc b/tensorflow/core/kernels/linalg/tridiagonal_solve_op_gpu.cu.cc
+index 198c7713eeb..7d1c27525bd 100644
+--- a/tensorflow/core/kernels/linalg/tridiagonal_solve_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/linalg/tridiagonal_solve_op_gpu.cu.cc
+@@ -19,6 +19,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/op_kernel.h"
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_shape.h"
+diff --git a/tensorflow/core/kernels/maxpooling_op_gpu.cu.cc b/tensorflow/core/kernels/maxpooling_op_gpu.cu.cc
+index 5006be3957e..bb0229a7b67 100644
+--- a/tensorflow/core/kernels/maxpooling_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/maxpooling_op_gpu.cu.cc
+@@ -21,6 +21,10 @@ limitations under the License.
+ 
+ #include <cfloat>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/framework/type_traits.h"
+diff --git a/tensorflow/core/kernels/pad_op_gpu.cu.cc b/tensorflow/core/kernels/pad_op_gpu.cu.cc
+index 2ef238af9d5..5e20200365e 100644
+--- a/tensorflow/core/kernels/pad_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/pad_op_gpu.cu.cc
+@@ -18,6 +18,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/pad_op.h"
+ 
+ #include "tensorflow/core/framework/register_types.h"
+diff --git a/tensorflow/core/kernels/pooling_ops_3d_gpu.cu.cc b/tensorflow/core/kernels/pooling_ops_3d_gpu.cu.cc
+index 92e52c3b60f..2836a5e8219 100644
+--- a/tensorflow/core/kernels/pooling_ops_3d_gpu.cu.cc
++++ b/tensorflow/core/kernels/pooling_ops_3d_gpu.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/pooling_ops_3d_gpu.h"
+ #include "tensorflow/core/util/gpu_kernel_helper.h"
+diff --git a/tensorflow/core/kernels/quantize_and_dequantize_op_gpu.cu.cc b/tensorflow/core/kernels/quantize_and_dequantize_op_gpu.cu.cc
+index 9f074535770..b5d185cef59 100644
+--- a/tensorflow/core/kernels/quantize_and_dequantize_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/quantize_and_dequantize_op_gpu.cu.cc
+@@ -18,6 +18,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/tensor_types.h"
+ #include "tensorflow/core/kernels/quantize_and_dequantize_op.h"
+ #include "tensorflow/core/platform/types.h"
+diff --git a/tensorflow/core/kernels/random_op_gpu.cu.cc b/tensorflow/core/kernels/random_op_gpu.cu.cc
+index 9d7c56e3310..a7a54aeddec 100644
+--- a/tensorflow/core/kernels/random_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/random_op_gpu.cu.cc
+@@ -20,6 +20,10 @@ limitations under the License.
+ #include <assert.h>
+ #include <stdio.h>
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/random_op_gpu.h"
+ 
+ #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"
+diff --git a/tensorflow/core/kernels/reduction_ops_gpu_complex128.cu.cc b/tensorflow/core/kernels/reduction_ops_gpu_complex128.cu.cc
+index 662f24d9054..3044c7ba505 100644
+--- a/tensorflow/core/kernels/reduction_ops_gpu_complex128.cu.cc
++++ b/tensorflow/core/kernels/reduction_ops_gpu_complex128.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/reduction_gpu_kernels.cu.h"
+ 
+ namespace tensorflow {
+diff --git a/tensorflow/core/kernels/reduction_ops_gpu_complex64.cu.cc b/tensorflow/core/kernels/reduction_ops_gpu_complex64.cu.cc
+index 8ab2a6e13e5..9ff2bd157c7 100644
+--- a/tensorflow/core/kernels/reduction_ops_gpu_complex64.cu.cc
++++ b/tensorflow/core/kernels/reduction_ops_gpu_complex64.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/reduction_gpu_kernels.cu.h"
+ 
+ namespace tensorflow {
+diff --git a/tensorflow/core/kernels/reduction_ops_gpu_double.cu.cc b/tensorflow/core/kernels/reduction_ops_gpu_double.cu.cc
+index dfd31795b35..69c31d57f99 100644
+--- a/tensorflow/core/kernels/reduction_ops_gpu_double.cu.cc
++++ b/tensorflow/core/kernels/reduction_ops_gpu_double.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/reduction_gpu_kernels.cu.h"
+ 
+ namespace tensorflow {
+diff --git a/tensorflow/core/kernels/reduction_ops_gpu_float.cu.cc b/tensorflow/core/kernels/reduction_ops_gpu_float.cu.cc
+index bf9831a1207..e672e74c04a 100644
+--- a/tensorflow/core/kernels/reduction_ops_gpu_float.cu.cc
++++ b/tensorflow/core/kernels/reduction_ops_gpu_float.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/reduction_gpu_kernels.cu.h"
+ 
+ namespace tensorflow {
+diff --git a/tensorflow/core/kernels/reduction_ops_gpu_int.cu.cc b/tensorflow/core/kernels/reduction_ops_gpu_int.cu.cc
+index 2efcad02950..1c60a60f673 100644
+--- a/tensorflow/core/kernels/reduction_ops_gpu_int.cu.cc
++++ b/tensorflow/core/kernels/reduction_ops_gpu_int.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/reduction_gpu_kernels.cu.h"
+ 
+ namespace tensorflow {
+diff --git a/tensorflow/core/kernels/reduction_ops_half_mean_sum.cu.cc b/tensorflow/core/kernels/reduction_ops_half_mean_sum.cu.cc
+index bbb34c9d3ba..0855d00e9fc 100644
+--- a/tensorflow/core/kernels/reduction_ops_half_mean_sum.cu.cc
++++ b/tensorflow/core/kernels/reduction_ops_half_mean_sum.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/reduction_gpu_kernels.cu.h"
+ 
+ namespace tensorflow {
+diff --git a/tensorflow/core/kernels/reduction_ops_half_prod_max_min.cu.cc b/tensorflow/core/kernels/reduction_ops_half_prod_max_min.cu.cc
+index 23c9ec9e592..887c73596ec 100644
+--- a/tensorflow/core/kernels/reduction_ops_half_prod_max_min.cu.cc
++++ b/tensorflow/core/kernels/reduction_ops_half_prod_max_min.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/reduction_gpu_kernels.cu.h"
+ 
+ namespace tensorflow {
+diff --git a/tensorflow/core/kernels/segment_reduction_ops_gpu.cu.h b/tensorflow/core/kernels/segment_reduction_ops_gpu.cu.h
+index 4840a927445..af1999ffde1 100644
+--- a/tensorflow/core/kernels/segment_reduction_ops_gpu.cu.h
++++ b/tensorflow/core/kernels/segment_reduction_ops_gpu.cu.h
+@@ -331,7 +331,11 @@ __global__ void SegmentReduceVectorKernel(
+           if (is_mean) {
+             result /= Treducevec(total_weight);
+           } else if (is_sqrtn) {
++#if defined(__APPLE__) && defined(__MACH__)
++            result /= Treducevec(sqrt((float)total_weight));
++#else
+             result /= Treducevec(sqrt(total_weight));
++#endif
+           }
+         }
+         // Cast from Treducevec to Tvec.
+@@ -407,8 +411,13 @@ __global__ void SegmentReduceEpilogueKernel(
+     } else if (is_mean) {
+       val /= Treducevec(segment_size);
+     } else if (is_sqrtn) {
++#if defined(__APPLE__) && defined(__MACH__)
++      val /= Treducevec(
++          sqrt((double)typename RealTypeIfComplex<Tinit>::type(segment_size)));
++#else
+       val /= Treducevec(
+           sqrt(typename RealTypeIfComplex<Tinit>::type(segment_size)));
++#endif
+     }
+     // Cast from Treducevec to Tvec.
+     output[seg] = static_cast<Tvec>(val);
+diff --git a/tensorflow/core/kernels/segment_reduction_ops_gpu_1.cu.cc b/tensorflow/core/kernels/segment_reduction_ops_gpu_1.cu.cc
+index db075e4bfed..6da0c4ce7b9 100644
+--- a/tensorflow/core/kernels/segment_reduction_ops_gpu_1.cu.cc
++++ b/tensorflow/core/kernels/segment_reduction_ops_gpu_1.cu.cc
+@@ -15,6 +15,10 @@ limitations under the License.
+ 
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/segment_reduction_ops_gpu.cu.h"
+ 
+diff --git a/tensorflow/core/kernels/snapshot_op_gpu.cu.cc b/tensorflow/core/kernels/snapshot_op_gpu.cu.cc
+index d4fee5b40e6..32d3f51b8b1 100644
+--- a/tensorflow/core/kernels/snapshot_op_gpu.cu.cc
++++ b/tensorflow/core/kernels/snapshot_op_gpu.cu.cc
+@@ -14,6 +14,10 @@ limitations under the License.
+ ==============================================================================*/
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ // See docs in ../ops/array_ops.cc.
+ #include "tensorflow/core/kernels/snapshot_op.h"
+ 
+diff --git a/tensorflow/core/kernels/strided_slice_op_gpu_int.cu.cc b/tensorflow/core/kernels/strided_slice_op_gpu_int.cu.cc
+index 02dd9259a76..c36d568d969 100644
+--- a/tensorflow/core/kernels/strided_slice_op_gpu_int.cu.cc
++++ b/tensorflow/core/kernels/strided_slice_op_gpu_int.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/strided_slice_op.h"
+ #include "tensorflow/core/kernels/strided_slice_op_gpu_impl.h"
+ 
+diff --git a/tensorflow/core/kernels/strided_slice_op_gpu_number_types.cu.cc b/tensorflow/core/kernels/strided_slice_op_gpu_number_types.cu.cc
+index 1725185bbbc..598ec40d4d6 100644
+--- a/tensorflow/core/kernels/strided_slice_op_gpu_number_types.cu.cc
++++ b/tensorflow/core/kernels/strided_slice_op_gpu_number_types.cu.cc
+@@ -17,6 +17,10 @@ limitations under the License.
+ 
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/strided_slice_op.h"
+ #include "tensorflow/core/kernels/strided_slice_op_gpu_impl.h"
+ 
+diff --git a/tensorflow/core/kernels/tile_functor_gpu_complex128.cu.cc b/tensorflow/core/kernels/tile_functor_gpu_complex128.cu.cc
+index 7654e096537..af877ddfe26 100644
+--- a/tensorflow/core/kernels/tile_functor_gpu_complex128.cu.cc
++++ b/tensorflow/core/kernels/tile_functor_gpu_complex128.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/tile_functor.h"
+ #include "tensorflow/core/kernels/tile_functor_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/tile_functor_gpu_complex64.cu.cc b/tensorflow/core/kernels/tile_functor_gpu_complex64.cu.cc
+index 2d05c9cdfb3..b55d42bdc59 100644
+--- a/tensorflow/core/kernels/tile_functor_gpu_complex64.cu.cc
++++ b/tensorflow/core/kernels/tile_functor_gpu_complex64.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/tile_functor.h"
+ #include "tensorflow/core/kernels/tile_functor_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/tile_functor_gpu_double.cu.cc b/tensorflow/core/kernels/tile_functor_gpu_double.cu.cc
+index c6b4a7f3ff4..7373d294010 100644
+--- a/tensorflow/core/kernels/tile_functor_gpu_double.cu.cc
++++ b/tensorflow/core/kernels/tile_functor_gpu_double.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/tile_functor.h"
+ #include "tensorflow/core/kernels/tile_functor_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/tile_functor_gpu_float.cu.cc b/tensorflow/core/kernels/tile_functor_gpu_float.cu.cc
+index 8c22b5a2969..b4229709f0d 100644
+--- a/tensorflow/core/kernels/tile_functor_gpu_float.cu.cc
++++ b/tensorflow/core/kernels/tile_functor_gpu_float.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/tile_functor.h"
+ #include "tensorflow/core/kernels/tile_functor_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/tile_functor_gpu_half.cu.cc b/tensorflow/core/kernels/tile_functor_gpu_half.cu.cc
+index f876f8aab6b..2025793d9d2 100644
+--- a/tensorflow/core/kernels/tile_functor_gpu_half.cu.cc
++++ b/tensorflow/core/kernels/tile_functor_gpu_half.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/tile_functor.h"
+ #include "tensorflow/core/kernels/tile_functor_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/tile_functor_gpu_int16.cu.cc b/tensorflow/core/kernels/tile_functor_gpu_int16.cu.cc
+index ed3b788e542..8c6a4e90d96 100644
+--- a/tensorflow/core/kernels/tile_functor_gpu_int16.cu.cc
++++ b/tensorflow/core/kernels/tile_functor_gpu_int16.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/tile_functor.h"
+ #include "tensorflow/core/kernels/tile_functor_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/tile_functor_gpu_int32.cu.cc b/tensorflow/core/kernels/tile_functor_gpu_int32.cu.cc
+index a066662bb27..8751bf95cd8 100644
+--- a/tensorflow/core/kernels/tile_functor_gpu_int32.cu.cc
++++ b/tensorflow/core/kernels/tile_functor_gpu_int32.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/tile_functor.h"
+ #include "tensorflow/core/kernels/tile_functor_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/tile_functor_gpu_int64.cu.cc b/tensorflow/core/kernels/tile_functor_gpu_int64.cu.cc
+index 4748fb4a6cb..dd03249c957 100644
+--- a/tensorflow/core/kernels/tile_functor_gpu_int64.cu.cc
++++ b/tensorflow/core/kernels/tile_functor_gpu_int64.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/tile_functor.h"
+ #include "tensorflow/core/kernels/tile_functor_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/topk_op_gpu_half.cu.cc b/tensorflow/core/kernels/topk_op_gpu_half.cu.cc
+index bde26cb0951..3a908bb87fe 100644
+--- a/tensorflow/core/kernels/topk_op_gpu_half.cu.cc
++++ b/tensorflow/core/kernels/topk_op_gpu_half.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/topk_op.h"
+ #include "tensorflow/core/kernels/topk_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/topk_op_gpu_int16.cu.cc b/tensorflow/core/kernels/topk_op_gpu_int16.cu.cc
+index fba39300700..b2210aa6880 100644
+--- a/tensorflow/core/kernels/topk_op_gpu_int16.cu.cc
++++ b/tensorflow/core/kernels/topk_op_gpu_int16.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/topk_op.h"
+ #include "tensorflow/core/kernels/topk_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/topk_op_gpu_int32.cu.cc b/tensorflow/core/kernels/topk_op_gpu_int32.cu.cc
+index a017234597d..e9471b9741c 100644
+--- a/tensorflow/core/kernels/topk_op_gpu_int32.cu.cc
++++ b/tensorflow/core/kernels/topk_op_gpu_int32.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/topk_op.h"
+ #include "tensorflow/core/kernels/topk_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/topk_op_gpu_int64.cu.cc b/tensorflow/core/kernels/topk_op_gpu_int64.cu.cc
+index ed9f6ea52c6..16fe8e6919d 100644
+--- a/tensorflow/core/kernels/topk_op_gpu_int64.cu.cc
++++ b/tensorflow/core/kernels/topk_op_gpu_int64.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/topk_op.h"
+ #include "tensorflow/core/kernels/topk_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/topk_op_gpu_int8.cu.cc b/tensorflow/core/kernels/topk_op_gpu_int8.cu.cc
+index 647700ebcda..c1f59f8c7c3 100644
+--- a/tensorflow/core/kernels/topk_op_gpu_int8.cu.cc
++++ b/tensorflow/core/kernels/topk_op_gpu_int8.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/topk_op.h"
+ #include "tensorflow/core/kernels/topk_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/topk_op_gpu_uint16.cu.cc b/tensorflow/core/kernels/topk_op_gpu_uint16.cu.cc
+index 41ab6ffa601..bed253d1e39 100644
+--- a/tensorflow/core/kernels/topk_op_gpu_uint16.cu.cc
++++ b/tensorflow/core/kernels/topk_op_gpu_uint16.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/topk_op.h"
+ #include "tensorflow/core/kernels/topk_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/topk_op_gpu_uint32.cu.cc b/tensorflow/core/kernels/topk_op_gpu_uint32.cu.cc
+index 6725f478c15..11cfad529b7 100644
+--- a/tensorflow/core/kernels/topk_op_gpu_uint32.cu.cc
++++ b/tensorflow/core/kernels/topk_op_gpu_uint32.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/topk_op.h"
+ #include "tensorflow/core/kernels/topk_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/topk_op_gpu_uint8.cu.cc b/tensorflow/core/kernels/topk_op_gpu_uint8.cu.cc
+index 6d544291fed..f8d5f5e36ee 100644
+--- a/tensorflow/core/kernels/topk_op_gpu_uint8.cu.cc
++++ b/tensorflow/core/kernels/topk_op_gpu_uint8.cu.cc
+@@ -16,6 +16,10 @@ limitations under the License.
+ #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
+ #define EIGEN_USE_GPU
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/kernels/topk_op.h"
+ #include "tensorflow/core/kernels/topk_op_gpu.h"
+ 
+diff --git a/tensorflow/core/kernels/unique_op_gpu_1.cu.cc b/tensorflow/core/kernels/unique_op_gpu_1.cu.cc
+index 44d649e84b6..3e2fc968a23 100644
+--- a/tensorflow/core/kernels/unique_op_gpu_1.cu.cc
++++ b/tensorflow/core/kernels/unique_op_gpu_1.cu.cc
+@@ -15,6 +15,10 @@ limitations under the License.
+ 
+ #if GOOGLE_CUDA
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/unique_op_gpu.cu.h"
+ 
+diff --git a/tensorflow/core/kernels/unique_op_gpu_2.cu.cc b/tensorflow/core/kernels/unique_op_gpu_2.cu.cc
+index ced3fb8c242..fc95fe202a1 100644
+--- a/tensorflow/core/kernels/unique_op_gpu_2.cu.cc
++++ b/tensorflow/core/kernels/unique_op_gpu_2.cu.cc
+@@ -15,6 +15,10 @@ limitations under the License.
+ 
+ #if GOOGLE_CUDA
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/unique_op_gpu.cu.h"
+ 
+diff --git a/tensorflow/core/kernels/unique_op_gpu_3.cu.cc b/tensorflow/core/kernels/unique_op_gpu_3.cu.cc
+index 2697e2eba53..d8ffbc6320a 100644
+--- a/tensorflow/core/kernels/unique_op_gpu_3.cu.cc
++++ b/tensorflow/core/kernels/unique_op_gpu_3.cu.cc
+@@ -15,6 +15,10 @@ limitations under the License.
+ 
+ #if GOOGLE_CUDA
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
++
+ #include "tensorflow/core/framework/register_types.h"
+ #include "tensorflow/core/kernels/unique_op_gpu.cu.h"
+ 
+diff --git a/tensorflow/core/kernels/where_op_gpu_impl_2.cu.cc b/tensorflow/core/kernels/where_op_gpu_impl_2.cu.cc
+index 3a62259608d..d4b06712413 100644
+--- a/tensorflow/core/kernels/where_op_gpu_impl_2.cu.cc
++++ b/tensorflow/core/kernels/where_op_gpu_impl_2.cu.cc
+@@ -14,5 +14,8 @@ limitations under the License.
+ ==============================================================================*/
+ 
+ #define GPU_PROVIDED_DIM 2
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
+ #include "tensorflow/core/kernels/where_op_gpu.cu.h"
+ #undef GPU_PROVIDED_DIM
+diff --git a/tensorflow/core/kernels/where_op_gpu_impl_3.cu.cc b/tensorflow/core/kernels/where_op_gpu_impl_3.cu.cc
+index 2ae5447175e..45d06619aeb 100644
+--- a/tensorflow/core/kernels/where_op_gpu_impl_3.cu.cc
++++ b/tensorflow/core/kernels/where_op_gpu_impl_3.cu.cc
+@@ -14,5 +14,8 @@ limitations under the License.
+ ==============================================================================*/
+ 
+ #define GPU_PROVIDED_DIM 3
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
+ #include "tensorflow/core/kernels/where_op_gpu.cu.h"
+ #undef GPU_PROVIDED_DIM
+diff --git a/tensorflow/core/kernels/where_op_gpu_impl_4.cu.cc b/tensorflow/core/kernels/where_op_gpu_impl_4.cu.cc
+index e976bb4331e..5991892d32d 100644
+--- a/tensorflow/core/kernels/where_op_gpu_impl_4.cu.cc
++++ b/tensorflow/core/kernels/where_op_gpu_impl_4.cu.cc
+@@ -14,5 +14,8 @@ limitations under the License.
+ ==============================================================================*/
+ 
+ #define GPU_PROVIDED_DIM 4
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
+ #include "tensorflow/core/kernels/where_op_gpu.cu.h"
+ #undef GPU_PROVIDED_DIM
+diff --git a/tensorflow/core/kernels/where_op_gpu_impl_5.cu.cc b/tensorflow/core/kernels/where_op_gpu_impl_5.cu.cc
+index ccbe2d6499f..996993c34e1 100644
+--- a/tensorflow/core/kernels/where_op_gpu_impl_5.cu.cc
++++ b/tensorflow/core/kernels/where_op_gpu_impl_5.cu.cc
+@@ -14,5 +14,8 @@ limitations under the License.
+ ==============================================================================*/
+ 
+ #define GPU_PROVIDED_DIM 5
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
+ #include "tensorflow/core/kernels/where_op_gpu.cu.h"
+ #undef GPU_PROVIDED_DIM
+diff --git a/tensorflow/core/kernels/where_op_gpu_impl_6.cu.cc b/tensorflow/core/kernels/where_op_gpu_impl_6.cu.cc
+index 1d5a536b7d7..82417d6a5bb 100644
+--- a/tensorflow/core/kernels/where_op_gpu_impl_6.cu.cc
++++ b/tensorflow/core/kernels/where_op_gpu_impl_6.cu.cc
+@@ -14,5 +14,8 @@ limitations under the License.
+ ==============================================================================*/
+ 
+ #define GPU_PROVIDED_DIM 6
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
+ #include "tensorflow/core/kernels/where_op_gpu.cu.h"
+ #undef GPU_PROVIDED_DIM
+diff --git a/tensorflow/core/kernels/where_op_gpu_impl_7.cu.cc b/tensorflow/core/kernels/where_op_gpu_impl_7.cu.cc
+index 9686863e3c4..c08625faaec 100644
+--- a/tensorflow/core/kernels/where_op_gpu_impl_7.cu.cc
++++ b/tensorflow/core/kernels/where_op_gpu_impl_7.cu.cc
+@@ -14,5 +14,8 @@ limitations under the License.
+ ==============================================================================*/
+ 
+ #define GPU_PROVIDED_DIM 7
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
+ #include "tensorflow/core/kernels/where_op_gpu.cu.h"
+ #undef GPU_PROVIDED_DIM
+diff --git a/tensorflow/core/kernels/where_op_gpu_impl_8.cu.cc b/tensorflow/core/kernels/where_op_gpu_impl_8.cu.cc
+index dd23bf31733..5d82827c9a4 100644
+--- a/tensorflow/core/kernels/where_op_gpu_impl_8.cu.cc
++++ b/tensorflow/core/kernels/where_op_gpu_impl_8.cu.cc
+@@ -14,5 +14,8 @@ limitations under the License.
+ ==============================================================================*/
+ 
+ #define GPU_PROVIDED_DIM 8
++#if defined(__APPLE__) && defined(__MACH__)
++#include "tensorflow/core/framework/tensor_shape.pb.h"
++#endif
+ #include "tensorflow/core/kernels/where_op_gpu.cu.h"
+ #undef GPU_PROVIDED_DIM
+diff --git a/tensorflow/core/util/gpu_kernel_helper.h b/tensorflow/core/util/gpu_kernel_helper.h
+index 207e141e1a6..b2aefee46de 100644
+--- a/tensorflow/core/util/gpu_kernel_helper.h
++++ b/tensorflow/core/util/gpu_kernel_helper.h
+@@ -61,10 +61,11 @@ using gpuError_t = hipError_t;
+ // 2. https://github.com/TomHeaven/tensorflow-osx-build/blob/master/source_patches/v2.2.0_macos.patch
+ #if GOOGLE_CUDA
+ 
+-#define GPU_DYNAMIC_SHARED_MEM_DECL(ALIGN, TYPE, NAME) \
+ #if defined(__APPLE__) && defined(__MACH__)
++#define GPU_DYNAMIC_SHARED_MEM_DECL(ALIGN, TYPE, NAME) \
+   extern __shared__ TYPE NAME[]
+ #else
++#define GPU_DYNAMIC_SHARED_MEM_DECL(ALIGN, TYPE, NAME) \
+   extern __shared__ __align__(ALIGN) TYPE NAME[]
+ #endif
+ 
+diff --git a/third_party/gpus/crosstool/BUILD.tpl b/third_party/gpus/crosstool/BUILD.tpl
+index bc92f91a777..27a13539dac 100644
+--- a/third_party/gpus/crosstool/BUILD.tpl
++++ b/third_party/gpus/crosstool/BUILD.tpl
+@@ -60,7 +60,8 @@ cc_toolchain_config(
+     name = "cc-compiler-local-config",
+     cpu = "local",
+     builtin_include_directories = [%{cxx_builtin_include_directories}],
+-    extra_no_canonical_prefixes_flags = [%{extra_no_canonical_prefixes_flags}],
++    # orlando: remove extra_no_canonical_prefixes_flags = ["-fno-canonical-system-headers"],
++    #extra_no_canonical_prefixes_flags = [%{extra_no_canonical_prefixes_flags}],
+     host_compiler_path = "%{host_compiler_path}",
+     host_compiler_prefix = "%{host_compiler_prefix}",
+     host_compiler_warnings = [%{host_compiler_warnings}],
+@@ -90,7 +91,8 @@ cc_toolchain_config(
+     name = "cc-compiler-local-darwin",
+     cpu = "darwin",
+     builtin_include_directories = [%{cxx_builtin_include_directories}],
+-    extra_no_canonical_prefixes_flags = [%{extra_no_canonical_prefixes_flags}],
++    # orlando: remove extra_no_canonical_prefixes_flags = ["-fno-canonical-system-headers"],
++    #extra_no_canonical_prefixes_flags = [%{extra_no_canonical_prefixes_flags}],
+     host_compiler_path = "%{host_compiler_path}",
+     host_compiler_prefix = "%{host_compiler_prefix}",
+     host_compiler_warnings = [%{host_compiler_warnings}],
+diff --git a/third_party/gpus/crosstool/cc_toolchain_config.bzl.tpl b/third_party/gpus/crosstool/cc_toolchain_config.bzl.tpl
+index 1b089008b77..dcd2d6b5abe 100644
+--- a/third_party/gpus/crosstool/cc_toolchain_config.bzl.tpl
++++ b/third_party/gpus/crosstool/cc_toolchain_config.bzl.tpl
+@@ -460,7 +460,9 @@ def _features(cpu, compiler, ctx):
+                                 expand_if_available = "linker_param_file",
+                                 flags = ["@%{linker_param_file}"],
+                             ),
+-                            flag_group(flags = ["rcsD"]),
++                            # orlando: remove rcsD with -o, as it's not supported on macOS
++                            #flag_group(flags = ["rcsD"]),
++                            flag_group(flags = ["-o"]),
+                             flag_group(
+                                 flags = ["%{output_execpath}"],
+                                 expand_if_available = "output_execpath",
+diff --git a/third_party/gpus/crosstool/clang/bin/crosstool_wrapper_driver_rocm.tpl b/third_party/gpus/crosstool/clang/bin/crosstool_wrapper_driver_rocm.tpl
+index 82d16af62ff..362d415f2d0 100755
+--- a/third_party/gpus/crosstool/clang/bin/crosstool_wrapper_driver_rocm.tpl
++++ b/third_party/gpus/crosstool/clang/bin/crosstool_wrapper_driver_rocm.tpl
+@@ -86,8 +86,8 @@ def GetHostCompilerOptions(argv):
+     opts += ' -iquote ' + ' -iquote '.join(sum(args.iquote, []))
+   if args.g:
+     opts += ' -g' + ' -g'.join(sum(args.g, []))
+-  #if args.fno_canonical_system_headers:
+-  #  opts += ' -fno-canonical-system-headers'
++  if args.fno_canonical_system_headers:
++   opts += ' -fno-canonical-system-headers'
+   if args.sysroot:
+     opts += ' --sysroot ' + args.sysroot[0]
+ 
+diff --git a/third_party/gpus/cuda_configure.bzl b/third_party/gpus/cuda_configure.bzl
+index 060258f361a..b02b05751f4 100644
+--- a/third_party/gpus/cuda_configure.bzl
++++ b/third_party/gpus/cuda_configure.bzl
+@@ -910,13 +910,15 @@ def make_copy_dir_rule(repository_ctx, name, src_dir, out_dir, exceptions = None
+     out_dir = "$(@D)/%s" % out_dir if len(outs) > 1 else "$(@D)"
+     if exceptions != None:
+         for x in exceptions:
+-            post_cmd += " ; rm -fR " + out_dir + "/" + x
++            post_cmd += " ; rm -fR " + out_dir + "/" + x 
++    # orlando: change 'cp -rLf' on other platforms to 'cp -rf' on macOS, refer to https://github.com/TomHeaven/tensorflow-osx-build/blob/master/source_patches/v2.2.0_macos.patch
++    # cmd = \"""cp -rLf "%s/." "%s/" %s\""",
+     return """genrule(
+     name = "%s",
+     outs = [
+ %s
+     ],
+-    cmd = \"""cp -rLf "%s/." "%s/" %s\""",
++    cmd = \"""cp -rf "%s/." "%s/" %s\""",
+ )""" % (name, "\n".join(outs), src_dir, out_dir, post_cmd)
+ 
+ def _flag_enabled(repository_ctx, flag_name):
+-- 
+2.17.2 (Apple Git-113)
+

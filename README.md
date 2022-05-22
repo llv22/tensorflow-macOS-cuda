@@ -15,7 +15,7 @@ The main development environment settings as follow:
 Consolidating [tensorflow-2.8.0-mac.patch](tensorflow-2.8.0-mac.patch) by
 
 ```bash
-git format-patch -2 --stdout > tensorflow-2.8.0-mac.patch
+git format-patch -7 --stdout > tensorflow-2.8.0-mac.patch
 ```
 
 --------------------------------------------------------------------------------
