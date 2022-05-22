@@ -910,13 +910,15 @@ def make_copy_dir_rule(repository_ctx, name, src_dir, out_dir, exceptions = None
     out_dir = "$(@D)/%s" % out_dir if len(outs) > 1 else "$(@D)"
     if exceptions != None:
         for x in exceptions:
-            post_cmd += " ; rm -fR " + out_dir + "/" + x
+            post_cmd += " ; rm -fR " + out_dir + "/" + x 
+    # orlando: change 'cp -rLf' on other platforms to 'cp -rf' on macOS, refer to https://github.com/TomHeaven/tensorflow-osx-build/blob/master/source_patches/v2.2.0_macos.patch
+    # cmd = \"""cp -rLf "%s/." "%s/" %s\""",
     return """genrule(
     name = "%s",
     outs = [
 %s
     ],
-    cmd = \"""cp -rLf "%s/." "%s/" %s\""",
+    cmd = \"""cp -rf "%s/." "%s/" %s\""",
 )""" % (name, "\n".join(outs), src_dir, out_dir, post_cmd)
 
 def _flag_enabled(repository_ctx, flag_name):

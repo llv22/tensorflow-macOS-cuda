@@ -61,10 +61,11 @@ using gpuError_t = hipError_t;
 // 2. https://github.com/TomHeaven/tensorflow-osx-build/blob/master/source_patches/v2.2.0_macos.patch
 #if GOOGLE_CUDA
 
-#define GPU_DYNAMIC_SHARED_MEM_DECL(ALIGN, TYPE, NAME) \
 #if defined(__APPLE__) && defined(__MACH__)
+#define GPU_DYNAMIC_SHARED_MEM_DECL(ALIGN, TYPE, NAME) \
   extern __shared__ TYPE NAME[]
 #else
+#define GPU_DYNAMIC_SHARED_MEM_DECL(ALIGN, TYPE, NAME) \
   extern __shared__ __align__(ALIGN) TYPE NAME[]
 #endif
 

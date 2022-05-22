@@ -15,6 +15,10 @@ limitations under the License.
 
 #if GOOGLE_CUDA
 
+#if defined(__APPLE__) && defined(__MACH__)
+#include "tensorflow/core/framework/tensor_shape.pb.h"
+#endif
+
 #include "tensorflow/core/framework/register_types.h"
 #include "tensorflow/core/kernels/unique_op_gpu.cu.h"
 

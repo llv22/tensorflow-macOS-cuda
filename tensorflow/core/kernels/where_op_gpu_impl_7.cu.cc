@@ -14,5 +14,8 @@ limitations under the License.
 ==============================================================================*/
 
 #define GPU_PROVIDED_DIM 7
+#if defined(__APPLE__) && defined(__MACH__)
+#include "tensorflow/core/framework/tensor_shape.pb.h"
+#endif
 #include "tensorflow/core/kernels/where_op_gpu.cu.h"
 #undef GPU_PROVIDED_DIM

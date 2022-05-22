@@ -12,6 +12,12 @@ The main development environment settings as follow:
 - macOS 10.13.6, cuda 10.1, cudnn 7.6.5 (cuda and cudnn is the last official version which Nvidia released to support macOS)
 - [NCCL on macOS 2.9.6.1](https://github.com/llv22/nccl-osx) and [test suite](https://github.com/llv22/nccl-tests-macOS-cuda)
 
+Consolidating [tensorflow-2.8.0-mac.patch](tensorflow-2.8.0-mac.patch) by
+
+```bash
+git format-patch -2 --stdout > tensorflow-2.8.0-mac.patch
+```
+
 --------------------------------------------------------------------------------
 
 <div align="center">
