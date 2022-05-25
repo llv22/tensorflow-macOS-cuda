@@ -57,9 +57,13 @@ using gpuError_t = hipError_t;
 
 // macro wrapper to declare dynamic shared memory
 #if GOOGLE_CUDA
-
+#if defined(__APPLE__) && defined(__MACH__)
+#define GPU_DYNAMIC_SHARED_MEM_DECL(ALIGN, TYPE, NAME) \
+  extern __shared__ TYPE NAME[]
+#else
 #define GPU_DYNAMIC_SHARED_MEM_DECL(ALIGN, TYPE, NAME) \
   extern __shared__ __align__(ALIGN) TYPE NAME[]
+#endif
 
 #elif TENSORFLOW_USE_ROCM
 

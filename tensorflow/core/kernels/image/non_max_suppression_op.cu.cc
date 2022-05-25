@@ -15,9 +15,17 @@ limitations under the License.
 
 #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
 #define EIGEN_USE_GPU
+#if defined(__APPLE__) && defined(__MACH__)
+#include "tensorflow/core/framework/tensor_shape.pb.h"
+#endif
+
 #include "tensorflow/core/kernels/image/non_max_suppression_op.h"
 
 #include <limits>
+
+#if defined(__APPLE__) && defined(__MACH__)
+#include "tensorflow/core/framework/tensor_shape.pb.h"
+#endif
 
 #include "absl/strings/str_cat.h"
 #include "third_party/eigen3/unsupported/Eigen/CXX11/Tensor"

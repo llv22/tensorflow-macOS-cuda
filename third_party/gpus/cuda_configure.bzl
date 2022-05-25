@@ -476,7 +476,8 @@ def _lib_path(lib, cpu_value, basedir, version, static):
     return "%s/%s" % (basedir, file_name)
 
 def _should_check_soname(version, static):
-    return version and not static
+    return False
+    # return version and not static
 
 def _check_cuda_lib_params(lib, cpu_value, basedir, version, static = False):
     return (

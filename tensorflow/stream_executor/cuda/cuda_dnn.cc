@@ -4754,7 +4754,15 @@ class CudnnLegacyFusedConvRunner : public dnn::FusedConvRunner {
     return MakeAlgorithmDesc().ToString();
   }
 
-  uint64_t GetWorkspaceSize() const override { return workspace_size_; }
+#if defined(__APPLE__) && defined(__MACH__)
+  size_t GetWorkspaceSize() const override {
+    return workspace_size_;
+  }
+#else
+  uint64_t GetWorkspaceSize() const override {
+    return workspace_size_;
+  }
+#endif
 
   port::StatusOr<dnn::AlgorithmDesc> ToAlgorithmDesc() const override {
     return MakeAlgorithmDesc();

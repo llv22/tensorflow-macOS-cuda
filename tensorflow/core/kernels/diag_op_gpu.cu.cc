@@ -19,6 +19,10 @@ limitations under the License.
 
 #include <complex>
 
+#if defined(__APPLE__) && defined(__MACH__)
+#include "tensorflow/core/framework/tensor_shape.pb.h"
+#endif
+
 #include "tensorflow/core/framework/register_types.h"
 #include "tensorflow/core/kernels/diag_op.h"
 #include "tensorflow/core/util/gpu_kernel_helper.h"

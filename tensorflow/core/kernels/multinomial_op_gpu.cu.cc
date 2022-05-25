@@ -20,6 +20,10 @@ limitations under the License.
 #include <assert.h>
 #include <stdio.h>
 
+#if defined(__APPLE__) && defined(__MACH__)
+#include "tensorflow/core/framework/tensor_shape.pb.h"
+#endif
+
 #include "tensorflow/core/framework/tensor_types.h"
 #include "tensorflow/core/kernels/gpu_prim.h"
 #include "tensorflow/core/kernels/multinomial_op.h"

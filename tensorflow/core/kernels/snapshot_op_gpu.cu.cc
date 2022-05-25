@@ -14,6 +14,10 @@ limitations under the License.
 ==============================================================================*/
 #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
 
+#if defined(__APPLE__) && defined(__MACH__)
+#include "tensorflow/core/framework/tensor_shape.pb.h"
+#endif
+
 // See docs in ../ops/array_ops.cc.
 #include "tensorflow/core/kernels/snapshot_op.h"
 

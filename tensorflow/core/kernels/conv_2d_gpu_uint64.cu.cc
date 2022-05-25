@@ -22,6 +22,10 @@ limitations under the License.
 #include <limits>
 #include <utility>
 
+#if defined(__APPLE__) && defined(__MACH__)
+#include "tensorflow/core/framework/tensor_shape.pb.h"
+#endif
+
 #include "tensorflow/core/kernels/conv_2d.h"
 #include "tensorflow/core/kernels/conv_2d_gpu.h"
 

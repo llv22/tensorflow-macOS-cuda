@@ -153,7 +153,7 @@ def _impl(ctx):
                                 "-D__TIMESTAMP__=\"redacted\"",
                                 "-D__TIME__=\"redacted\"",
                                 "-no-canonical-prefixes",
-                                "-fno-canonical-system-headers",
+                                #"-fno-canonical-system-headers",
                             ],
                         ),
                     ],

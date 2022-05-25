@@ -17,6 +17,10 @@ limitations under the License.
 
 #define EIGEN_USE_GPU
 
+#if defined(__APPLE__) && defined(__MACH__)
+#include "tensorflow/core/framework/tensor_shape.pb.h"
+#endif
+
 #include "tensorflow/core/framework/bounds_check.h"
 #include "tensorflow/core/framework/register_types.h"
 #include "tensorflow/core/kernels/sparse_tensor_dense_matmul_op.h"

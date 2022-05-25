@@ -19,6 +19,10 @@ limitations under the License.
 
 #include <stdio.h>
 
+#if defined(__APPLE__) && defined(__MACH__)
+#include "tensorflow/core/framework/tensor_shape.pb.h"
+#endif
+
 #include "tensorflow/core/kernels/softsign_op.h"
 
 #include "tensorflow/core/framework/register_types.h"

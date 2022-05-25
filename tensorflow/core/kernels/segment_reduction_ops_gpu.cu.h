@@ -331,7 +331,11 @@ __global__ void SegmentReduceVectorKernel(
           if (is_mean) {
             result /= Treducevec(total_weight);
           } else if (is_sqrtn) {
+#if defined(__APPLE__) && defined(__MACH__)
+            result /= Treducevec(sqrt((float)total_weight));
+#else
             result /= Treducevec(sqrt(total_weight));
+#endif
           }
         }
         // Cast from Treducevec to Tvec.
@@ -407,8 +411,13 @@ __global__ void SegmentReduceEpilogueKernel(
     } else if (is_mean) {
       val /= Treducevec(segment_size);
     } else if (is_sqrtn) {
+#if defined(__APPLE__) && defined(__MACH__)
+      val /= Treducevec(
+          sqrt((double)typename RealTypeIfComplex<Tinit>::type(segment_size)));
+#else
       val /= Treducevec(
           sqrt(typename RealTypeIfComplex<Tinit>::type(segment_size)));
+#endif
     }
     // Cast from Treducevec to Tvec.
     output[seg] = static_cast<Tvec>(val);

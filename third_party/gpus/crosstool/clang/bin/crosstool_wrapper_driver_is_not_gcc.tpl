@@ -106,8 +106,8 @@ def GetHostCompilerOptions(argv):
     opts += ' -iquote ' + ' -iquote '.join(sum(args.iquote, []))
   if args.g:
     opts += ' -g' + ' -g'.join(sum(args.g, []))
-  if args.fno_canonical_system_headers:
-    opts += ' -fno-canonical-system-headers'
+  # if args.fno_canonical_system_headers:
+  #   opts += ' -fno-canonical-system-headers'
   if args.no_canonical_prefixes:
     opts += ' -no-canonical-prefixes'
   if args.sysroot:
