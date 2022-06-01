@@ -48,6 +48,7 @@ load(
 )
 load("@bazel_skylib//lib:new_sets.bzl", "sets")
 load("@bazel_skylib//rules:common_settings.bzl", "BuildSettingInfo")
+load("@bazel_tools//tools/cpp:toolchain_utils.bzl", "find_cpp_toolchain")
 
 def register_extension_info(**kwargs):
     pass
@@ -719,6 +720,7 @@ def tf_cc_shared_object(
         if framework_so != []:
             data_extra = tf_binary_additional_data_deps()
 
+        # print("tf_cc_shared_object::cc_binary deps : {}".format(deps))
         cc_binary(
             name = name_os_full,
             srcs = srcs + framework_so,
@@ -2254,6 +2256,89 @@ _append_init_to_versionscript = rule(
     implementation = _append_init_to_versionscript_impl,
 )
 
+def _combine_impl(ctx):
+    cc_toolchain = find_cpp_toolchain(ctx)    
+
+    target_list = []
+    for dep_target in ctx.attr.deps:        
+        # CcInfo, InstrumentedFilesInfo, OutputGroupInfo      
+        cc_info_linker_inputs = dep_target[CcInfo].linking_context.linker_inputs
+
+        target_dirname_list = []
+        for linker_in in cc_info_linker_inputs.to_list():            
+            for linker_in_lib in linker_in.libraries:                
+                if linker_in_lib.pic_static_library != None:
+                    target_list.append(linker_in_lib.pic_static_library)                  
+                if linker_in_lib.static_library != None:
+                    target_list.append(linker_in_lib.static_library)
+                print("linker_in_lib.pic_static_library: {}, linker_in_lib.static_library: {}".format(linker_in_lib.pic_static_library, linker_in_lib.static_library))
+    
+    output = ctx.outputs.output
+    if ctx.attr.genstatic:
+        # still have bug for ar, as static libraries may have the same name under the same folder, refer to https://cloud.tencent.com/developer/article/1669789, https://blog.fearcat.in/a?ID=01800-1382ef06-27b7-4b13-aa66-b297d5767c01 and https://docs.bazel.build/versions/main/integrating-with-rules-cc.html
+        cp_command = ""       
+        processed_list = []
+        processed_path_list = []
+        for dep in target_list:
+            cp_command += "cp -a "+ dep.path +" "+ output.dirname + "/&&"
+            processed = ctx.actions.declare_file(dep.basename)
+            processed_list += [processed]
+            processed_path_list += [dep.path]
+        cp_command += "echo'starting to run shell'"
+        processed_path_list += [output.path]
+  
+        print("cp_command = ", cp_command)
+        ctx.actions.run_shell(
+            outputs = processed_list,
+            inputs = target_list,
+            command = cp_command,
+        )
+
+        command = "cd {} && ar -x {} {}".format(
+                output.dirname,
+                "&& ar -x ".join([dep.basename for dep in target_list]),
+                "&& ar -rc libauto.a *.o"
+            )
+        print("ar command = ", command)
+        ctx.actions.run_shell(
+            outputs = [output],
+            inputs = processed_list,
+            command = command,
+        )
+    else:
+        counter = {}
+        for dep in target_list:
+            if dep in counter:
+                counter[dep.path] += 1
+            else:
+                counter[dep.path] = 1
+
+        paths = list(counter.keys())
+        command = "export PATH=$PATH:{} && {} -shared -fPIC -Wl,--whole-archive {} -Wl,--no-whole-archive -Wl,-soname -o {}".format (
+                cc_toolchain.ld_executable,
+                cc_toolchain.compiler_executable,
+                " ".join(paths),
+                output.path)
+        print("dynamic command argument validation = ", 262144 - len(command))
+        print("dynamic command = ", command)
+        if len(command) - 262144 > 0:
+            fail("dynamic command argument validation failed, as oversizing by {}.".format(len(command) - 262144))
+        ctx.actions.run_shell(
+            outputs = [output],
+            inputs = target_list,
+            command = command,
+        )
+
+my_cc_combine = rule(
+    implementation = _combine_impl,
+    attrs = {
+        "_cc_toolchain": attr.label(default = Label("@bazel_tools//tools/cpp:current_cc_toolchain")),
+        "genstatic": attr.bool(default = False),
+        "deps": attr.label_list(),
+        "output": attr.output()
+    },
+)
+
 # This macro should only be used for pywrap_tensorflow_internal.so.
 # It was copied and refined from the original tf_py_wrap_cc_opensource rule.
 # buildozer: disable=function-docstring-args
@@ -2328,6 +2413,7 @@ def pywrap_tensorflow_macro(
         ],
     )
 
+    print("pywrap_tensorflow_macro::tf_cc_shared_object cc_library_name: {}, deps : {}".format(cc_library_name, deps + extra_deps))
     tf_cc_shared_object(
         name = cc_library_name,
         srcs = srcs,
