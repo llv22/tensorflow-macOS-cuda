@@ -3307,6 +3307,19 @@ cc_binary(
 )
 
 cc_library(
+    name = "libintermediate_pywrap_tf.5",
+    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.5.so"],
+)
+
+cc_binary(
+    name = "libintermediate_pywrap_tf.5.so",    
+    deps = [
+        "//tensorflow/core/config:flag_defs",
+    ],
+    linkshared = True,
+)
+
+cc_library(
     name = "libintermediate_pywrap_tf.6",
     srcs = ["//tensorflow/python:libintermediate_pywrap_tf.6.so"],
 )
@@ -3489,19 +3502,6 @@ cc_binary(
     linkshared = True,
 )
 
-cc_library(
-    name = "libintermediate_pywrap_tf.5",
-    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.5.so"],
-)
-
-cc_binary(
-    name = "libintermediate_pywrap_tf.5.so",    
-    deps = [
-        "//tensorflow/core/config:flag_defs",
-    ],
-    linkshared = True,
-)
-
 pywrap_tensorflow_macro(
     name = "pywrap_tensorflow_internal",
     srcs = ["pywrap_tensorflow_internal.cc"],
@@ -3517,30 +3517,30 @@ pywrap_tensorflow_macro(
         ":libintermediate_pywrap_tf.3",
         ":libintermediate_pywrap_tf.4",
         ":libintermediate_pywrap_tf.5",
-        "//tensorflow/python/lib/core:py_func_lib",
         ":libintermediate_pywrap_tf.6",
         ":libintermediate_pywrap_tf.7",
-        "//tensorflow/python/framework:python_api_info",
-        "//tensorflow/python/framework:python_api_parameter_converter",
-        "//tensorflow/python/framework:python_tensor_converter",
         ":libintermediate_pywrap_tf.8",
-        "//tensorflow/c:c_api_experimental",
         ":libintermediate_pywrap_tf.9",
-        "//tensorflow/c/eager:c_api",
         ":libintermediate_pywrap_tf.10",
-        "//tensorflow/c/eager:c_api_experimental",
-        "//tensorflow/c/experimental/ops",
-        "//tensorflow/c/experimental/gradients/tape",
-        "//tensorflow/compiler/mlir/tensorflow/c:mlir_c_api_registration",
         ":libintermediate_pywrap_tf.11",
         ":libintermediate_pywrap_tf.12",
         ":libintermediate_pywrap_tf.13",
         ":libintermediate_pywrap_tf.14",
         ":libintermediate_pywrap_tf.15",
-        "//tensorflow/lite/delegates/flex:delegate",
-        "//tensorflow/dtensor/cc:dtensor_device_cc",
         ":libintermediate_pywrap_tf.16",
         ":libintermediate_pywrap_tf.17",
+        "//tensorflow/python/lib/core:py_func_lib",
+        "//tensorflow/python/framework:python_api_info",
+        "//tensorflow/python/framework:python_api_parameter_converter",
+        "//tensorflow/python/framework:python_tensor_converter",
+        "//tensorflow/c:c_api_experimental",
+        "//tensorflow/c/eager:c_api",
+        "//tensorflow/c/eager:c_api_experimental",
+        "//tensorflow/c/experimental/ops",
+        "//tensorflow/c/experimental/gradients/tape",
+        "//tensorflow/compiler/mlir/tensorflow/c:mlir_c_api_registration",
+        "//tensorflow/lite/delegates/flex:delegate",
+        "//tensorflow/dtensor/cc:dtensor_device_cc",
         "//tensorflow/python/eager:pywrap_tfe_lib",
         "//tensorflow/python/client:tf_session_helper",
         "//tensorflow/core/distributed_runtime/rpc:grpc_server_lib",
