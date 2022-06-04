@@ -3476,6 +3476,19 @@ cc_binary(
     linkshared = True,
 )
 
+cc_library(
+    name = "libintermediate_pywrap_tf.34",
+    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.34.so"],
+)
+
+cc_binary(
+    name = "libintermediate_pywrap_tf.34.so",    
+    deps = [
+        "//tensorflow/lite/kernels/shim:tf_kernel_shim",
+    ],
+    linkshared = True,
+)
+
 pywrap_tensorflow_macro(
     name = "pywrap_tensorflow_internal",
     srcs = ["pywrap_tensorflow_internal.cc"],
@@ -3511,15 +3524,15 @@ pywrap_tensorflow_macro(
         ":libintermediate_pywrap_tf.28",
         ":libintermediate_pywrap_tf.30",
         ":libintermediate_pywrap_tf.31",
-        "//tensorflow/dtensor/cc:dtensor_device_cc",
         "//tensorflow/lite/delegates/flex:delegate",
+        "//tensorflow/dtensor/cc:dtensor_device_cc",
         ":libintermediate_pywrap_tf.33",
+        ":libintermediate_pywrap_tf.34",
         "//tensorflow/python/eager:pywrap_tfe_lib",
         "//tensorflow/python/client:tf_session_helper",
         "//tensorflow/core/distributed_runtime/rpc:grpc_server_lib",
         "//tensorflow/lite/toco/python:toco_python_api",
         "//tensorflow/compiler/mlir/python:mlir",
-        "//tensorflow/lite/kernels/shim:tf_kernel_shim",
         "//tensorflow/compiler/mlir/quantization/tensorflow/python:quantize_model_cc",
         "//tensorflow/c/experimental/gradients",
     ] + (tf_additional_lib_deps() +
