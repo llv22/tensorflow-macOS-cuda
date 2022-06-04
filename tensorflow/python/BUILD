@@ -3307,6 +3307,37 @@ cc_binary(
 )
 
 cc_library(
+    name = "libintermediate_pywrap_tf.6",
+    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.6.so"],
+)
+
+cc_binary(
+    name = "libintermediate_pywrap_tf.6.so",    
+    deps = [
+        "//tensorflow/python/lib/core:pybind11_lib",
+        "//tensorflow/python/lib/core:pybind11_status",
+        "//tensorflow/python/lib/core:pybind11_proto",
+        "//tensorflow/python/framework:op_def_util_cc",
+        "//tensorflow/python/framework:python_api_dispatcher",
+    ],
+    linkshared = True,
+)
+
+cc_library(
+    name = "libintermediate_pywrap_tf.7",
+    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.7.so"],
+)
+
+cc_binary(
+    name = "libintermediate_pywrap_tf.7.so",    
+    deps = [
+        "//tensorflow/python/framework:python_op_gen",
+        "//tensorflow/python/lib/core:safe_pyobject_ptr",
+    ],
+    linkshared = True,
+)
+
+cc_library(
     name = "libintermediate_pywrap_tf.8",
     srcs = ["//tensorflow/python:libintermediate_pywrap_tf.8.so"],
 )
@@ -3314,11 +3345,9 @@ cc_library(
 cc_binary(
     name = "libintermediate_pywrap_tf.8.so",    
     deps = [
-        "//tensorflow/python/lib/core:pybind11_lib",
-        "//tensorflow/python/lib/core:pybind11_status",
-        "//tensorflow/python/lib/core:pybind11_proto",
-        "//tensorflow/python/framework:op_def_util_cc",
-        "//tensorflow/python/framework:python_api_dispatcher",
+        "//third_party/python_runtime:headers",
+        "//tensorflow/c:c_api",
+        "//tensorflow/c:checkpoint_reader",
     ],
     linkshared = True,
 )
@@ -3331,35 +3360,6 @@ cc_library(
 cc_binary(
     name = "libintermediate_pywrap_tf.9.so",    
     deps = [
-        "//tensorflow/python/framework:python_op_gen",
-        "//tensorflow/python/lib/core:safe_pyobject_ptr",
-    ],
-    linkshared = True,
-)
-
-cc_library(
-    name = "libintermediate_pywrap_tf.13",
-    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.13.so"],
-)
-
-cc_binary(
-    name = "libintermediate_pywrap_tf.13.so",    
-    deps = [
-        "//third_party/python_runtime:headers",
-        "//tensorflow/c:c_api",
-        "//tensorflow/c:checkpoint_reader",
-    ],
-    linkshared = True,
-)
-
-cc_library(
-    name = "libintermediate_pywrap_tf.15",
-    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.15.so"],
-)
-
-cc_binary(
-    name = "libintermediate_pywrap_tf.15.so",    
-    deps = [
         "//tensorflow/c:python_api",
         "//tensorflow/c:tf_status_helper",
         "//tensorflow/core/config:flags",
@@ -3368,12 +3368,12 @@ cc_binary(
 )
 
 cc_library(
-    name = "libintermediate_pywrap_tf.16",
-    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.16.so"],
+    name = "libintermediate_pywrap_tf.10",
+    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.10.so"],
 )
 
 cc_binary(
-    name = "libintermediate_pywrap_tf.16.so",    
+    name = "libintermediate_pywrap_tf.10.so",    
     deps = [
         "//tensorflow/core/data/service:server_lib",
     ],
@@ -3381,12 +3381,12 @@ cc_binary(
 )
 
 cc_library(
-    name = "libintermediate_pywrap_tf.21",
-    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.21.so"],
+    name = "libintermediate_pywrap_tf.11",
+    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.11.so"],
 )
 
 cc_binary(
-    name = "libintermediate_pywrap_tf.21.so",    
+    name = "libintermediate_pywrap_tf.11.so",    
     deps = [
         "//tensorflow/core/data/service:dispatcher_client",             
         "//tensorflow/core/data/service:grpc_util",
@@ -3400,12 +3400,12 @@ cc_binary(
 )
 
 cc_library(
-    name = "libintermediate_pywrap_tf.24",
-    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.24.so"],
+    name = "libintermediate_pywrap_tf.12",
+    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.12.so"],
 )
 
 cc_binary(
-    name = "libintermediate_pywrap_tf.24.so",    
+    name = "libintermediate_pywrap_tf.12.so",    
     deps = [
         "//tensorflow/core/grappler/clusters:virtual_cluster",
         "//tensorflow/core/grappler/costs:graph_memory", 
@@ -3420,12 +3420,12 @@ cc_binary(
 )
 
 cc_library(
-    name = "libintermediate_pywrap_tf.28",
-    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.28.so"],
+    name = "libintermediate_pywrap_tf.13",
+    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.13.so"],
 )
 
 cc_binary(
-    name = "libintermediate_pywrap_tf.28.so",    
+    name = "libintermediate_pywrap_tf.13.so",    
     deps = [
         "//tensorflow/core/distributed_runtime:server_lib",
         "//tensorflow/core/platform:stacktrace_handler",
@@ -3436,12 +3436,12 @@ cc_binary(
 )   
 
 cc_library(
-    name = "libintermediate_pywrap_tf.30",
-    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.30.so"],
+    name = "libintermediate_pywrap_tf.14",
+    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.14.so"],
 )
 
 cc_binary(
-    name = "libintermediate_pywrap_tf.30.so",    
+    name = "libintermediate_pywrap_tf.14.so",    
     deps = [
         "//tensorflow/core/profiler/internal:print_model_analysis",
         "//tensorflow/core/profiler/internal/cpu:python_tracer",    
@@ -3450,12 +3450,12 @@ cc_binary(
 )
 
 cc_library(
-    name = "libintermediate_pywrap_tf.31",
-    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.31.so"],
+    name = "libintermediate_pywrap_tf.15",
+    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.15.so"],
 )
 
 cc_binary(
-    name = "libintermediate_pywrap_tf.31.so",    
+    name = "libintermediate_pywrap_tf.15.so",    
     deps = [
         "//tensorflow/distribute/experimental/rpc/kernels:rpc_ops",
     ],
@@ -3463,12 +3463,12 @@ cc_binary(
 )
 
 cc_library(
-    name = "libintermediate_pywrap_tf.33",
-    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.33.so"],
+    name = "libintermediate_pywrap_tf.16",
+    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.16.so"],
 )
 
 cc_binary(
-    name = "libintermediate_pywrap_tf.33.so",    
+    name = "libintermediate_pywrap_tf.16.so",    
     deps = [
         "//tensorflow/tools/graph_transforms:transform_graph_lib",
         "//tensorflow/core/util/tensor_bundle",
@@ -3477,14 +3477,27 @@ cc_binary(
 )
 
 cc_library(
-    name = "libintermediate_pywrap_tf.34",
-    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.34.so"],
+    name = "libintermediate_pywrap_tf.17",
+    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.17.so"],
 )
 
 cc_binary(
-    name = "libintermediate_pywrap_tf.34.so",    
+    name = "libintermediate_pywrap_tf.17.so",    
     deps = [
         "//tensorflow/lite/kernels/shim:tf_kernel_shim",
+    ],
+    linkshared = True,
+)
+
+cc_library(
+    name = "libintermediate_pywrap_tf.5",
+    srcs = ["//tensorflow/python:libintermediate_pywrap_tf.5.so"],
+)
+
+cc_binary(
+    name = "libintermediate_pywrap_tf.5.so",    
+    deps = [
+        "//tensorflow/core/config:flag_defs",
     ],
     linkshared = True,
 )
@@ -3503,31 +3516,31 @@ pywrap_tensorflow_macro(
         ":libintermediate_pywrap_tf.2",
         ":libintermediate_pywrap_tf.3",
         ":libintermediate_pywrap_tf.4",
+        ":libintermediate_pywrap_tf.5",
         "//tensorflow/python/lib/core:py_func_lib",
-        ":libintermediate_pywrap_tf.8",
-        ":libintermediate_pywrap_tf.9",
+        ":libintermediate_pywrap_tf.6",
+        ":libintermediate_pywrap_tf.7",
         "//tensorflow/python/framework:python_api_info",
         "//tensorflow/python/framework:python_api_parameter_converter",
         "//tensorflow/python/framework:python_tensor_converter",
-        ":libintermediate_pywrap_tf.13",
+        ":libintermediate_pywrap_tf.8",
         "//tensorflow/c:c_api_experimental",
-        ":libintermediate_pywrap_tf.15",
+        ":libintermediate_pywrap_tf.9",
         "//tensorflow/c/eager:c_api",
-        ":libintermediate_pywrap_tf.16",
+        ":libintermediate_pywrap_tf.10",
         "//tensorflow/c/eager:c_api_experimental",
         "//tensorflow/c/experimental/ops",
-        "//tensorflow/core/config:flag_defs",
         "//tensorflow/c/experimental/gradients/tape",
         "//tensorflow/compiler/mlir/tensorflow/c:mlir_c_api_registration",
-        ":libintermediate_pywrap_tf.21",
-        ":libintermediate_pywrap_tf.24",
-        ":libintermediate_pywrap_tf.28",
-        ":libintermediate_pywrap_tf.30",
-        ":libintermediate_pywrap_tf.31",
+        ":libintermediate_pywrap_tf.11",
+        ":libintermediate_pywrap_tf.12",
+        ":libintermediate_pywrap_tf.13",
+        ":libintermediate_pywrap_tf.14",
+        ":libintermediate_pywrap_tf.15",
         "//tensorflow/lite/delegates/flex:delegate",
         "//tensorflow/dtensor/cc:dtensor_device_cc",
-        ":libintermediate_pywrap_tf.33",
-        ":libintermediate_pywrap_tf.34",
+        ":libintermediate_pywrap_tf.16",
+        ":libintermediate_pywrap_tf.17",
         "//tensorflow/python/eager:pywrap_tfe_lib",
         "//tensorflow/python/client:tf_session_helper",
         "//tensorflow/core/distributed_runtime/rpc:grpc_server_lib",
