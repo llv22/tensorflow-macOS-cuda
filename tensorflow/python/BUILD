@@ -2,7 +2,7 @@
 # Public targets:
 #  ":platform" - Low-level and platform-specific Python code.
 
-load("//tensorflow:tensorflow.bzl", "my_cc_combine")
+load("//tensorflow:tensorflow.bzl", "incremental_cc_combine")
 load("//tensorflow:tensorflow.bzl", "py_strict_library")
 load("//tensorflow:tensorflow.bzl", "cc_header_only_library", "if_mlir", "if_windows", "if_xla_available", "py_test", "tf_enable_mlir_bridge")
 
@@ -3502,6 +3502,18 @@ cc_binary(
     linkshared = True,
 )
 
+incremental_cc_combine(
+    name = "incremental_pywrap_tf.1",
+    genstatic = False,
+    output = "libincremental_pywrap_tf.1.so",
+    deps = ["//tensorflow/python/lib/core:py_func_lib"]
+)
+
+cc_library(
+    name = "libincremental_pywrap_tf.1",
+    srcs = ["//tensorflow/python:libincremental_pywrap_tf.1.so"],
+)
+
 pywrap_tensorflow_macro(
     name = "pywrap_tensorflow_internal",
     srcs = ["pywrap_tensorflow_internal.cc"],
@@ -3529,7 +3541,8 @@ pywrap_tensorflow_macro(
         ":libintermediate_pywrap_tf.15",
         ":libintermediate_pywrap_tf.16",
         ":libintermediate_pywrap_tf.17",
-        "//tensorflow/python/lib/core:py_func_lib",
+        # "//tensorflow/python/lib/core:py_func_lib",
+        ":libincremental_pywrap_tf.1",
         "//tensorflow/python/framework:python_api_info",
         "//tensorflow/python/framework:python_api_parameter_converter",
         "//tensorflow/python/framework:python_tensor_converter",

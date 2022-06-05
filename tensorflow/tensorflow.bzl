@@ -2271,7 +2271,7 @@ def _combine_impl(ctx):
                     target_list.append(linker_in_lib.pic_static_library)                  
                 if linker_in_lib.static_library != None:
                     target_list.append(linker_in_lib.static_library)
-                print("linker_in_lib.pic_static_library: {}, linker_in_lib.static_library: {}".format(linker_in_lib.pic_static_library, linker_in_lib.static_library))
+                # print("linker_in_lib.pic_static_library: {}, linker_in_lib.static_library: {}".format(linker_in_lib.pic_static_library, linker_in_lib.static_library))
     
     output = ctx.outputs.output
     if ctx.attr.genstatic:
@@ -2314,22 +2314,40 @@ def _combine_impl(ctx):
                 counter[dep.path] = 1
 
         paths = list(counter.keys())
-        command = "export PATH=$PATH:{} && {} -shared -fPIC -Wl,--whole-archive {} -Wl,--no-whole-archive -Wl,-soname -o {}".format (
+        size = 1000
+        segment_len = len(paths)//size + (int)(len(paths)%size != 0)
+        inter_libraries = []
+        for x in range(segment_len):
+            command = "export PATH=$PATH:{} && {} -shared -fPIC -Wl,--whole-archive {} -Wl,--no-whole-archive -Wl,-soname -o {}".format (
                 cc_toolchain.ld_executable,
                 cc_toolchain.compiler_executable,
-                " ".join(paths),
-                output.path)
-        print("dynamic command argument validation = ", 262144 - len(command))
-        print("dynamic command = ", command)
-        if len(command) - 262144 > 0:
-            fail("dynamic command argument validation failed, as oversizing by {}.".format(len(command) - 262144))
+                " ".join(paths[x::size]),
+                "inter_{}.{}.so".format(output, x)
+            )
+            inter_libraries.append("inter_{}_{}.so".format(output.basename, x))
+            # print("dynamic command argument validation = {} with dependencies size = {}".format(262144 - len(command), len(paths)))
+            # print("dynamic command = ", command)
+            if len(command) - 262144 > 0:
+                fail("dynamic command argument validation failed, as oversizing by {} with dependencies size = {}.".format(len(command) - 262144, len(paths)))
+            ctx.actions.run_shell(
+                outputs = [ctx.actions.declare_file("inter_{}_{}.so".format(output.basename, x))],
+                inputs = target_list,
+                command = command,
+            )
+        
+        command = "export PATH=$PATH:{} && {} -shared -fPIC -Wl,--whole-archive {} -Wl,--no-whole-archive -Wl,-soname -o {}".format (
+            cc_toolchain.ld_executable,
+            cc_toolchain.compiler_executable,
+            " ".join(inter_libraries),
+            output.basename
+        )
         ctx.actions.run_shell(
             outputs = [output],
-            inputs = target_list,
+            inputs = [ctx.actions.declare_file(f) for f in inter_libraries],
             command = command,
         )
 
-my_cc_combine = rule(
+incremental_cc_combine = rule(
     implementation = _combine_impl,
     attrs = {
         "_cc_toolchain": attr.label(default = Label("@bazel_tools//tools/cpp:current_cc_toolchain")),
