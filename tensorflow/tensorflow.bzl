@@ -2264,16 +2264,18 @@ def _combine_impl(ctx):
         # CcInfo, InstrumentedFilesInfo, OutputGroupInfo      
         cc_info_linker_inputs = dep_target[CcInfo].linking_context.linker_inputs
 
-        target_dirname_list = []
+        # target_dirname_list = []
         for linker_in in cc_info_linker_inputs.to_list():            
-            for linker_in_lib in linker_in.libraries:                
-                if linker_in_lib.pic_static_library != None:
-                    target_list.append(linker_in_lib.pic_static_library)                  
+            for linker_in_lib in linker_in.libraries:
+                ## see: avoid duplicate symbols   
+                # if linker_in_lib.pic_static_library != None:
+                #     target_list.append(linker_in_lib.pic_static_library)                  
                 if linker_in_lib.static_library != None:
                     target_list.append(linker_in_lib.static_library)
                 # print("linker_in_lib.pic_static_library: {}, linker_in_lib.static_library: {}".format(linker_in_lib.pic_static_library, linker_in_lib.static_library))
     
     output = ctx.outputs.output
+    # print("target_list = {}".format(target_list))
     if ctx.attr.genstatic:
         # still have bug for ar, as static libraries may have the same name under the same folder, refer to https://cloud.tencent.com/developer/article/1669789, https://blog.fearcat.in/a?ID=01800-1382ef06-27b7-4b13-aa66-b297d5767c01 and https://docs.bazel.build/versions/main/integrating-with-rules-cc.html
         cp_command = ""       
@@ -2314,33 +2316,41 @@ def _combine_impl(ctx):
                 counter[dep.path] = 1
 
         paths = list(counter.keys())
-        size = 1000
+        size = 200
         segment_len = len(paths)//size + (int)(len(paths)%size != 0)
+        # print("segment_len = {}, total size = {}, paths = {}".format(segment_len, len(paths), paths))
+        # print("segment_len = {}, total size = {}".format(segment_len, len(paths)))
         inter_libraries = []
         for x in range(segment_len):
-            command = "export PATH=$PATH:{} && {} -shared -fPIC -Wl,--whole-archive {} -Wl,--no-whole-archive -Wl,-soname -o {}".format (
+            if (x+1)*size>len(paths):
+                end = len(paths)
+            else:
+                end = (x+1)*size
+            command = "export PATH=$PATH:{} && {} -shared -fPIC {} -o {} -pthread -lm -ldl -lpthread -Wl,-framework -Wl,SystemConfiguration -Wl,-S -lc++ -no-canonical-prefixes -undefined dynamic_lookup".format (
                 cc_toolchain.ld_executable,
                 cc_toolchain.compiler_executable,
-                " ".join(paths[x::size]),
-                "inter_{}.{}.so".format(output, x)
+                " -Wl,-force_load,".join(paths[x*size:end]),
+                "inter_{}_{}.so".format(output.basename, x)
             )
             inter_libraries.append("inter_{}_{}.so".format(output.basename, x))
-            # print("dynamic command argument validation = {} with dependencies size = {}".format(262144 - len(command), len(paths)))
             # print("dynamic command = ", command)
             if len(command) - 262144 > 0:
                 fail("dynamic command argument validation failed, as oversizing by {} with dependencies size = {}.".format(len(command) - 262144, len(paths)))
             ctx.actions.run_shell(
                 outputs = [ctx.actions.declare_file("inter_{}_{}.so".format(output.basename, x))],
                 inputs = target_list,
+                # inputs = [ctx.actions.declare_file(f) for f in paths[x::size]],
                 command = command,
             )
         
-        command = "export PATH=$PATH:{} && {} -shared -fPIC -Wl,--whole-archive {} -Wl,--no-whole-archive -Wl,-soname -o {}".format (
+        command = "export PATH=$PATH:{} && {} -shared -fPIC {} -o {} -pthread -lm -ldl -lpthread -Wl,-framework -Wl,SystemConfiguration -Wl,-S -lc++ -no-canonical-prefixes -undefined dynamic_lookup".format (
             cc_toolchain.ld_executable,
             cc_toolchain.compiler_executable,
-            " ".join(inter_libraries),
+            " -Wl,-force_load,".join(inter_libraries),
             output.basename
         )
+        # print("dynamic libraries = ", inter_libraries)
+        # print("dynamic command = ", command)
         ctx.actions.run_shell(
             outputs = [output],
             inputs = [ctx.actions.declare_file(f) for f in inter_libraries],
@@ -2431,7 +2441,7 @@ def pywrap_tensorflow_macro(
         ],
     )
 
-    print("pywrap_tensorflow_macro::tf_cc_shared_object cc_library_name: {}, deps : {}".format(cc_library_name, deps + extra_deps))
+    # print("pywrap_tensorflow_macro::tf_cc_shared_object cc_library_name: {}, deps : {}".format(cc_library_name, deps + extra_deps))
     tf_cc_shared_object(
         name = cc_library_name,
         srcs = srcs,
