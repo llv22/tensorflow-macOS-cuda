@@ -2319,7 +2319,7 @@ def _combine_impl(ctx):
         size = 200
         segment_len = len(paths)//size + (int)(len(paths)%size != 0)
         # print("segment_len = {}, total size = {}, paths = {}".format(segment_len, len(paths), paths))
-        # print("segment_len = {}, total size = {}".format(segment_len, len(paths)))
+        print("segment_len = {}, total size = {}".format(segment_len, len(paths)))
         inter_libraries = []
         for x in range(segment_len):
             if (x+1)*size>len(paths):
