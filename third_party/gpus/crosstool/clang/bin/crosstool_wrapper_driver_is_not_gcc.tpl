@@ -93,7 +93,7 @@ def GetHostCompilerOptions(argv):
   parser.add_argument('-iquote', nargs='*', action='append')
   parser.add_argument('--sysroot', nargs=1)
   parser.add_argument('-g', nargs='*', action='append')
-  parser.add_argument('-fno-canonical-system-headers', action='store_true')
+  parser.add_argument('-fno-canonical-system-headers', action='store_false')
   parser.add_argument('-no-canonical-prefixes', action='store_true')
 
   args, _ = parser.parse_known_args(argv)

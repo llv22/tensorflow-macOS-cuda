@@ -236,7 +236,7 @@ def _impl(ctx):
                         flag_group(
                             flags = [
                                 "-no-canonical-prefixes",
-                                "-fno-canonical-system-headers",
+                                #"-fno-canonical-system-headers",
                                 "-Wno-builtin-macro-redefined",
                                 "-D__DATE__=\"redacted\"",
                                 "-D__TIMESTAMP__=\"redacted\"",
