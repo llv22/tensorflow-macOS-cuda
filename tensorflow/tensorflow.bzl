@@ -2317,12 +2317,13 @@ def _combine_impl(ctx):
 
         paths = list(counter.keys())
         size = 200
+        max_argument_size = 262144
         segment_len = len(paths)//size + (int)(len(paths)%size != 0)
         # print("segment_len = {}, total size = {}, paths = {}".format(segment_len, len(paths), paths))
         print("segment_len = {}, total size = {}".format(segment_len, len(paths)))
         inter_libraries = []
         for x in range(segment_len):
-            if (x+1)*size>len(paths):
+            if (x+1)*size > len(paths):
                 end = len(paths)
             else:
                 end = (x+1)*size
@@ -2334,12 +2335,11 @@ def _combine_impl(ctx):
             )
             inter_libraries.append("inter_{}_{}.so".format(output.basename, x))
             # print("dynamic command = ", command)
-            if len(command) - 262144 > 0:
-                fail("dynamic command argument validation failed, as oversizing by {} with dependencies size = {}.".format(len(command) - 262144, len(paths)))
+            if len(command) - max_argument_size > 0:
+                fail("dynamic command argument validation failed, as oversizing by {} with dependencies size = {}.".format(len(command) - max_argument_size, len(paths)))
             ctx.actions.run_shell(
                 outputs = [ctx.actions.declare_file("inter_{}_{}.so".format(output.basename, x))],
-                inputs = target_list,
-                # inputs = [ctx.actions.declare_file(f) for f in paths[x::size]],
+                inputs = [ctx.actions.declare_file(f) for f in paths[x*size:end]],
                 command = command,
             )
         
