@@ -916,7 +916,7 @@ def make_copy_dir_rule(repository_ctx, name, src_dir, out_dir, exceptions = None
     outs = [
 %s
     ],
-    cmd = \"""cp -rLf "%s/." "%s/" %s\""",
+    cmd = \"""cp -rf "%s/." "%s/" %s\""",
 )""" % (name, "\n".join(outs), src_dir, out_dir, post_cmd)
 
 def _flag_enabled(repository_ctx, flag_name):
@@ -1248,7 +1248,7 @@ def _create_local_cuda_repository(repository_ctx):
         # .d file - given that includes that are prefixed with "../" multiple
         # time quickly grow longer than the root of the tree, this can lead to
         # bazel's header check failing.
-        cuda_defines["%{extra_no_canonical_prefixes_flags}"] = "\"-fno-canonical-system-headers\""
+        #cuda_defines["%{extra_no_canonical_prefixes_flags}"] = "\"-fno-canonical-system-headers\""
 
         file_ext = ".exe" if is_windows(repository_ctx) else ""
         nvcc_path = "%s/nvcc%s" % (cuda_config.config["cuda_binary_dir"], file_ext)
