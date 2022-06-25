@@ -211,6 +211,9 @@ cc_library(
         ":platform_port",
         "@com_google_absl//absl/base",
     ],
+    linkopts = [
+        "-framework CoreFoundation",
+    ],
 )
 
 # Used by //tensorflow/python/platform:platform.

@@ -913,6 +913,7 @@ def tf_cc_binary(
     tags = kwargs.pop("tags", []) + ["req_dep=" + clean_dep("//third_party/mkl:intel_binary_blob")]
 
     for name_os in names:
+        # print("linkopts in tf_cc_binary: name = {}, copts = {}, linkopts = {}, _rpath_linkopts(name_os) = {}\n".format(name, copts, linkopts, _rpath_linkopts(name_os)))
         cc_binary(
             name = name_os,
             copts = copts,

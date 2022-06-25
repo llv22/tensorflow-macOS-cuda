@@ -43,7 +43,8 @@ def repo():
         system_build_file = "//third_party/absl:system.BUILD",
         system_link_files = SYS_LINKS,
         # TODO(mihaimaruseac): Remove the patch when https://github.com/abseil/abseil-cpp/issues/326 is resolved
-        patch_file = ["//third_party/absl:com_google_absl_fix_mac_and_nvcc_build.patch"],
+        patch_file = ["//third_party/absl:com_google_absl_fix_mac_and_nvcc_build_v1.patch"],
+        # patch_file = ["//third_party/absl:com_google_absl_fix_mac_and_nvcc_build.patch"],
         strip_prefix = "abseil-cpp-{commit}".format(commit = ABSL_COMMIT),
         urls = tf_mirror_urls("https://github.com/abseil/abseil-cpp/archive/{commit}.tar.gz".format(commit = ABSL_COMMIT)),
     )
