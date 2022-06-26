@@ -1,0 +1,567 @@
+diff --git a/.bazelrc b/.bazelrc
+index b6a72c1e5d3..f95e4347537 100644
+--- a/.bazelrc
++++ b/.bazelrc
+@@ -195,6 +195,8 @@ build:ios_armv7 --config=ios
+ build:ios_armv7 --cpu=ios_armv7
+ build:ios_arm64 --config=ios
+ build:ios_arm64 --cpu=ios_arm64
++build:ios_sim_arm64 --config=ios
++build:ios_sim_arm64 --cpu=ios_sim_arm64
+ build:ios_i386 --config=ios
+ build:ios_i386 --cpu=ios_i386
+ build:ios_x86_64 --config=ios
+diff --git a/.github/workflows/arm-cd.yml b/.github/workflows/arm-cd.yml
+new file mode 100644
+index 00000000000..9affdf56212
+--- /dev/null
++++ b/.github/workflows/arm-cd.yml
+@@ -0,0 +1,57 @@
++# Copyright 2022 The TensorFlow Authors. All Rights Reserved.
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++# ==============================================================================
++
++name: ARM CD
++
++on:
++  push:
++    tags:
++      - v2.**
++    branches:
++      - r2.9
++  schedule:
++    - cron: '0 8 * * *'
++
++jobs:
++  build:
++    runs-on: [self-hosted, linux, ARM64]
++    strategy:
++      matrix:
++        pyver: ['3.7', '3.8', '3.9', '3.10']
++    steps:
++      - name: Stop old running containers (if any)
++        shell: bash
++        run: |
++          running_containers=$(docker ps -q) && \
++          if [[ $running_containers == "" ]]; then
++            echo "No running containers";
++          else
++            echo "Running container(s) found" && \
++            docker stop $running_containers;
++          fi
++          docker container prune -f
++      - name: Clean repository
++        shell: bash
++        run: find /home/ubuntu/actions-runner/_work/tensorflow/tensorflow/. -name . -o -prune -exec sudo rm -rf -- {} + || true
++      - name: Checkout repository
++        uses: actions/checkout@v3
++      - name: Build and test pip wheel
++        shell: bash
++        run: |
++          CI_DOCKER_BUILD_EXTRA_PARAMS='--build-arg py_major_minor_version=${{ matrix.pyver }}' \
++          ./tensorflow/tools/ci_build/ci_build.sh cpu.arm64 bash tensorflow/tools/ci_build/rel/ubuntu/cpu_arm64_pip.sh
++      - name: Upload pip wheel to PyPI
++        shell: bash
++        run: python3 -m twine upload --verbose /home/ubuntu/actions-runner/_work/tensorflow/tensorflow/whl/* -u "__token__" -p ${{ secrets.AWS_PYPI_ACCOUNT_TOKEN }}
+diff --git a/.github/workflows/arm-ci.yml b/.github/workflows/arm-ci.yml
+new file mode 100644
+index 00000000000..5497ccd5db9
+--- /dev/null
++++ b/.github/workflows/arm-ci.yml
+@@ -0,0 +1,57 @@
++# Copyright 2022 The TensorFlow Authors. All Rights Reserved.
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++# ==============================================================================
++
++name: ARM CI
++
++on:
++  pull_request:
++    types: [opened, synchronize, reopened]
++    branches:
++      - master
++      - r2.**
++
++jobs:
++  build:
++    runs-on: [self-hosted, linux, ARM64]
++    strategy:
++      matrix:
++        pyver: ['3.7', '3.8', '3.9', '3.10']
++    steps:
++      - name: Stop old running containers (if any)
++        shell: bash
++        run: |
++          running_containers=$(docker ps -q) && \
++          if [[ $running_containers == "" ]]; then
++            echo "No running containers";
++          else
++            echo "Running container(s) found" && \
++            docker stop $running_containers;
++          fi
++          docker container prune -f
++      - name: Clean repository
++        shell: bash
++        run: find /home/ubuntu/actions-runner/_work/tensorflow/tensorflow/. -name . -o -prune -exec sudo rm -rf -- {} + || true
++      - name: Checkout repository
++        uses: actions/checkout@v3
++      - name: Build and test pip wheel
++        shell: bash
++        run: |
++          CI_DOCKER_BUILD_EXTRA_PARAMS='--build-arg py_major_minor_version=${{ matrix.pyver }}' \
++          ./tensorflow/tools/ci_build/ci_build.sh cpu.arm64 bash tensorflow/tools/ci_build/rel/ubuntu/cpu_arm64_pip.sh
++      - name: Upload pip wheel to GitHub
++        uses: actions/upload-artifact@v3
++        with:
++          name: tensorflow_py${{ matrix.pyver }}_wheel
++          path: /home/ubuntu/actions-runner/_work/tensorflow/tensorflow/whl/*.whl
+diff --git a/RELEASE.md b/RELEASE.md
+index b2cd63195e2..c4bb3eb0fe4 100644
+--- a/RELEASE.md
++++ b/RELEASE.md
+@@ -1,3 +1,7 @@
++# Release 2.9.1
++
++Add an upper bound for `protobuf` in `setup.py` since `protobuf` after version 3.20 is currently incompatible with TensorFlow. See https://github.com/tensorflow/tensorflow/issues/53234, https://github.com/protocolbuffers/protobuf/issues/9954 and https://github.com/tensorflow/tensorflow/issues/56077.
++
+ # Release 2.9.0
+ 
+ # Breaking Changes
+diff --git a/tensorflow/core/public/version.h b/tensorflow/core/public/version.h
+index c8bdb318876..68fead40d4f 100644
+--- a/tensorflow/core/public/version.h
++++ b/tensorflow/core/public/version.h
+@@ -22,7 +22,7 @@ limitations under the License.
+ // tensorflow/tools/pip_package/setup.py
+ #define TF_MAJOR_VERSION 2
+ #define TF_MINOR_VERSION 9
+-#define TF_PATCH_VERSION 0
++#define TF_PATCH_VERSION 1
+ 
+ // TF_VERSION_SUFFIX is non-empty for pre-releases (e.g. "-alpha", "-alpha.1",
+ // "-beta", "-rc", "-rc.1")
+diff --git a/tensorflow/lite/core/api/BUILD b/tensorflow/lite/core/api/BUILD
+index 3f1bbca7054..6135eaf41dd 100644
+--- a/tensorflow/lite/core/api/BUILD
++++ b/tensorflow/lite/core/api/BUILD
+@@ -88,6 +88,7 @@ cc_library(
+     copts = tflite_copts(),
+     visibility = op_resolver_internal_visibility_allowlist() + [
+         "//tensorflow/lite:__pkg__",
++        "//tensorflow/lite/java/src/main/native:__pkg__",
+     ],
+     deps = [":op_resolver"],
+ )
+diff --git a/tensorflow/python/data/kernel_tests/BUILD b/tensorflow/python/data/kernel_tests/BUILD
+index a12f13097eb..b0227dae29a 100644
+--- a/tensorflow/python/data/kernel_tests/BUILD
++++ b/tensorflow/python/data/kernel_tests/BUILD
+@@ -70,6 +70,7 @@ tf_py_test(
+     srcs = ["cache_test.py"],
+     tags = [
+         "notsan",  # TODO(b/206452257): re-enable after flakiness resolved.
++        "no_oss",
+     ],
+     deps = [
+         ":checkpoint_test_base",
+@@ -258,6 +259,7 @@ tf_py_test(
+     srcs = ["flat_map_test.py"],
+     grpc_enabled = True,
+     shard_count = 8,
++    tags = ["no_oss"],
+     deps = [
+         ":checkpoint_test_base",
+         ":test_base",
+diff --git a/tensorflow/python/kernel_tests/linalg/BUILD b/tensorflow/python/kernel_tests/linalg/BUILD
+index 8d423a9f95f..02252640551 100644
+--- a/tensorflow/python/kernel_tests/linalg/BUILD
++++ b/tensorflow/python/kernel_tests/linalg/BUILD
+@@ -623,6 +623,7 @@ cuda_py_test(
+     srcs = ["matrix_solve_ls_op_test.py"],
+     tags = [
+         "noasan",  # TODO(b/337374867) fails with -fsanitize=null
++        "no_oss",
+     ],
+     deps = [
+         "//tensorflow/python:array_ops",
+diff --git a/tensorflow/tensorflow.bzl b/tensorflow/tensorflow.bzl
+index 143bc0294da..ffe445dad95 100644
+--- a/tensorflow/tensorflow.bzl
++++ b/tensorflow/tensorflow.bzl
+@@ -56,7 +56,7 @@ def register_extension_info(**kwargs):
+ # not contain rc or alpha, only numbers.
+ # Also update tensorflow/core/public/version.h
+ # and tensorflow/tools/pip_package/setup.py
+-VERSION = "2.9.0"
++VERSION = "2.9.1"
+ VERSION_MAJOR = VERSION.split(".")[0]
+ two_gpu_tags = ["requires-gpu-nvidia:2", "notap", "manual", "no_pip"]
+ 
+diff --git a/tensorflow/tools/ci_build/Dockerfile.cpu.arm64 b/tensorflow/tools/ci_build/Dockerfile.cpu.arm64
+new file mode 100644
+index 00000000000..0a003816098
+--- /dev/null
++++ b/tensorflow/tools/ci_build/Dockerfile.cpu.arm64
+@@ -0,0 +1,40 @@
++FROM quay.io/pypa/manylinux2014_aarch64
++
++RUN yum -y check-update || true && \
++    yum install -y epel-release && \
++    yum install -y \
++        sudo \
++        wget \
++        openssl-devel \
++        libffi-devel \
++        java-1.8.0-openjdk-devel \
++        bzip2-devel \
++        gdbm-devel \
++        ncurses-devel \
++        nss-devel \
++        readline-devel \
++        sqlite-devel \
++        hdf5-devel && \
++    yum clean all
++
++COPY install/install_bazel.sh /install/
++RUN /install/install_bazel.sh
++
++ARG py_major_minor_version
++
++ENV TF_PYTHON_VERSION=python${py_major_minor_version}
++ENV PYTHON_BIN_PATH=/usr/local/bin/${TF_PYTHON_VERSION}
++
++RUN ln -s ${PYTHON_BIN_PATH} /usr/local/bin/python && \
++    ln -s ${PYTHON_BIN_PATH} /usr/local/bin/python3
++
++RUN curl -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
++    python /tmp/get-pip.py && \
++    rm -f /tmp/get-pip.py
++
++RUN export PYTHON_VERSION=$(python -c 'import platform; print(platform.python_version())') && \
++    ln -s /opt/_internal/cpython-$PYTHON_VERSION/bin/pip3 /usr/local/bin/pip${py_major_minor_version} && \
++    ln -s /opt/_internal/cpython-$PYTHON_VERSION/bin/pip3 /usr/local/bin/pip3 && \
++    ln -s /opt/_internal/cpython-$PYTHON_VERSION/bin/pip /usr/local/bin/pip
++
++RUN pip3 install packaging
+diff --git a/tensorflow/tools/ci_build/builds/pip_new.sh b/tensorflow/tools/ci_build/builds/pip_new.sh
+index b630d1a5d7d..d503b6f95fd 100755
+--- a/tensorflow/tools/ci_build/builds/pip_new.sh
++++ b/tensorflow/tools/ci_build/builds/pip_new.sh
+@@ -762,12 +762,10 @@ if [[ ${OS_TYPE} == "ubuntu" ]] && \
+   for WHL_PATH in $(ls ${PIP_WHL_DIR}/*.whl); do
+     # Repair the wheels for cpu manylinux2010/manylinux2014
+     echo "auditwheel repairing ${WHL_PATH}"
+-    auditwheel repair --plat ${AUDITWHEEL_TARGET_PLAT}_x86_64 -w "${WHL_DIR}" "${WHL_PATH}"
++    auditwheel repair --plat ${AUDITWHEEL_TARGET_PLAT}_$(uname -m) -w "${WHL_DIR}" "${WHL_PATH}"
+ 
+-    WHL_BASE_NAME=$(basename "${WHL_PATH}")
+-    AUDITED_WHL_NAME="${WHL_DIR}"/$(echo "${WHL_BASE_NAME//linux/${AUDITWHEEL_TARGET_PLAT}}")
+-    if [[ -f ${AUDITED_WHL_NAME} ]]; then
+-      WHL_PATH=${AUDITED_WHL_NAME}
++    if [[ $(ls ${WHL_DIR} | grep ${AUDITWHEEL_TARGET_PLAT} | wc -l) == 1 ]] ; then
++      WHL_PATH=${WHL_DIR}/$(ls ${WHL_DIR} | grep ${AUDITWHEEL_TARGET_PLAT})
+       echo "Repaired ${AUDITWHEEL_TARGET_PLAT} wheel file at: ${WHL_PATH}"
+     else
+       die "WARNING: Cannot find repaired wheel."
+diff --git a/tensorflow/tools/ci_build/builds/with_the_same_user b/tensorflow/tools/ci_build/builds/with_the_same_user
+index 0c8c5069936..b09134d5ad1 100755
+--- a/tensorflow/tools/ci_build/builds/with_the_same_user
++++ b/tensorflow/tools/ci_build/builds/with_the_same_user
+@@ -27,39 +27,45 @@ set -e
+ 
+ COMMAND=("$@")
+ 
+-if ! touch /this_is_writable_file_system; then
+-  echo "You can't write to your filesystem!"
+-  echo "If you are in Docker you should check you do not have too many images" \
+-      "with too many files in them. Docker has some issue with it."
+-  exit 1
++if [[ $(awk -F= '/^NAME/{print $2}' /etc/os-release) == *"CentOS"* ]]; then
++  ${COMMAND[@]}
+ else
+-  rm /this_is_writable_file_system
+-fi
+ 
+-if [ -n "${CI_BUILD_USER_FORCE_BADNAME}" ]; then
+-  ADDUSER_OPTS="--force-badname"
+-fi
++  if ! touch /this_is_writable_file_system; then
++    echo "You can't write to your filesystem!"
++    echo "If you are in Docker you should check you do not have too many images" \
++        "with too many files in them. Docker has some issue with it."
++    exit 1
++  else
++    rm /this_is_writable_file_system
++  fi
+ 
+-apt-get install sudo
++  if [ -n "${CI_BUILD_USER_FORCE_BADNAME}" ]; then
++    ADDUSER_OPTS="--force-badname"
++  fi
+ 
+-getent group "${CI_BUILD_GID}" || addgroup ${ADDUSER_OPTS} --gid "${CI_BUILD_GID}" "${CI_BUILD_GROUP}"
+-getent passwd "${CI_BUILD_UID}" || adduser ${ADDUSER_OPTS} \
+-    --gid "${CI_BUILD_GID}" --uid "${CI_BUILD_UID}" \
+-    --gecos "${CI_BUILD_USER} (generated by with_the_same_user script)" \
+-    --disabled-password --home "${CI_BUILD_HOME}" --quiet "${CI_BUILD_USER}"
+-usermod -a -G sudo "${CI_BUILD_USER}"
+-echo "${CI_BUILD_USER} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/90-nopasswd-sudo
++  apt-get install sudo
+ 
+-if [[ "${TF_NEED_ROCM}" -eq 1 ]]; then
+-  # ROCm requires the video group in order to use the GPU for compute. If it
+-  # exists on the host, add it to the container.
+-  getent group video || addgroup video && adduser "${CI_BUILD_USER}" video
+-fi
++  getent group "${CI_BUILD_GID}" || addgroup ${ADDUSER_OPTS} --gid "${CI_BUILD_GID}" "${CI_BUILD_GROUP}"
++  getent passwd "${CI_BUILD_UID}" || adduser ${ADDUSER_OPTS} \
++      --gid "${CI_BUILD_GID}" --uid "${CI_BUILD_UID}" \
++      --gecos "${CI_BUILD_USER} (generated by with_the_same_user script)" \
++      --disabled-password --home "${CI_BUILD_HOME}" --quiet "${CI_BUILD_USER}"
++  usermod -a -G sudo "${CI_BUILD_USER}"
++  echo "${CI_BUILD_USER} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/90-nopasswd-sudo
+ 
+-if [ -e /root/.bazelrc ]; then
+-  cp /root/.bazelrc "${CI_BUILD_HOME}/.bazelrc"
+-  chown "${CI_BUILD_UID}:${CI_BUILD_GID}" "${CI_BUILD_HOME}/.bazelrc"
+-fi
++  if [[ "${TF_NEED_ROCM}" -eq 1 ]]; then
++    # ROCm requires the video group in order to use the GPU for compute. If it
++    # exists on the host, add it to the container.
++    getent group video || addgroup video && adduser "${CI_BUILD_USER}" video
++  fi
+ 
+-sudo -u "#${CI_BUILD_UID}" --preserve-env "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" \
+-"HOME=${CI_BUILD_HOME}" ${COMMAND[@]}
++  if [ -e /root/.bazelrc ]; then
++    cp /root/.bazelrc "${CI_BUILD_HOME}/.bazelrc"
++    chown "${CI_BUILD_UID}:${CI_BUILD_GID}" "${CI_BUILD_HOME}/.bazelrc"
++  fi
++
++  sudo -u "#${CI_BUILD_UID}" --preserve-env "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" \
++  "HOME=${CI_BUILD_HOME}" ${COMMAND[@]}
++
++fi
+diff --git a/tensorflow/tools/ci_build/install/install_bazel.sh b/tensorflow/tools/ci_build/install/install_bazel.sh
+index c8a605c322d..a41b158d2c7 100755
+--- a/tensorflow/tools/ci_build/install/install_bazel.sh
++++ b/tensorflow/tools/ci_build/install/install_bazel.sh
+@@ -29,12 +29,17 @@ set -e
+ # Install bazel.
+ mkdir -p /bazel
+ cd /bazel
+-if [[ ! -f "bazel-$BAZEL_VERSION-installer-linux-x86_64.sh" ]]; then
+-  curl -fSsL -O https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh
++if [[ $(uname -m) == "aarch64" ]]; then
++  curl -o /usr/local/bin/bazel -fSsL https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-linux-arm64
++  chmod +x /usr/local/bin/bazel
++else
++  if [[ ! -f "bazel-$BAZEL_VERSION-installer-linux-x86_64.sh" ]]; then
++    curl -fSsL -O https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh
++  fi
++  chmod +x /bazel/bazel-*.sh
++  /bazel/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh
++  rm -f /bazel/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh
+ fi
+-chmod +x /bazel/bazel-*.sh
+-/bazel/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh
+-rm -f /bazel/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh
+ 
+ # Enable bazel auto completion.
+ echo "source /usr/local/lib/bazel/bin/bazel-complete.bash" >> ~/.bashrc
+diff --git a/tensorflow/tools/ci_build/rel/ubuntu/cpu_arm64_pip.sh b/tensorflow/tools/ci_build/rel/ubuntu/cpu_arm64_pip.sh
+new file mode 100644
+index 00000000000..0e090bb2042
+--- /dev/null
++++ b/tensorflow/tools/ci_build/rel/ubuntu/cpu_arm64_pip.sh
+@@ -0,0 +1,94 @@
++#!/bin/bash
++# Copyright 2022 The TensorFlow Authors. All Rights Reserved.
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++# ==============================================================================
++
++set -e
++set -x
++
++source tensorflow/tools/ci_build/release/common.sh
++
++# Update bazel
++install_bazelisk
++
++# Env vars used to avoid interactive elements of the build.
++export HOST_C_COMPILER=(which gcc)
++export HOST_CXX_COMPILER=(which g++)
++export TF_ENABLE_XLA=1
++export TF_DOWNLOAD_CLANG=0
++export TF_SET_ANDROID_WORKSPACE=0
++export TF_NEED_MPI=0
++export TF_NEED_ROCM=0
++export TF_NEED_GCP=0
++export TF_NEED_S3=0
++export TF_NEED_OPENCL_SYCL=0
++export TF_NEED_CUDA=0
++export TF_NEED_HDFS=0
++export TF_NEED_OPENCL=0
++export TF_NEED_JEMALLOC=1
++export TF_NEED_VERBS=0
++export TF_NEED_AWS=0
++export TF_NEED_GDR=0
++export TF_NEED_OPENCL_SYCL=0
++export TF_NEED_COMPUTECPP=0
++export TF_NEED_KAFKA=0
++export TF_NEED_TENSORRT=0
++
++# Export required variables for running pip_new.sh
++export OS_TYPE="UBUNTU"
++export CONTAINER_TYPE="CPU"
++
++# Get the default test targets for bazel.
++source tensorflow/tools/ci_build/build_scripts/DEFAULT_TEST_TARGETS.sh
++
++# Set python version string
++py_ver=$(python -c 'import sys; print(str(sys.version_info.major)+str(sys.version_info.minor))')
++
++# Export optional variables for running pip_new.sh
++export TF_BUILD_FLAGS="--config=mkl_aarch64 --copt=-mtune=generic --copt=-march=armv8-a \
++    --copt=-O3 --copt=-fopenmp --copt=-flax-vector-conversions --linkopt=-lgomp"
++export TF_TEST_FLAGS="${TF_BUILD_FLAGS} \
++    --test_env=TF_ENABLE_ONEDNN_OPTS=1 --test_env=TF2_BEHAVIOR=1 --test_lang_filters=py \
++    --define=no_tensorflow_py_deps=true --verbose_failures=true --test_keep_going"
++export TF_TEST_TARGETS="${DEFAULT_BAZEL_TARGETS} \
++    -//tensorflow/lite/... \
++    -//tensorflow/compiler/mlir/lite/tests:const-fold.mlir.test \
++    -//tensorflow/compiler/mlir/lite/tests:prepare-tf.mlir.test \
++    -//tensorflow/python:nn_grad_test \
++    -//tensorflow/python/eager:forwardprop_test \
++    -//tensorflow/python/framework:node_file_writer_test \
++    -//tensorflow/python/grappler:memory_optimizer_test \
++    -//tensorflow/python/keras/engine:training_arrays_test \
++    -//tensorflow/python/kernel_tests/linalg:linear_operator_householder_test \
++    -//tensorflow/python/kernel_tests/linalg:linear_operator_inversion_test \
++    -//tensorflow/python/kernel_tests/linalg:linear_operator_block_diag_test \
++    -//tensorflow/python/kernel_tests/linalg:linear_operator_block_lower_triangular_test \
++    -//tensorflow/python/kernel_tests/linalg:linear_operator_kronecker_test \
++    -//tensorflow/python/kernel_tests/math_ops:batch_matmul_op_test \
++    -//tensorflow/python/kernel_tests/nn_ops:conv_ops_test \
++    -//tensorflow/python/kernel_tests/nn_ops:conv2d_backprop_filter_grad_test \
++    -//tensorflow/python/kernel_tests/nn_ops:conv3d_backprop_filter_v2_grad_test \
++    -//tensorflow/python/kernel_tests/nn_ops:atrous_conv2d_test \
++    -//tensorflow/python/ops/parallel_for:math_test"
++export TF_PIP_TESTS="test_pip_virtualenv_clean"
++export TF_TEST_FILTER_TAGS="-no_oss,-oss_serial,-no_oss_py${py_ver},-gpu,-tpu,-benchmark-test,-v1only,-no_aarch64,-requires-gpu"
++export IS_NIGHTLY=0 # Not nightly; uncomment if building from tf repo.
++export TF_PROJECT_NAME="aws_tensorflow_cpu"
++export TF_PIP_TEST_ROOT="pip_test"
++export TF_AUDITWHEEL_TARGET_PLAT="manylinux2014"
++
++source tensorflow/tools/ci_build/builds/pip_new.sh
++
++# remove duplicate wheel and copy wheel to mounted volume for local access
++rm -rf /tensorflow/pip_test/whl/*linux_aarch64.whl && cp -r /tensorflow/pip_test/whl .
+diff --git a/tensorflow/tools/ci_build/release/common.sh b/tensorflow/tools/ci_build/release/common.sh
+index dd82501f77a..c510af5b0ad 100644
+--- a/tensorflow/tools/ci_build/release/common.sh
++++ b/tensorflow/tools/ci_build/release/common.sh
+@@ -62,7 +62,12 @@ function install_bazelisk {
+   date
+   case "$(uname -s)" in
+     Darwin) local name=bazelisk-darwin-amd64 ;;
+-    Linux)  local name=bazelisk-linux-amd64  ;;
++    Linux)
++      case "$(uname -m)" in
++       x86_64) local name=bazelisk-linux-amd64 ;;
++       aarch64) local name=bazelisk-linux-arm64 ;;
++       *) die "Unknown machine type: $(uname -m)" ;;
++      esac ;;
+     *) die "Unknown OS: $(uname -s)" ;;
+   esac
+   mkdir -p "$HOME/bin"
+diff --git a/tensorflow/tools/pip_package/setup.py b/tensorflow/tools/pip_package/setup.py
+index 09d82821222..cdcc355f4a6 100644
+--- a/tensorflow/tools/pip_package/setup.py
++++ b/tensorflow/tools/pip_package/setup.py
+@@ -45,7 +45,7 @@ from setuptools.dist import Distribution
+ # result for pip.
+ # Also update tensorflow/tensorflow.bzl and
+ # tensorflow/core/public/version.h
+-_VERSION = '2.9.0'
++_VERSION = '2.9.1'
+ 
+ 
+ # We use the same setup.py for all tensorflow_* packages and for the nightly
+@@ -87,7 +87,14 @@ REQUIRED_PACKAGES = [
+     'numpy >= 1.20',
+     'opt_einsum >= 2.3.2',
+     'packaging',
+-    'protobuf >= 3.9.2',
++    # TODO(b/182876485): Protobuf 3.20 results in linker errors on Windows
++    # Protobuf 4.0 is binary incompatible with what C++ TF uses.
++    # We need ~1 quarter to update properly.
++    # See also: https://github.com/tensorflow/tensorflow/issues/53234
++    # See also: https://github.com/protocolbuffers/protobuf/issues/9954
++    # See also: https://github.com/tensorflow/tensorflow/issues/56077
++    # This is a temporary patch for now, to patch previous TF releases.
++    'protobuf >= 3.9.2, < 3.20',
+     'setuptools',
+     'six >= 1.12.0',
+     'termcolor >= 1.1.0',
+diff --git a/third_party/cpuinfo/cpuinfo.BUILD b/third_party/cpuinfo/cpuinfo.BUILD
+index eb2937d20ef..e362682b810 100644
+--- a/third_party/cpuinfo/cpuinfo.BUILD
++++ b/third_party/cpuinfo/cpuinfo.BUILD
+@@ -121,6 +121,7 @@ cc_library(
+         ":ios_armv7": COMMON_SRCS + MACH_SRCS + MACH_ARM_SRCS,
+         ":ios_arm64": COMMON_SRCS + MACH_SRCS + MACH_ARM_SRCS,
+         ":ios_arm64e": COMMON_SRCS + MACH_SRCS + MACH_ARM_SRCS,
++        ":ios_sim_arm64": COMMON_SRCS + MACH_SRCS + MACH_ARM_SRCS,
+         ":watchos_x86_64": COMMON_SRCS + X86_SRCS + MACH_SRCS + MACH_X86_SRCS,
+         ":watchos_x86": COMMON_SRCS + X86_SRCS + MACH_SRCS + MACH_X86_SRCS,
+         ":watchos_armv7k": COMMON_SRCS + MACH_SRCS + MACH_ARM_SRCS,
+@@ -297,6 +298,14 @@ config_setting(
+     },
+ )
+ 
++config_setting(
++    name = "ios_sim_arm64",
++    values = {
++        "apple_platform_type": "ios",
++        "cpu": "ios_sim_arm64",
++    },
++)
++
+ config_setting(
+     name = "ios_arm64e",
+     values = {
