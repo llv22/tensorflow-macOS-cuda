@@ -1,3 +1,24 @@
+<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable MD004 -->
+<!-- markdownlint-disable MD029 -->
+# tensorflow 2.9.0 for Nvidia GPU on macOS
+
+--------------------------------------------------------------------------------
+
+As officially Tensorflow doesn't support for macOS cuda, I used this repository to build tensorflow 2.8+ on macOS cuda. **This branch v2.9.1-fixed branch is the current investigation branch**. Though [TomHeaven's Tensorflow OSX Build](https://github.com/TomHeaven/tensorflow-osx-build) didn't support TF 1.15, 2.0.0, 2.1.0 and 2.2.0 as well as [2.4.0](https://github.com/TomHeaven/tensorflow/tree/v2.4.0-macos). After checkup with him via [ticket 25 on tensorflow-osx-build](https://github.com/TomHeaven/tensorflow-osx-build/issues/25), knowing that he won't continue to crack for higher version, I decided to try on my own similar to [pytorch-macOS-cuda](https://github.com/llv22/pytorch-macOS-cuda/), [nccl-osx](https://github.com/llv22/nccl-osx), as well as [jax-macOS-cuda](https://github.com/llv22/jax-macOS-cuda).
+
+The main development environment settings as follow:
+
+- macOS 10.13.6, cuda 10.1, cudnn 7.6.5 (cuda and cudnn is the last official version which Nvidia released to support macOS)
+- [NCCL on macOS 2.9.6.1](https://github.com/llv22/nccl-osx) and [test suite](https://github.com/llv22/nccl-tests-macOS-cuda)
+
+Consolidating [tensorflow-2.9.0-mac.patch](tensorflow-2.9.0-mac.patch) by
+
+```bash
+git format-patch -17 --stdout > tensorflow-2.9.0-mac.patch
+```
+
+--------------------------------------------------------------------------------
 <div align="center">
   <img src="https://www.tensorflow.org/images/tf_logo_horizontal.png">
 </div>
